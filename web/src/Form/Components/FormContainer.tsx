@@ -29,10 +29,6 @@ const Submit = Styled.button`
     transition: background-color ${Duration.FAST}, color ${Duration.FAST};
     width: 100%;
     
-    &:hover {
-        background-color: ${Color.DARKEST_HOVER};
-    }
-    
     &[disabled] {
         opacity: 0.5;
         pointer-events: none;

@@ -33,7 +33,7 @@ const GeneratorView: React.FC<Props> & Static = ({ ...props }) => {
         <Root {...props}>
             <Async
                 data={[[topics, getTopics]]}
-                success={() => generator.topics ? <Generator /> : <InitForm />}/>
+                success={() => generator && generator.topics ? <Generator /> : <InitForm />}/>
         </Root>
     )
 

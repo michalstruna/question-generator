@@ -29,7 +29,13 @@ export default {
         answer: { [CS]: 'Odpověď', [EN]: 'Answer' },
         missingAnswer: { [CS]: 'Napište odpověď', [EN]: 'Type answer' },
         submit: { [CS]: 'Odpovědět', [EN]: 'Answer' },
-        dontKnow: { [CS]: 'Nevím', [EN]: 'Don\'t know' }
+        dontKnow: { [CS]: 'Nevím', [EN]: 'Don\'t know' },
+        next: { [CS]: 'Další', [EN]: 'Next' },
+        exit: { [CS]: 'Ukončit', [EN]: 'Exit' },
+        correct: { [CS]: 'Správně' },
+        wrong: { [CS]: 'Špatně' },
+        correctAnswer: { [CS]: 'Správná odpověď' },
+        time: { [CS]: 'Doba odpovědi' }
     }
 
 }

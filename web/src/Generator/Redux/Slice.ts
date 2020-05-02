@@ -16,7 +16,7 @@ const answers: Answer[] = [
 ]
 
 const answerChecks: AnswerCheck[] = [
-    { isCorrect: true, time: 1200, correctAnswer: answers[0] }
+    { isCorrect: true, time: 12650, correctAnswer: answers[0] }
 ]
 
 const mock = {
@@ -27,7 +27,7 @@ const mock = {
         setTimeout(() => resolve(questions[Math.floor(Math.random() * 2)]), 500)
     }),
     sendAnswer: (answer: Answer) => new Promise<AnswerCheck>(resolve => {
-        setTimeout(() => resolve(answerChecks[0]))
+        setTimeout(() => resolve(answerChecks[0]), 500)
     })
 }
 
@@ -37,7 +37,7 @@ const Slice = Redux.slice(
         topics: Redux.async<Topic[]>(),
         question: Redux.async<GeneratedQuestion>(),
         answer: Redux.async<Answer>(),
-        generator: Redux.empty<GeneratorInstance>()
+        generator: Redux.empty<GeneratorInstance | undefined>()
     },
     ({ async, set }) => ({
         getTopics: async<void, Topic[]>('topics', mock.getTopics),
@@ -47,15 +47,15 @@ const Slice = Redux.slice(
         sendAnswer: async<Answer, AnswerCheck>('answer', mock.sendAnswer, {
             onSuccess: (state, action) => {
                 if ((action.payload as any).isCorrect) {
-                    state.generator.correct++
+                    state.generator!.correct++
                 } else {
-                    state.generator.wrong++
+                    state.generator!.wrong++
                 }
 
                 state.answer.payload = action.payload
             }
         }),
-        setGenerator: set<GeneratorInstance>('generator')
+        setGenerator: set<GeneratorInstance | undefined>('generator')
     })
 )
 

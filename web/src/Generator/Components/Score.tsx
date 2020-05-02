@@ -44,12 +44,10 @@ const InnerBar = Styled.div`
 
 const Correct = Styled.div`
     color: ${Color.GREEN};
-    float: left;
 `
 
 const Wrong = Styled.div`
     color: ${Color.RED};
-    float: right;
 `
 
 const SpentTime = Styled(IconText)`
@@ -94,7 +92,7 @@ const Score: React.FC<Props> & Static = ({ ...props }) => {
                     <Correct>
                         {generator.correct}
                     </Correct>
-                    <div>
+                    <div style={{ color: `rgb(${(100 - successRatio) * 2}, ${successRatio * 2}, 0)` }}>
                         {Math.floor(100 * successRatio) / 100} %
                     </div>
                     <Wrong>
