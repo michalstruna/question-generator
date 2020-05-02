@@ -7,7 +7,8 @@ const topics: Topic[] = [
 ]
 
 const questions: GeneratedQuestion[] = [
-    { id: 'q1', topicId: 't2', token: 'abc', name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?', stats: { wrong: 10, correct: 20, time: 30 } }
+    { id: 'q1', topicId: 't2', token: 'abc', name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?', stats: { wrong: 10, correct: 20, time: 30 } },
+    { id: 'q2', topicId: 't1', token: 'cde', name: 'Kolik nejvýše potomků může mít uzel binárního stromu?', stats: { correct: 8, time: 12, wrong: 23 } }
 ]
 
 const answers: Answer[] = [
@@ -23,7 +24,7 @@ const mock = {
         setTimeout(() => resolve(topics), 500)
     }),
     generateQuestion: (topics: Topic[]) => new Promise<GeneratedQuestion>(resolve => {
-        setTimeout(() => resolve(questions[0]), 500)
+        setTimeout(() => resolve(questions[Math.floor(Math.random() * 2)]), 500)
     }),
     sendAnswer: (answer: Answer) => new Promise<AnswerCheck>(resolve => {
         setTimeout(() => resolve(answerChecks[0]))
@@ -40,10 +41,18 @@ const Slice = Redux.slice(
     },
     ({ async, set }) => ({
         getTopics: async<void, Topic[]>('topics', mock.getTopics),
-        generateQuestion: async<Topic[], GeneratedQuestion>('question', mock.generateQuestion),
+        generateQuestion: async<Topic[], GeneratedQuestion>('question', mock.generateQuestion, {
+            onPending: state => state.question.payload = state.question.error = state.answer.payload = null
+        }),
         sendAnswer: async<Answer, AnswerCheck>('answer', mock.sendAnswer, {
             onSuccess: (state, action) => {
-                console.log(111, state, action)
+                if ((action.payload as any).isCorrect) {
+                    state.generator.correct++
+                } else {
+                    state.generator.wrong++
+                }
+
+                state.answer.payload = action.payload
             }
         }),
         setGenerator: set<GeneratorInstance>('generator')
