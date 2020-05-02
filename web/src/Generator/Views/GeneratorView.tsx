@@ -5,6 +5,7 @@ import { Async } from '../../Async'
 import { useTopics, getTopics, useGenerator } from '..'
 import InitForm from '../Components/InitForm'
 import Generator from '../Components/Generator'
+import { size } from '../../Style'
 
 interface Static {
 
@@ -15,7 +16,12 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const Root = Styled.div`
-
+    ${size()}
+    align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2rem;
 `
 
 const GeneratorView: React.FC<Props> & Static = ({ ...props }) => {

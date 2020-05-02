@@ -15,7 +15,9 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const Root = Styled.div`
-
+    margin: 0 auto;
+    width: calc(100% - 1rem);
+    max-width: 50rem;
 `
 
 const Generator: React.FC<Props> & Static = ({ ...props }) => {
@@ -32,8 +34,8 @@ const Generator: React.FC<Props> & Static = ({ ...props }) => {
 
     return (
         <Root {...props}>
-            <Score />
             <Question />
+            <Score />
         </Root>
     )
 

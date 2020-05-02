@@ -1,6 +1,5 @@
 import Language from './Language'
 import Url from '../../Routing/Constants/Url'
-import { Validator } from '../../Native'
 
 const CS = Language.CS
 const EN = Language.EN
@@ -24,6 +23,13 @@ export default {
             [CS]: 'Změnit jazyk',
             [EN]: 'Change language'
         }
+    },
+
+    question: {
+        answer: { [CS]: 'Odpověď', [EN]: 'Answer' },
+        missingAnswer: { [CS]: 'Napište odpověď', [EN]: 'Type answer' },
+        submit: { [CS]: 'Odpovědět', [EN]: 'Answer' },
+        dontKnow: { [CS]: 'Nevím', [EN]: 'Don\'t know' }
     }
 
 }

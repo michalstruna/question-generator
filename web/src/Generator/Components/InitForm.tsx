@@ -21,8 +21,8 @@ const InitForm: React.FC<Props> & Static = ({ ...props }) => {
     const topics = useTopics()
 
     const handleSubmit = () => {
-        const selectedTopics = [topics.payload[0]]
-        actions.setGenerator({ time: 0, correct: 0, topics: selectedTopics, wrong: 0 })
+        const selectedTopics = [topics.payload[0], topics.payload[1]]
+        actions.setGenerator({ time: new Date().getTime(), correct: 0, topics: selectedTopics, wrong: 0 })
     }
 
     return (
