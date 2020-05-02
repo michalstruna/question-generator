@@ -6,7 +6,7 @@ import { Provider } from 'react-redux'
 import * as serviceWorker from './serviceWorker'
 import { App, Store } from './Core'
 import { History, Url } from './Routing'
-import { HomeView } from './Generator'
+import { HomeView, GeneratorView } from './Generator'
 
 ReactDOM.render(
     <Provider store={Store}>
@@ -14,6 +14,7 @@ ReactDOM.render(
             <App>
                 <Switch>
                     <Route exact path={Url.HOME} component={HomeView} />
+                    <Route path={Url.GENERATOR} component={GeneratorView} />
                     <Redirect to={Url.HOME} />
                 </Switch>
             </App>

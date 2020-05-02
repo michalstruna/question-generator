@@ -1,3 +1,8 @@
 import { useSelector } from 'react-redux'
 
-export const useTopics = () => useSelector((state: any) => state.generator.topics)
+type State = any // TODO: Use typeof State.
+
+export const useTopics = () => useSelector((state: State) => state.generator.topics)
+export const useQuestion = () => useSelector((state: State) => state.generator.question)
+export const useAnswer = () => useSelector((state: State) => state.generator.answer)
+export const useGenerator = () => useSelector((state: State) => state.generator.generator)
