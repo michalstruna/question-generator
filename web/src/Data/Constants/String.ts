@@ -8,9 +8,8 @@ export default {
 
     nav: {
         links: [
-            { text: { [CS]: 'Přehled', [EN]: 'Overview' }, pathname: Url.HOME, icon: 'Overview' },
+            { text: { [CS]: 'Generátor', [EN]: 'Generator' }, pathname: Url.HOME, icon: 'Overview' },
             { text: { [CS]: 'Databáze', [EN]: 'Database' }, pathname: Url.DATABASE, icon: 'Database' },
-            { text: { [CS]: 'Generátor', [EN]: 'Generator' }, pathname: Url.GENERATOR, icon: 'Generator' }
         ]
     },
 
@@ -25,6 +24,13 @@ export default {
         }
     },
 
+    generator: {
+        title: { [CS]: 'Generátor otázek' },
+        selectTopics: { [CS]: 'Vyberte témata' },
+        selectedTopics: { [CS]: 'Vybraná témata' },
+        submit: { [CS]: 'Začít' }
+    },
+
     question: {
         answer: { [CS]: 'Odpověď', [EN]: 'Answer' },
         missingAnswer: { [CS]: 'Napište odpověď', [EN]: 'Type answer' },
@@ -35,7 +41,7 @@ export default {
         correct: { [CS]: 'Správně' },
         wrong: { [CS]: 'Špatně' },
         correctAnswer: { [CS]: 'Správná odpověď' },
-        time: { [CS]: 'Doba odpovědi' }
+        time: { [CS]: 'Doba odpovědi' },
     }
 
 }

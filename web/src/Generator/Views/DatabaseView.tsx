@@ -11,7 +11,7 @@ interface Props {
 
 }
 
-const HomeView: React.FC<Props> & Static = () => {
+const DatabaseView: React.FC<Props> & Static = () => {
 
     const strings = useStrings().home
     const language = useLanguage()
@@ -31,4 +31,4 @@ const HomeView: React.FC<Props> & Static = () => {
 
 }
 
-export default HomeView
+export default DatabaseView

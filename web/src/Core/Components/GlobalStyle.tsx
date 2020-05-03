@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: inherit;
     }
     
-    button, input, textarea, select {
+    button, input[type="text"], input[type="number"], input[type="email"], textarea, select {
         background-color: transparent;
         border: none;
         border-bottom: 1px solid ${Color.MEDIUM_LIGHT};
@@ -52,11 +52,16 @@ const GlobalStyle = createGlobalStyle`
           outline: none;
           padding: 0.5rem;
           text-align: center;
-          transition: background-color ${Duration.MEDIUM};
+          transition: background-color ${Duration.MEDIUM}, opacity ${Duration.MEDIUM};
           user-select: none;
         
           &:hover {
                background-color: ${Color.DARKEST_HOVER};
+          }
+          
+          &[disabled] {
+            opacity: 0.6;
+            pointer-events: none;
           }
      }
       

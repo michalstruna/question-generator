@@ -15,7 +15,7 @@ interface Props extends React.ComponentPropsWithoutRef<'nav'> {
 }
 
 const Root = Styled.nav`
-    ${size('35rem', Dimension.NAV_HEIGHT, true)}
+    ${size('25rem', Dimension.NAV_HEIGHT, true)}
     display: flex;
     justify-content: space-around;
     user-select: none;

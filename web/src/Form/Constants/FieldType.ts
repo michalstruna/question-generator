@@ -28,6 +28,11 @@ export default {
     SELECT: {
         name: 'select',
         validator: () => true
+    },
+
+    CHECKBOX: {
+        name: 'checkbox',
+        validator: () => true
     }
 
 }

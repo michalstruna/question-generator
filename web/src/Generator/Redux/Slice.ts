@@ -1,9 +1,14 @@
 import { Redux } from '../../Data'
-import { Answer, AnswerCheck, GeneratedQuestion, GeneratorInstance, Question, Stats, Topic } from '../types'
+import { Answer, AnswerCheck, GeneratedQuestion, GeneratorInstance, Topic } from '../types'
 
 const topics: Topic[] = [
     { id: 't1', name: 'Datové struktury', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456} },
-    { id: 't2', name: 'Webové aplikace', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456 } }
+    { id: 't2', name: 'Webové aplikace', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456 } },
+    { id: 't1', name: 'Datové struktury', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456} },
+    { id: 't2', name: 'Webové aplikace', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456 } },
+    { id: 't1', name: 'Datové struktury', stats: { questionsCount: 128, correct: 5, wrong: 118, time: 123456} },
+    { id: 't2', name: 'Webové aplikace', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456 } },
+    { id: 't1', name: 'Datové struktury', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456} }
 ]
 
 const questions: GeneratedQuestion[] = [
