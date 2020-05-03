@@ -33,7 +33,7 @@ const GlobalStyle = createGlobalStyle`
         -webkit-appearance: none;
     }
     
-    option {
+    option, optgroup {
         background-color: ${Color.MEDIUM_DARK};
         border: none;
         padding: 0.5rem;

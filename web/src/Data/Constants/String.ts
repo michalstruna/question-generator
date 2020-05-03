@@ -50,9 +50,17 @@ export default {
         answers: { [CS]: 'Odpovědí' },
         success: { [CS]: 'Úspěšnost' },
         totalTime: { [CS]: 'Strávený čas' },
-        timePerQuestion: { [CS]: 'Čas na otázku' },
+        timePerQuestion: { [CS]: 'Čas na odpověď' },
         reset: 'Reset',
-        delete: { [CS]: 'Smazat' }
+        delete: { [CS]: 'Smazat' },
+        allTopics: { [CS]: 'Všechna témata' },
+        allQuestions: { [CS]: 'Všechny otázky' },
+        global: { [CS]: 'Obecné' },
+        specified: { [CS]: 'Specifické' },
+        select: { [CS]: 'Vybrat' },
+        contains: { [CS]: 'Kde název obsahuje' },
+        anything: { [CS]: 'Cokoliv' },
+        questionsFromTopics: { [CS]: 'Otázky z tématu' }
     }
 
 }

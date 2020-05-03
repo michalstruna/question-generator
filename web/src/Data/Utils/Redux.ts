@@ -11,6 +11,7 @@ type PlainOptions<State, Payload> = {
     syncObject?: (state: State) => ({
         [K in keyof Payload]?: [Query, Validator.Predicate<Payload[K]>, Payload[K]]
     })
+    sync?: (state: State) => ([Query, Validator.Predicate<Payload>, Payload])
 }
 
 type AsyncOptions<State, Payload> = {
@@ -75,6 +76,11 @@ export const slice = <State extends Record<any, any>, Actions extends Record<str
                         initialState[value.property][i] = Urls.safeQuery(queryName, validator, defaultValue)
                     }
                 }
+
+                if (value.options.sync) {
+                    const [queryName, validator, defaultValue] = value.options.sync(initialState)
+                    initialState[value.property] = Urls.safeQuery(queryName, validator, defaultValue)
+                }
             }
 
             reducers[key] = <T>(state: State, action: Action<T>) => {
@@ -88,6 +94,13 @@ export const slice = <State extends Record<any, any>, Actions extends Record<str
                             state[value.property][i] = queryValue
                             Urls.replace({ query: { [queryName]: queryValue } })
                         }
+                    }
+
+                    if (value.options.sync) {
+                        const [queryName, validator, defaultValue] = value.options.sync(initialState)
+                        const queryValue = Validator.safe((action.payload as any), validator, defaultValue)
+                        state[value.property] = queryValue
+                        Urls.replace({ query: { [queryName]: queryValue } })
                     }
                 }
 

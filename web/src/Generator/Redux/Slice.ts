@@ -1,5 +1,5 @@
 import { Redux, Sort } from '../../Data'
-import { Answer, AnswerCheck, GeneratedQuestion, GeneratorInstance, Topic } from '../types'
+import { Answer, AnswerCheck, GeneratedQuestion, GeneratorInstance, Question, Topic } from '../types'
 import { Query } from '../../Routing'
 
 const topics: Topic[] = [
@@ -76,7 +76,46 @@ const questions: GeneratedQuestion[] = [
         token: 'cde',
         name: 'Kolik nejvýše potomků může mít uzel binárního stromu?',
         stats: { correct: 8, time: 12, wrong: 23 }
-    }
+    },    {
+        id: 'q1',
+        topicId: 't2',
+        token: 'abc',
+        name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?',
+        stats: { wrong: 10, correct: 20, time: 30 }
+    },
+    {
+        id: 'q2',
+        topicId: 't1',
+        token: 'cde',
+        name: 'Kolik nejvýše potomků může mít uzel binárního stromu?',
+        stats: { correct: 8, time: 12, wrong: 23 }
+    },    {
+        id: 'q1',
+        topicId: 't2',
+        token: 'abc',
+        name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?',
+        stats: { wrong: 10, correct: 20, time: 30 }
+    },
+    {
+        id: 'q2',
+        topicId: 't1',
+        token: 'cde',
+        name: 'Kolik nejvýše potomků může mít uzel binárního stromu?',
+        stats: { correct: 8, time: 12, wrong: 23 }
+    },    {
+        id: 'q1',
+        topicId: 't2',
+        token: 'abc',
+        name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?',
+        stats: { wrong: 10, correct: 20, time: 30 }
+    },
+    {
+        id: 'q2',
+        topicId: 't1',
+        token: 'cde',
+        name: 'Kolik nejvýše potomků může mít uzel binárního stromu?',
+        stats: { correct: 8, time: 12, wrong: 23 }
+    },
 ]
 
 const answers: Answer[] = [
@@ -96,6 +135,9 @@ const mock = {
     }),
     sendAnswer: (answer: Answer) => new Promise<AnswerCheck>(resolve => {
         setTimeout(() => resolve(answerChecks[0]), 500)
+    }),
+    getQuestions: () => new Promise<Question[]>(resolve => {
+        setTimeout(() => resolve(questions), 500)
     })
 }
 
@@ -106,10 +148,13 @@ const Slice = Redux.slice(
         question: Redux.async<GeneratedQuestion>(),
         answer: Redux.async<Answer>(),
         generator: Redux.empty<GeneratorInstance | undefined>(),
-        sort: Redux.empty<Sort>({})
+        sort: Redux.empty<Sort>({}),
+        questions: Redux.async<Question[]>(),
+        table: ''
     },
     ({ async, set }) => ({
         getTopics: async<void, Topic[]>('topics', mock.getTopics),
+        getQuestions: async<string | void, Question[]>('questions', mock.getQuestions),
         generateQuestion: async<Topic[], GeneratedQuestion>('question', mock.generateQuestion, {
             onPending: state => state.question.payload = state.question.error = state.answer.payload = null
         }),
@@ -130,9 +175,12 @@ const Slice = Redux.slice(
                 column: [Query.SORT_COLUMN, v => Number.isInteger(v) && v > 0 && v < 6, 1],
                 isAsc: [Query.SORT_IS_ASC, [false, true], true]
             })
+        }),
+        setTable: set<string>('table', {
+            sync: () => [Query.DB_TABLE, s => s?.length > 0, '__topics__']
         })
     })
 )
 
 export default Slice.reducer
-export const { getTopics, generateQuestion, sendAnswer, setGenerator, setSort } = Slice.actions
+export const { getTopics, generateQuestion, sendAnswer, setGenerator, setSort, setTable, getQuestions } = Slice.actions
