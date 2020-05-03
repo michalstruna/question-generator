@@ -97,11 +97,13 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
 
     const { sort, sortedColumn, isAsc } = useSort(defaultSort ? defaultSort.column : 1, defaultSort ? defaultSort.isAsc : true)
 
-    React.useEffect(() => {
-        if (onSort) {
-            onSort({ column: sortedColumn, isAsc })
-        }
-    }, [sortedColumn, isAsc])
+    const sortedItems = React.useMemo(() => (
+        [...items].sort((a, b) => {
+            const valueA = columns[sortedColumn].accessor(a, 0)
+            const valueB = columns[sortedColumn].accessor(b, 0)
+            return (valueA > valueB ? 1 : (valueB > valueA ? -1 : 0)) * (isAsc ? 1 : -1)
+        })
+    ), [sortedColumn, isAsc, items])
 
     const renderedHeader = React.useMemo(() => withHeader && (
         <HeaderRow>
@@ -115,7 +117,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
     ), [columns, withHeader, sort])
 
     const renderedItems = React.useMemo(() => (
-        items.map((item, i) => (
+        sortedItems.map((item, i) => (
             <Row key={i}>
                 {columns.map((column, j) => (
                     <Cell key={j} style={{ flex: `${column.width ?? 1}` }}>
@@ -124,7 +126,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
                 ))}
             </Row>
         ))
-    ), [items, columns])
+    ), [sortedItems, columns])
 
     return (
         <Root {...props}>

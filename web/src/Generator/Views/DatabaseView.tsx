@@ -7,7 +7,7 @@ import { Table, View } from '../../Layout'
 import { Async } from '../../Async'
 import Bar from '../Components/Bar'
 import { Time } from '../../Native'
-import { Dimension, Duration, ZIndex } from '../../Style'
+import { Dimension, ZIndex } from '../../Style'
 
 interface Static {
 
@@ -54,11 +54,6 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const topics = useTopics()
     const actions = useActions({ setSort, getTopics })
     const sort = useSort()
-
-    React.useEffect(() => {
-        console.log(sort)
-        actions.getTopics()
-    }, [sort.column, sort.isAsc])
 
     return (
         <Root>
