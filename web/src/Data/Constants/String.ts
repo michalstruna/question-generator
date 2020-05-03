@@ -42,6 +42,17 @@ export default {
         wrong: { [CS]: 'Špatně' },
         correctAnswer: { [CS]: 'Správná odpověď' },
         time: { [CS]: 'Doba odpovědi' },
+    },
+
+    database: {
+        topic: { [CS]: 'Téma' },
+        questions: { [CS]: 'Otázek' },
+        answers: { [CS]: 'Odpovědí' },
+        success: { [CS]: 'Úspěšnost' },
+        totalTime: { [CS]: 'Strávený čas' },
+        timePerQuestion: { [CS]: 'Čas na otázku' },
+        reset: 'Reset',
+        delete: { [CS]: 'Smazat' }
     }
 
 }

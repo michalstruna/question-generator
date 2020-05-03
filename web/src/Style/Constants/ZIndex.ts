@@ -1,4 +1,5 @@
 enum ZIndex {
+    TABLE_HEADER = 1,
     WINDOW
 }
 

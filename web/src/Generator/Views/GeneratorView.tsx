@@ -6,6 +6,7 @@ import { useTopics, getTopics, useGenerator } from '..'
 import InitForm from '../Components/InitForm'
 import Generator from '../Components/Generator'
 import { size } from '../../Style'
+import { View } from '../../Layout'
 
 interface Static {
 
@@ -15,7 +16,7 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 }
 
-const Root = Styled.div`
+const Root = Styled(View)`
     ${size()}
     align-items: center;
     box-sizing: border-box;

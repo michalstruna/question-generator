@@ -5,7 +5,7 @@ import { Validator } from '../../Native'
 import { Urls } from '../../Routing'
 
 export const async = <T>(payload: T | null = null) => ({ pending: false, payload, error: null })
-export const empty = <T>(value: T = undefined as any) => value as T
+export const empty = <T>(value: any = undefined) => value as T
 
 type PlainOptions<State, Payload> = {
     syncObject?: (state: State) => ({
