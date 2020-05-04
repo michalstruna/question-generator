@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/topics")
-@CrossOrigin("*")
 public class TopicController {
 
     @Autowired
