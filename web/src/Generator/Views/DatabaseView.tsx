@@ -2,12 +2,30 @@ import React, { ChangeEvent } from 'react'
 import Styled from 'styled-components'
 
 import { useActions, useStrings } from '../../Data'
-import { useTopics, getTopics, setSort, useSort, Topic, useTable, setTable, Question, useQuestions, getQuestions } from '..'
-import { Table, View } from '../../Layout'
+import {
+    useTopics,
+    getTopics,
+    setSort,
+    useSort,
+    Topic,
+    useTable,
+    setTable,
+    Question,
+    useQuestions,
+    getQuestions,
+    removeTopic,
+    resetQuestion,
+    resetTopic,
+    removeQuestion
+} from '..'
+
+import { Table, View, Window } from '../../Layout'
 import { Async } from '../../Async'
 import Bar from '../Components/Bar'
 import { Time } from '../../Native'
-import { Dimension, ZIndex } from '../../Style'
+import { ZIndex } from '../../Style'
+import TopicForm from '../Components/TopicForm'
+import QuestionForm from '../Components/QuestionForm'
 
 interface Static {
 
@@ -18,8 +36,6 @@ interface Props {
 }
 
 const Root = Styled(View)`
-    min-height: calc(100vh - ${Dimension.NAV_HEIGHT} + 1px);
-
     ${Table.Root} {
         min-width: 70rem;
     }
@@ -61,6 +77,12 @@ const Controls = Styled.div`
     }
 `
 
+const ControlRight = Styled.div`
+    top: 1rem;
+    position: absolute;
+    right: 1rem;
+`
+
 const ALL_TOPICS = '__topics__'
 const ALL_QUESTIONS = '__questions__'
 
@@ -69,12 +91,14 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const strings = useStrings().database
     const topics = useTopics()
     const questions = useQuestions()
-    const actions = useActions({ setSort, setTable, getTopics })
+    const actions = useActions({ setSort, setTable, getTopics, removeTopic, removeQuestion, resetTopic, resetQuestion })
     const sort = useSort()
     const [filter, setFilter] = React.useState('')
     const table = useTable()
 
-    React.useEffect(() => actions.getTopics(), [])
+    React.useEffect(() => {
+        actions.getTopics()
+    }, [])
 
     const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
         actions.setTable(event.target.value)
@@ -99,7 +123,13 @@ const DatabaseView: React.FC<Props> & Static = () => {
             <p>
                 {strings.contains}
             </p>
-            <input type='text' onChange={e => setFilter(e.target.value)} value={filter} placeholder={strings.anything} />
+            <input type='text' onChange={e => setFilter(e.target.value)} value={filter}
+                   placeholder={strings.anything} />
+            <ControlRight>
+                <Window renderButton={() => <button>{strings.add}</button>}>
+                    {table === ALL_TOPICS ? <TopicForm /> : <QuestionForm />}
+                </Window>
+            </ControlRight>
         </Controls>
     )
 
@@ -109,7 +139,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
             onSort={actions.setSort}
             defaultSort={sort}
             columns={[
-                { accessor: (item, i) => i, title: '#', width: 0.25 },
+                { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.topic, width: 1.5 },
                 {
                     accessor: item => item.stats.correct / item.stats.wrong,
@@ -120,17 +150,17 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 { accessor: item => item.stats.correct + item.stats.wrong, title: strings.answers },
                 { accessor: item => item.stats.time, title: strings.totalTime, render: Time.format },
                 {
-                    accessor: item => item.stats.time / (item.stats.correct + item.stats.wrong),
+                    accessor: item => (item.stats.time / (item.stats.correct + item.stats.wrong)) || 0,
                     title: strings.timePerQuestion,
                     render: Time.format
                 },
                 {
                     accessor: item => item, title: '', render: item => (
                         <>
-                            <button>
+                            <button onClick={() => actions.resetTopic(item.id)}>
                                 {strings.reset}
                             </button>
-                            <button>
+                            <button onClick={() => actions.removeTopic(item.id)}>
                                 {strings.delete}
                             </button>
                         </>
@@ -146,7 +176,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
             onSort={actions.setSort}
             defaultSort={sort}
             columns={[
-                { accessor: (item, i) => i, title: '#', width: 0.25 },
+                { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.topic, width: 3 },
                 {
                     accessor: item => item.stats.correct / item.stats.wrong,
@@ -155,24 +185,25 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 },
                 { accessor: item => item.stats.correct + item.stats.wrong, title: strings.answers },
                 {
-                    accessor: item => item.stats.time / (item.stats.correct + item.stats.wrong),
+                    accessor: item => (item.stats.time / (item.stats.correct + item.stats.wrong)) || 0,
                     title: strings.timePerQuestion,
                     render: Time.format
                 },
                 {
                     accessor: item => item, title: '', render: item => (
                         <>
-                            <button>
+                            <button onClick={() => actions.resetQuestion(item.id)}>
                                 {strings.reset}
                             </button>
-                            <button>
+                            <button onClick={() => actions.removeQuestion(item.id)}>
                                 {strings.delete}
                             </button>
                         </>
                     )
                 }
             ]}
-            renderBody={items => (<Async data={[questions, () => getQuestions(table), table]} success={() => items} />)} />
+            renderBody={items => (
+                <Async data={[questions, () => getQuestions(table), table]} success={() => items} />)} />
     )
 
     return (

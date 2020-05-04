@@ -142,7 +142,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
     }, [generator])
 
     const handleAnswer = (values: AnswerFormValues) => {
-        actions.sendAnswer({ token: question.payload.token, value: values.answer })
+        actions.sendAnswer({ token: question.payload!.token, value: values.answer })
     }
 
     const handleNext = () => {
@@ -157,16 +157,16 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
         <Async
             data={[answer]}
             success={() => (
-                <Answer isCorrect={answer.payload.isCorrect}>
+                <Answer isCorrect={answer.payload!.isCorrect}>
                     <div>
                         <AnswerTitle>
-                            {answer.payload.isCorrect ? strings.correct : strings.wrong}
+                            {answer.payload!.isCorrect ? strings.correct : strings.wrong}
                         </AnswerTitle>
                         <p>
-                            {strings.correctAnswer}: {answer.payload.correctAnswer.value}
+                            {strings.correctAnswer}: {answer.payload!.correctAnswer.value}
                         </p>
                         <p>
-                            {strings.time}: {Time.format(answer.payload.time)}
+                            {strings.time}: {Time.format(answer.payload!.time)}
                         </p>
                     </div>
                     <button onClick={handleNext}>
@@ -206,7 +206,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
         <Header>
             Otázka č. {questionIndex + 1}
             <Tag>
-                {topics.payload!.find((topic: Topic) => topic.id === question.payload.topicId)!.name}
+                {topics.payload!.find((topic: Topic) => topic.id === question.payload!.topicId)!.name}
             </Tag>
         </Header>
     )
@@ -219,7 +219,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                     <>
                         {renderHeader()}
                         <Title>
-                            {question.payload.name}
+                            {question.payload!.name}
                         </Title>
                         {answer.payload || answer.pending ? renderAnswer() : renderAnswerForm()}
                     </>

@@ -1,6 +1,6 @@
 enum ZIndex {
     TABLE_HEADER = 1,
-    WINDOW
+    WINDOW,
 }
 
 export default ZIndex

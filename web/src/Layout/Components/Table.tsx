@@ -105,6 +105,10 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
         })
     ), [sortedColumn, isAsc, items])
 
+    React.useEffect(() => {
+        onSort?.({ column: sortedColumn, isAsc })
+    }, [sortedColumn, isAsc])
+
     const renderedHeader = React.useMemo(() => withHeader && (
         <HeaderRow>
             {columns.map((column, i) => (

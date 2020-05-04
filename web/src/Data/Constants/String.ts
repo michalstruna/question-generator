@@ -60,7 +60,14 @@ export default {
         select: { [CS]: 'Vybrat' },
         contains: { [CS]: 'Kde název obsahuje' },
         anything: { [CS]: 'Cokoliv' },
-        questionsFromTopics: { [CS]: 'Otázky z tématu' }
+        questionsFromTopics: { [CS]: 'Otázky z tématu' },
+        add: { [CS]: 'Přidat' },
+        name: { [CS]: 'Název' },
+        missingName: { [CS]: 'Zadejte název' },
+        addTopic: { [CS]: 'Nové téma' },
+        addQuestion: { [CS]: 'Nová otázka' },
+        answer: { [CS]: 'Odpověď' },
+        missingAnswer: { [CS]: 'Zadejte odpověď' }
     }
 
 }
