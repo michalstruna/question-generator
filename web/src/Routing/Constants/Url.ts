@@ -1,7 +1,6 @@
 enum Url {
     HOME = '/',
-    DATABASE = '/db',
-    GENERATOR = '/generator'
+    DATABASE = '/db'
 }
 
 export default Url

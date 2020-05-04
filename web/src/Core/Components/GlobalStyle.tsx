@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 
-import { Color, Dimension, fontFace } from '../../Style'
+import { Color, Dimension, Duration, fontFace } from '../../Style'
 
 const GlobalStyle = createGlobalStyle`
      ${fontFace('Montserrat', 'Montserrat.woff2')}
@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: inherit;
     }
     
-    button, input, textarea, select {
+    button, input[type="text"], input[type="number"], input[type="email"], textarea, select {
         background-color: transparent;
         border: none;
         border-bottom: 1px solid ${Color.MEDIUM_LIGHT};
@@ -45,12 +45,24 @@ const GlobalStyle = createGlobalStyle`
     }
     
      button {
-        border: none;
-        cursor: pointer;
-        outline: none;
-        padding: 0;
-        text-align: center;
-        user-select: none;
+          background-color: ${Color.DARKEST};
+          border: none;
+          cursor: pointer;
+          font-weight: bold;
+          outline: none;
+          padding: 0.5rem;
+          text-align: center;
+          transition: background-color ${Duration.MEDIUM}, opacity ${Duration.MEDIUM};
+          user-select: none;
+        
+          &:hover {
+               background-color: ${Color.DARKEST_HOVER};
+          }
+          
+          &[disabled] {
+            opacity: 0.6;
+            pointer-events: none;
+          }
      }
       
     p, h1, h2, h3, h4, h5, h6 {

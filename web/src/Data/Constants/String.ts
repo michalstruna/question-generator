@@ -1,6 +1,5 @@
 import Language from './Language'
 import Url from '../../Routing/Constants/Url'
-import { Validator } from '../../Native'
 
 const CS = Language.CS
 const EN = Language.EN
@@ -9,9 +8,8 @@ export default {
 
     nav: {
         links: [
-            { text: { [CS]: 'Přehled', [EN]: 'Overview' }, pathname: Url.HOME, icon: 'Overview' },
+            { text: { [CS]: 'Generátor', [EN]: 'Generator' }, pathname: Url.HOME, icon: 'Overview' },
             { text: { [CS]: 'Databáze', [EN]: 'Database' }, pathname: Url.DATABASE, icon: 'Database' },
-            { text: { [CS]: 'Generátor', [EN]: 'Generator' }, pathname: Url.GENERATOR, icon: 'Generator' }
         ]
     },
 
@@ -24,6 +22,26 @@ export default {
             [CS]: 'Změnit jazyk',
             [EN]: 'Change language'
         }
+    },
+
+    generator: {
+        title: { [CS]: 'Generátor otázek' },
+        selectTopics: { [CS]: 'Vyberte témata' },
+        selectedTopics: { [CS]: 'Vybraná témata' },
+        submit: { [CS]: 'Začít' }
+    },
+
+    question: {
+        answer: { [CS]: 'Odpověď', [EN]: 'Answer' },
+        missingAnswer: { [CS]: 'Napište odpověď', [EN]: 'Type answer' },
+        submit: { [CS]: 'Odpovědět', [EN]: 'Answer' },
+        dontKnow: { [CS]: 'Nevím', [EN]: 'Don\'t know' },
+        next: { [CS]: 'Další', [EN]: 'Next' },
+        exit: { [CS]: 'Ukončit', [EN]: 'Exit' },
+        correct: { [CS]: 'Správně' },
+        wrong: { [CS]: 'Špatně' },
+        correctAnswer: { [CS]: 'Správná odpověď' },
+        time: { [CS]: 'Doba odpovědi' },
     }
 
 }
