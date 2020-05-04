@@ -1,37 +1,20 @@
 package cz.michalstruna.questiongenerator.data;
 
-public class Topic {
-    private String id;
-    private String name;
-    private TopicStats stats;
+public class Topic extends UpdatedTopic {
 
-    public Topic(String id, String name, TopicStats stats) {
+    private int id;
+
+    public Topic(int id, String name, Integer questionsCount, Integer correct, Integer wrong, Integer time) {
+        super(name, questionsCount, correct, wrong, time);
         this.id = id;
-        this.name = name;
-        this.stats = stats;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public TopicStats getStats() {
-        return stats;
-    }
-
-    public void setStats(TopicStats stats) {
-        this.stats = stats;
-    }
 }
