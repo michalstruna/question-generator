@@ -1,5 +1,5 @@
 import Axios, { AxiosPromise } from 'axios'
-import Path from 'path'
+import Path from 'url'
 
 import Config from '../../Async/Constants/Config'
 
@@ -8,7 +8,7 @@ export default class Requests {
     public static get<T>(path: string, query: Record<string, any> = {}): Promise<T> {
         return this.process<T>(
             Axios.get(
-                Path.join(Config.apiUrl, path),
+                this.getPath(path),
                 this.getOptions(query)
             )
         )
@@ -17,7 +17,7 @@ export default class Requests {
     public static post<T>(path: string, body: Record<string, any> = {}, query: Record<string, any> = {}): Promise<T> {
         return this.process<T>(
             Axios.post(
-                Path.join(Config.apiUrl, path),
+                this.getPath(path),
                 body,
                 this.getOptions(query)
             )
@@ -27,7 +27,7 @@ export default class Requests {
     public static put<T>(path: string, body: Record<string, any> = {}, query: Record<string, any> = {}): Promise<T> {
         return this.process<T>(
             Axios.put(
-                Path.join(Config.apiUrl, path),
+                this.getPath(path),
                 body,
                 this.getOptions(query)
             )
@@ -37,7 +37,7 @@ export default class Requests {
     public static delete<T>(path: string, query: Record<string, any> = {}): Promise<T> {
         return this.process<T>(
             Axios.delete(
-                Path.join(Config.apiUrl, path),
+                this.getPath(path),
                 this.getOptions(query)
             )
         )
@@ -53,6 +53,10 @@ export default class Requests {
 
     private static getOptions(query: Record<string, any>): object {
         return { params: query }
+    }
+
+    private static getPath(path: string): string {
+        return (Path.resolve(Config.apiUrl, path).replace('/$', '') + '/')
     }
 
 }

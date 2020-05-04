@@ -142,8 +142,8 @@ const InitForm: React.FC<Props> & Static = ({ ...props }) => {
                                     <h3>
                                         {topics.payload![i].name}
                                     </h3>
-                                    <Bar correct={topics.payload![i].stats.correct}
-                                         wrong={topics.payload![i].stats.wrong} />
+                                    <Bar correct={topics.payload![i].correct}
+                                         wrong={topics.payload![i].wrong} />
                                 </TopicInfo>
                             </label>
                         </TopicContainer>

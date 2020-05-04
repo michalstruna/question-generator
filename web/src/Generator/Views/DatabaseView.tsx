@@ -47,7 +47,7 @@ const Root = Styled(View)`
     }
     
     ${Table.HeaderCell} {
-        padding: 1rem 0.5rem;
+        line-height: 2rem;
         
         &:first-of-type {
             padding-left: 1rem;
@@ -142,15 +142,15 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.topic, width: 1.5 },
                 {
-                    accessor: item => item.stats.correct / item.stats.wrong,
+                    accessor: item => item.correct / item.wrong,
                     title: strings.success,
-                    render: (value, item) => <Bar correct={item.stats.correct} wrong={item.stats.wrong} />
+                    render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />
                 },
-                { accessor: item => item.stats.questionsCount, title: strings.questions },
-                { accessor: item => item.stats.correct + item.stats.wrong, title: strings.answers },
-                { accessor: item => item.stats.time, title: strings.totalTime, render: Time.format },
+                { accessor: item => item.questionsCount, title: strings.questions },
+                { accessor: item => item.correct + item.wrong, title: strings.answers },
+                { accessor: item => item.time, title: strings.totalTime, render: Time.format },
                 {
-                    accessor: item => (item.stats.time / (item.stats.correct + item.stats.wrong)) || 0,
+                    accessor: item => (item.time / (item.correct + item.wrong)) || 0,
                     title: strings.timePerQuestion,
                     render: Time.format
                 },
@@ -179,13 +179,13 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.topic, width: 3 },
                 {
-                    accessor: item => item.stats.correct / item.stats.wrong,
+                    accessor: item => item.correct / item.wrong,
                     title: strings.success,
-                    render: (value, item) => <Bar correct={item.stats.correct} wrong={item.stats.wrong} />
+                    render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />
                 },
-                { accessor: item => item.stats.correct + item.stats.wrong, title: strings.answers },
+                { accessor: item => item.correct + item.wrong, title: strings.answers },
                 {
-                    accessor: item => (item.stats.time / (item.stats.correct + item.stats.wrong)) || 0,
+                    accessor: item => (item.time / (item.correct + item.wrong)) || 0,
                     title: strings.timePerQuestion,
                     render: Time.format
                 },

@@ -65,7 +65,7 @@ const TopicForm: React.FC<Props> & Static = ({ ...props }) => {
                                 name='answer'
                                 label={strings.answer}
                                 required={strings.missingAnswer} />
-                            <Field name='topicId' type={FieldType.SELECT}
+                            <Field name='topicId' type={FieldType.SELECT} label={strings.topic}
                                    options={topics.payload!.map(topic => ({ text: topic.name, value: topic.id }))} />
                             {renderSubmit(strings.add)}
                             {globalError}

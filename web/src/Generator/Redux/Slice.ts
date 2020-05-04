@@ -10,26 +10,52 @@ import {
     TopicNew
 } from '../types'
 import { Query } from '../../Routing'
+import { Requests } from '../../Async'
 
 const topics: Topic[] = [
-    { id: 't1', name: 'Datové struktury', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456 } },
-    { id: 't2', name: 'Webové aplikace', stats: { questionsCount: 128, correct: 512, wrong: 118, time: 123456 } }
+    { id: 't1', name: 'Datové struktury', questionsCount: 128, correct: 512, wrong: 118, time: 123456 },
+    { id: 't2', name: 'Webové aplikace', questionsCount: 128, correct: 512, wrong: 118, time: 123456 }
 ]
 
-const questions: GeneratedQuestion[] = [
+const generatedQuestions: GeneratedQuestion[] = [
     {
         id: 'q1',
         topicId: 't2',
         token: 'abc',
         name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?',
-        stats: { wrong: 10, correct: 20, time: 30 }
+        wrong: 10,
+        correct: 20,
+        time: 30
     },
     {
         id: 'q2',
         topicId: 't1',
         token: 'cde',
         name: 'Kolik nejvýše potomků může mít uzel binárního stromu?',
-        stats: { correct: 8, time: 12, wrong: 23 }
+        correct: 8,
+        time: 12,
+        wrong: 23
+    }
+]
+
+const questions: Question[] = [
+    {
+        id: 'q1',
+        topicId: 't2',
+        answer: 'abc',
+        name: 'Jak se nazývá novinka, která v Reactu umožňuje používat state ve stateless komponentách?',
+        wrong: 10,
+        correct: 20,
+        time: 30
+    },
+    {
+        id: 'q2',
+        topicId: 't1',
+        answer: 'cde',
+        name: 'Kolik nejvýše potomků může mít uzel binárního stromu?',
+        correct: 8,
+        time: 12,
+        wrong: 23
     }
 ]
 
@@ -46,7 +72,7 @@ const mock = {
         setTimeout(() => resolve(topics), 500)
     }),
     generateQuestion: (topics: Topic[]) => new Promise<GeneratedQuestion>(resolve => {
-        setTimeout(() => resolve(questions[Math.floor(Math.random() * 2)]), 500)
+        setTimeout(() => resolve(generatedQuestions[Math.floor(Math.random() * 2)]), 500)
     }),
     sendAnswer: (answer: Answer) => new Promise<AnswerCheck>(resolve => {
         setTimeout(() => resolve(answerChecks[0]), 500)
@@ -92,7 +118,38 @@ const Slice = Redux.slice(
         resetQuestion: Redux.async<void>()
     },
     ({ async, set }) => ({
-        getTopics: async<void, Topic[]>('topics', mock.getTopics),
+        getTopics: async<void, Topic[]>('topics', () => Requests.get<Topic[]>('topics')),
+
+        addTopic: async<TopicNew, Topic>('newTopic', topic => Requests.post<Topic>('topics', topic), {
+            onSuccess: (state, action) => {
+                state.topics.payload!.push(action.payload)
+            }
+        }),
+
+        removeTopic: async<string, void>('removedTopic', topicId => Requests.delete<any>(`topics/${topicId}`), {
+            onSuccess: (state, action) => {
+                if (state.topics.payload) {
+                    state.topics.payload = state.topics.payload.filter(topic => topic.id !== action.meta?.arg)
+                }
+            }
+        }),
+
+        resetTopic: async<string, void>('resetTopic', topicId => Requests.put<void>(`topics/${topicId}/reset`), {
+            onSuccess: (state, action) => {
+                for (const topic of state.topics.payload!) {
+                    if (topic.id === action.meta?.arg) {
+                        topic.correct = topic.wrong = topic.time = 0
+
+                        if (state.table === topic.id) {
+                            for (const question of state.questions.payload!) {
+                                question.correct = question.wrong = question.time = 0
+                            }
+                        }
+                    }
+                }
+            }
+        }),
+
         getQuestions: async<string | void, Question[]>('questions', mock.getQuestions),
         generateQuestion: async<Topic[], GeneratedQuestion>('question', mock.generateQuestion, {
             onPending: state => state.question.payload = state.question.error = state.answer.payload = null
@@ -118,11 +175,6 @@ const Slice = Redux.slice(
         setTable: set<string>('table', {
             sync: () => [Query.DB_TABLE, s => s?.length > 0, '__topics__']
         }),
-        addTopic: async<TopicNew, Topic>('newTopic', mock.addTopic, {
-            onSuccess: (state, action) => {
-                state.topics.payload?.push(action.payload)
-            }
-        }),
         addQuestion: async<QuestionNew, Question>('newQuestion', mock.addQuestion, {
             onSuccess: (state, action) => {
                 if (state.table === action.payload.topicId) {
@@ -130,26 +182,17 @@ const Slice = Redux.slice(
                 }
             }
         }),
-        removeTopic: async<string, void>('removedTopic', mock.removeTopic, {
-            onSuccess: (state, action) => {
-                if (state.topics.payload) {
-                    state.topics.payload = state.topics.payload.filter(topic => topic.id !== action.meta?.arg)
-                }
-            }
-        }),
         removeQuestion: async<string, void>('resetQuestion', mock.resetQuestion, {
             onSuccess: (state, action) => {
                 if (state.questions.payload) {
                     state.questions.payload = state.questions.payload.filter(question => {
-                        if (question.id == action.meta?.arg) {
+                        if (question.id === action.meta?.arg) {
                             for (const topic of state.topics.payload!) {
                                 if (topic.id === question.topicId) {
-                                    topic.stats = {
-                                        correct: topic.stats.correct - question.stats.correct,
-                                        wrong: topic.stats.wrong - question.stats.wrong,
-                                        questionsCount: topic.stats.questionsCount - 1,
-                                        time: topic.stats.time - question.stats.time
-                                    }
+                                    topic.correct = topic.correct - question.correct
+                                    topic.wrong = topic.wrong - question.wrong
+                                    topic.questionsCount = topic.questionsCount - 1
+                                    topic.time = topic.time - question.time
                                 }
                             }
 
@@ -161,37 +204,20 @@ const Slice = Redux.slice(
                 }
             }
         }),
-        resetTopic: async<string, void>('resetTopic', mock.resetTopic, {
-            onSuccess: (state, action) => {
-                for (const topic of state.topics.payload!) {
-                    if (topic.id === action.meta?.arg) {
-                        topic.stats = { wrong: 0, time: 0, correct: 0, questionsCount: 0 }
-
-                        if (state.table === topic.id) {
-                            for (const question of state.questions.payload!) {
-                                question.stats = { correct: 0, time: 0, wrong: 0 }
-                            }
-                        }
-                    }
-                }
-            }
-        }),
         resetQuestion: async<string, void>('resetQuestion', mock.resetQuestion, {
             onSuccess: (state, action) => {
                 for (const question of state.questions.payload!) {
                     if (question.id === action.meta?.arg) {
                         for (const topic of state.topics.payload!) {
                             if (topic.id === question.topicId) {
-                                topic.stats = {
-                                    correct: topic.stats.correct - question.stats.correct,
-                                    wrong: topic.stats.wrong - question.stats.wrong,
-                                    questionsCount: topic.stats.questionsCount - 1,
-                                    time: topic.stats.time - question.stats.time
-                                }
+                                topic.correct = topic.correct - question.correct
+                                topic.wrong = topic.wrong - question.wrong
+                                topic.questionsCount = topic.questionsCount - 1
+                                topic.time = topic.time - question.time
                             }
                         }
 
-                        question.stats = { correct: 0, time: 0, wrong: 0 }
+                        question.correct = question.time = question.wrong = 0
                     }
                 }
             }
@@ -200,4 +226,8 @@ const Slice = Redux.slice(
 )
 
 export default Slice.reducer
-export const { getTopics, generateQuestion, sendAnswer, setGenerator, setSort, setTable, getQuestions, addTopic, addQuestion, removeTopic, removeQuestion, resetQuestion, resetTopic } = Slice.actions
+
+export const {
+    getTopics, generateQuestion, sendAnswer, setGenerator, setSort, setTable, getQuestions, addTopic, addQuestion,
+    removeTopic, removeQuestion, resetQuestion, resetTopic
+} = Slice.actions

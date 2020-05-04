@@ -2,11 +2,9 @@ export type TopicNew = {
     name: string
 }
 
-export type Topic = TopicNew & {
+export type Topic = Stats & TopicNew & {
     id: string
-    stats: Stats & {
-        questionsCount: number
-    }
+    questionsCount: number
 }
 
 export type QuestionNew = {
@@ -15,14 +13,13 @@ export type QuestionNew = {
     topicId: string
 }
 
-export type Question = {
+export type Question = Stats & QuestionNew & {
     id: string
     topicId: string
     name: string
-    stats: Stats
 }
 
-export type GeneratedQuestion = Question & {
+export type GeneratedQuestion = Omit<Question, 'answer'> & {
     token: string
 }
 
