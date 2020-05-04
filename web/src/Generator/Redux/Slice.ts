@@ -126,7 +126,7 @@ const Slice = Redux.slice(
             }
         }),
 
-        removeTopic: async<string, void>('removedTopic', topicId => Requests.delete(`topics/${topicId}`), {
+        removeTopic: async<string, void>('removedTopic', topicId => Requests.delete<any>(`topics/${topicId}`), {
             onSuccess: (state, action) => {
                 if (state.topics.payload) {
                     state.topics.payload = state.topics.payload.filter(topic => topic.id !== action.meta?.arg)

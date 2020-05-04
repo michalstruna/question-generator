@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/topics")
+@CrossOrigin("*")
 public class TopicController {
 
     @Autowired
@@ -29,16 +30,16 @@ public class TopicController {
         return topicService.add(topic);
     }
 
-    @PutMapping("/{id}")
-    public Topic update(@PathVariable("id") int id, @RequestBody NewTopic newTopic) {
+    @PutMapping("/{topicId}")
+    public Topic update(@PathVariable("topicId") int id, @RequestBody NewTopic newTopic) {
         UpdatedTopic topic = new UpdatedTopic();
         topic.setName(newTopic.getName());
 
         return topicService.update(id, topic);
     }
 
-    @PutMapping("/{id}/reset")
-    public Topic reset(@PathVariable("id") int id) {
+    @PutMapping("/{topicId}/reset")
+    public Topic reset(@PathVariable("topicId") int id) {
         UpdatedTopic topic = new UpdatedTopic();
         topic.setCorrect(0);
         topic.setTime(0);
@@ -47,8 +48,8 @@ public class TopicController {
         return topicService.update(id, topic);
     }
 
-    @DeleteMapping("/{id}")
-    public void remove(@PathVariable("id") int id) {
+    @DeleteMapping("/{topicId}")
+    public void remove(@PathVariable("topicId") int id) {
         topicService.remove(id);
     }
 

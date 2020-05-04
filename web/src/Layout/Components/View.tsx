@@ -1,8 +1,8 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Duration, viewFadeIn } from '../../Style'
+import { Duration, fadeIn } from '../../Style'
 
 export default Styled.div`
-    animation: ${viewFadeIn} ${Duration.SLOW} 1;
+    animation: ${fadeIn} ${Duration.SLOW} 1;
 `
