@@ -10,6 +10,7 @@ export { default as Language } from './Constants/Language'
 export { default as String } from './Constants/String'
 
 export { default as useActions } from './Hooks/UseActions'
+export { default as useSort } from './Hooks/UseSort'
 
 export { Languages, Redux }
 

@@ -134,7 +134,7 @@ const InitForm: React.FC<Props> & Static = ({ ...props }) => {
                                         if (event.target.checked) {
                                             setSelectedTopics([...selectedTopics, topics.payload![i]])
                                         } else {
-                                            setSelectedTopics([...selectedTopics].filter(t => t != topics.payload![i]))
+                                            setSelectedTopics([...selectedTopics].filter(t => t !== topics.payload![i]))
                                         }
                                     }}
                                 />

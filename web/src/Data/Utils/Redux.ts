@@ -5,12 +5,13 @@ import { Validator } from '../../Native'
 import { Urls } from '../../Routing'
 
 export const async = <T>(payload: T | null = null) => ({ pending: false, payload, error: null })
-export const empty = <T>(value: T = undefined as any) => value as T
+export const empty = <T>(value: any = undefined) => value as T
 
 type PlainOptions<State, Payload> = {
     syncObject?: (state: State) => ({
         [K in keyof Payload]?: [Query, Validator.Predicate<Payload[K]>, Payload[K]]
     })
+    sync?: (state: State) => ([Query, Validator.Predicate<Payload>, Payload])
 }
 
 type AsyncOptions<State, Payload> = {
@@ -23,6 +24,9 @@ export type Action<Payload = void, Error = { message: string }> = {
     payload: Payload
     type: string
     error?: Error
+    meta?: {
+        arg?: any
+    }
 }
 
 enum ActionType {PLAIN, ASYNC, SET}
@@ -31,12 +35,12 @@ type AsyncAction<Payload, ResultPayload = Payload> = (payload: Payload) => Promi
 type PlainAction<State, Payload> = (state: State, payload: Action<Payload>) => any
 
 type PlainActionCreator<State> = <Payload>(action: PlainAction<State, Payload>, options?: PlainOptions<State, Payload>) => PlainActionWrapper<State, Payload>
-type AsyncActionCreator<State> = <Payload, ResultPayload>(property: keyof State, action: AsyncAction<Payload, ResultPayload>, options?: AsyncOptions<State, Payload>) => AsyncActionWrapper<State, Payload, ResultPayload>
+type AsyncActionCreator<State> = <Payload, ResultPayload>(property: keyof State, action: AsyncAction<Payload, ResultPayload>, options?: AsyncOptions<State, ResultPayload>) => AsyncActionWrapper<State, Payload, ResultPayload>
 type SetActionCreator<State> = <Payload>(property: keyof State, options?: PlainOptions<State, Payload>) => SetActionWrapper<State, Payload>
 
 type ActionWrapper<State, Payload = any> = PlainActionWrapper<State, Payload> | AsyncActionWrapper<State, Payload, any> | SetActionWrapper<State, Payload>
 type PlainActionWrapper<State, Payload> = { type: ActionType.PLAIN, action: PlainAction<State, Payload>, options?: PlainOptions<State, Payload> }
-type AsyncActionWrapper<State, Payload, ResultPayload> = { type: ActionType.ASYNC, action: AsyncAction<Payload, ResultPayload>, property: keyof State, options?: AsyncOptions<State, Payload> }
+type AsyncActionWrapper<State, Payload, ResultPayload> = { type: ActionType.ASYNC, action: AsyncAction<Payload, ResultPayload>, property: keyof State, options?: AsyncOptions<State, ResultPayload> }
 type SetActionWrapper<State, Payload> = { type: ActionType.SET, action: PlainAction<State, Payload>, property: keyof State, options?: PlainOptions<State, Payload> }
 
 type ActionsSet<State> = {
@@ -75,6 +79,11 @@ export const slice = <State extends Record<any, any>, Actions extends Record<str
                         initialState[value.property][i] = Urls.safeQuery(queryName, validator, defaultValue)
                     }
                 }
+
+                if (value.options.sync) {
+                    const [queryName, validator, defaultValue] = value.options.sync(initialState)
+                    initialState[value.property] = Urls.safeQuery(queryName, validator, defaultValue)
+                }
             }
 
             reducers[key] = <T>(state: State, action: Action<T>) => {
@@ -88,6 +97,13 @@ export const slice = <State extends Record<any, any>, Actions extends Record<str
                             state[value.property][i] = queryValue
                             Urls.replace({ query: { [queryName]: queryValue } })
                         }
+                    }
+
+                    if (value.options.sync) {
+                        const [queryName, validator, defaultValue] = value.options.sync(initialState)
+                        const queryValue = Validator.safe((action.payload as any), validator, defaultValue)
+                        state[value.property] = queryValue
+                        Urls.replace({ query: { [queryName]: queryValue } })
                     }
                 }
 

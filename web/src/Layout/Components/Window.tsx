@@ -4,6 +4,7 @@ import { Color, Duration, ZIndex } from '../../Style'
 
 interface Static {
     Content: string
+    hideCurrent?: () => void
 }
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
@@ -47,6 +48,10 @@ const Arrow = Styled.div`
 const Window: React.FC<Props> & Static = ({ children, renderButton, onToggle, ...props }) => {
 
     const [isOpened, setOpened] = React.useState(false)
+
+    React.useEffect(() => {
+        Window.hideCurrent = () => setOpened(false)
+    }, [])
 
     const handleToggle = () => {
         onToggle && onToggle(!isOpened)

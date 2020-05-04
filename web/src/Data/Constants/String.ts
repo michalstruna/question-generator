@@ -42,6 +42,32 @@ export default {
         wrong: { [CS]: 'Špatně' },
         correctAnswer: { [CS]: 'Správná odpověď' },
         time: { [CS]: 'Doba odpovědi' },
+    },
+
+    database: {
+        topic: { [CS]: 'Téma' },
+        questions: { [CS]: 'Otázek' },
+        answers: { [CS]: 'Odpovědí' },
+        success: { [CS]: 'Úspěšnost' },
+        totalTime: { [CS]: 'Strávený čas' },
+        timePerQuestion: { [CS]: 'Čas na odpověď' },
+        reset: 'Reset',
+        delete: { [CS]: 'Smazat' },
+        allTopics: { [CS]: 'Všechna témata' },
+        allQuestions: { [CS]: 'Všechny otázky' },
+        global: { [CS]: 'Obecné' },
+        specified: { [CS]: 'Specifické' },
+        select: { [CS]: 'Vybrat' },
+        contains: { [CS]: 'Kde název obsahuje' },
+        anything: { [CS]: 'Cokoliv' },
+        questionsFromTopics: { [CS]: 'Otázky z tématu' },
+        add: { [CS]: 'Přidat' },
+        name: { [CS]: 'Název' },
+        missingName: { [CS]: 'Zadejte název' },
+        addTopic: { [CS]: 'Nové téma' },
+        addQuestion: { [CS]: 'Nová otázka' },
+        answer: { [CS]: 'Odpověď' },
+        missingAnswer: { [CS]: 'Zadejte odpověď' }
     }
 
 }

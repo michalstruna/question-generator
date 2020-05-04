@@ -36,7 +36,7 @@ const Header: React.FC<Props> & Static = ({ ...props }) => {
                 <Nav />
             </Left>
             <Right>
-                123
+
             </Right>
         </Root>
     )

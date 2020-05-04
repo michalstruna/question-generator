@@ -12,6 +12,7 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 }
 
 const Root = Styled.div`
+    filter: grayscale(20%);
     overflow: hidden;
     width: 11rem;
     max-width: 100%;
@@ -19,14 +20,14 @@ const Root = Styled.div`
 
 const Outer = Styled.div`
     ${size('100%', '1rem')}
-    background-color: ${Color.RED};
+    background-color: ${Color.DARK_RED};
     border-radius: 0.5rem;
 `
 
 const Inner = Styled.div`
     ${size()}
     border-radius: 0.5rem;
-    background-color: ${Color.GREEN};
+    background-color: ${Color.DARK_GREEN};
     transition: width ${Duration.MEDIUM};
 `
 

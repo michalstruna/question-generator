@@ -1,12 +1,16 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { size, threeDots } from '../../Style'
+import { Color, Duration, size, threeDots } from '../../Style'
+import { Sort, useSort } from '../../Data'
 
 interface Props<Item> extends React.ComponentPropsWithoutRef<'div'> {
     items: Item[]
     columns: Column<Item>[]
     withHeader?: boolean
+    onSort?: (sort: Sort) => void
+    defaultSort?: Sort
+    renderBody?: (items: React.ReactNode) => React.ReactNode
 }
 
 interface Column<Item> {
@@ -21,7 +25,7 @@ const Root = Styled.div`
 `
 
 const Row = Styled.div`
-    align-items: center;
+    align-items: stretch;
     display: flex;
     
     &:nth-of-type(2n + 1) {
@@ -31,11 +35,17 @@ const Row = Styled.div`
 
 const Cell = Styled.div`
     ${threeDots()}
-    ${size()}
+    align-items: center;
+    display: flex;
     flex: 1 1 0;
     overflow: hidden;
     padding: 0.5rem;
     vertical-align: middle;
+    width: 100%;
+    
+    &:nth-of-type(2n + 1) {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
     
     &:first-of-type {
         padding-left: 1rem;
@@ -51,23 +61,67 @@ const HeaderRow = Styled(Row)`
 `
 
 const HeaderCell = Styled(Cell)`
+    background-color: ${Color.DARKEST} !important;
+    cursor: pointer;
+    user-select: none;
+    transition: bakcground-color ${Duration.MEDIUM};
+
+    &:hover {
+        background-color: ${Color.DARKEST_HOVER} !important;
+    }
+    
+    &:after {
+        border: 5px solid transparent;
+        content: "";
+        display: inline-block;
+        margin-left: 0.5rem;
+    }
+    
+    &[data-sorted="asc"] {
+        &:after {
+            border-top-color: ${Color.LIGHT};
+            transform: translateY(25%);
+        }
+    }
+    
+    &[data-sorted="desc"] {
+        &:after {
+            border-bottom-color: ${Color.LIGHT};
+            transform: translateY(-25%);
+        }
+    }
 
 `
 
-function Table<Item>({ columns, items, withHeader, ...props }: Props<Item>) {
+function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBody, ...props }: Props<Item>) {
+
+    const { sort, sortedColumn, isAsc } = useSort(defaultSort ? defaultSort.column : 1, defaultSort ? defaultSort.isAsc : true)
+
+    const sortedItems = React.useMemo(() => (
+        [...items].sort((a, b) => {
+            const valueA = columns[sortedColumn].accessor(a, 0)
+            const valueB = columns[sortedColumn].accessor(b, 0)
+            return (valueA > valueB ? 1 : (valueB > valueA ? -1 : 0)) * (isAsc ? 1 : -1)
+        })
+    ), [sortedColumn, isAsc, items])
+
+    React.useEffect(() => {
+        onSort?.({ column: sortedColumn, isAsc })
+    }, [sortedColumn, isAsc])
 
     const renderedHeader = React.useMemo(() => withHeader && (
         <HeaderRow>
             {columns.map((column, i) => (
-                <HeaderCell key={i} style={{ flex: `${column.width ?? 1}` }}>
+                <HeaderCell key={i} style={{ flex: `${column.width ?? 1}` }} onClick={() => sort(i)}
+                            data-sorted={sortedColumn === i ? (isAsc ? 'asc' : 'desc') : undefined}>
                     {column.title || ''}
                 </HeaderCell>
             ))}
         </HeaderRow>
-    ), [columns, withHeader])
+    ), [columns, withHeader, sort])
 
     const renderedItems = React.useMemo(() => (
-        items.map((item, i) => (
+        sortedItems.map((item, i) => (
             <Row key={i}>
                 {columns.map((column, j) => (
                     <Cell key={j} style={{ flex: `${column.width ?? 1}` }}>
@@ -76,12 +130,12 @@ function Table<Item>({ columns, items, withHeader, ...props }: Props<Item>) {
                 ))}
             </Row>
         ))
-    ), [items, columns])
+    ), [sortedItems, columns])
 
     return (
         <Root {...props}>
             {renderedHeader}
-            {renderedItems}
+            {renderBody ? renderBody(renderedItems) : renderedItems}
         </Root>
     )
 }
