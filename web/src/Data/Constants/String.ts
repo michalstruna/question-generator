@@ -70,7 +70,8 @@ export default {
         answer: { [CS]: 'Odpověď' },
         missingAnswer: { [CS]: 'Zadejte odpověď' },
         from: { [CS]: 'Z tématu' },
-        missingTopic: { [CS]: 'Vyberte téma' }
+        missingTopic: { [CS]: 'Vyberte téma' },
+        question: { [CS]: 'Otázka' }
     }
 
 }

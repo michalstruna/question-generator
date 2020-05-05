@@ -23,7 +23,7 @@ const Content = Styled.div`
     pointer-events: none;
     position: absolute;
     right: 0;
-    bottom: 100%;
+    bottom: calc(100% + 0.5rem);
     transform: scale(0);
     transform-origin: bottom right;
     transition: transform ${Duration.MEDIUM};
@@ -37,9 +37,8 @@ const Content = Styled.div`
 
 const Arrow = Styled.div`
     border: 0.5rem solid transparent;
-    border-bottom-color: #444;
-    bottom: 0;
-    transform: translateY(-100%);
+    border-top-color: #444;
+    top: 100%;
     position: absolute;
     left: 80%;
     width: 0;

@@ -34,11 +34,9 @@ const Row = Styled.div`
 `
 
 const Cell = Styled.div`
-    ${threeDots()}
     align-items: center;
     display: flex;
     flex: 1 1 0;
-    overflow: hidden;
     padding: 0.5rem;
     vertical-align: middle;
     width: 100%;
@@ -65,6 +63,7 @@ const HeaderCell = Styled(Cell)`
     cursor: pointer;
     user-select: none;
     transition: bakcground-color ${Duration.MEDIUM};
+    white-space: nowrap;
 
     &:hover {
         background-color: ${Color.DARKEST_HOVER} !important;

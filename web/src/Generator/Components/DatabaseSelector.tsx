@@ -12,7 +12,6 @@ import {
     setTable,
     useTopicId,
     setTopicId,
-    useSort,
     getTopics,
     getQuestions
 } from '..'

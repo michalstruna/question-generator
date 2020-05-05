@@ -13,9 +13,9 @@ export type QuestionNew = {
     topicId: number
 }
 
-export type Question = Stats & QuestionNew & {
+export type Question = Stats & Omit<QuestionNew, 'topicId'> & {
     id: number
-    topicId: number
+    topic: Topic
     name: string
 }
 

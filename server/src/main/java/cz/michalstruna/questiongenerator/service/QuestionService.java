@@ -31,6 +31,7 @@ public class QuestionService {
         question.setName(newQuestion.getName());
         question.setCorrect(0);
         question.setWrong(0);
+        question.setTopic(topicService.get(newQuestion.getTopicId()));
 
         return questionRepository.save(question);
     }

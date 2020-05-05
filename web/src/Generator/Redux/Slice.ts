@@ -62,10 +62,7 @@ const Slice = Redux.slice(
         topicId: Redux.empty('')
     },
     ({ async, set }) => ({
-        getTopics: async<Cursor, Pageable<Topic>>('topics', cursor => Requests.get<Pageable<Topic>>('topics', {
-            filter: cursor.filter,
-            sort: questionColumns[cursor.sort.column] + ',' + (cursor.sort.isAsc ? 'asc' : 'desc')
-        })),
+        getTopics: async<void, Pageable<Topic>>('topics', () => Requests.get<Pageable<Topic>>('topics')),
 
         addTopic: async<TopicNew, Topic>('newTopic', topic => Requests.post<Topic>('topics', topic), {
             onSuccess: (state, action) => {
@@ -128,7 +125,7 @@ const Slice = Redux.slice(
             onSuccess: (state, action) => {
                 console.log(action)
 
-                if (state.topicId === action.payload.topicId || !state.topicId) {
+                if (state.topicId === action.payload.topic.id || !state.topicId) {
                     state.questions.payload?.content.push(action.payload)
                 }
             }
@@ -140,7 +137,7 @@ const Slice = Redux.slice(
                     state.questions.payload.content = state.questions.payload.content.filter(question => {
                         if (question.id === action.meta?.arg) {
                             for (const topic of state.topics.payload!.content) {
-                                if (topic.id === question.topicId) {
+                                if (topic.id === question.topic.id) {
                                     topic.correct = topic.correct - question.correct
                                     topic.wrong = topic.wrong - question.wrong
                                     topic.questionsCount = topic.questionsCount - 1
@@ -162,7 +159,7 @@ const Slice = Redux.slice(
                 for (const question of state.questions.payload!.content) {
                     if (question.id === action.meta?.arg) {
                         for (const topic of state.topics.payload!.content) {
-                            if (topic.id === question.topicId) {
+                            if (topic.id === question.topic.id) {
                                 topic.correct = topic.correct - question.correct
                                 topic.wrong = topic.wrong - question.wrong
                                 topic.questionsCount = topic.questionsCount - 1

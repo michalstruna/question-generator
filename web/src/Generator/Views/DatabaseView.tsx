@@ -82,20 +82,21 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const strings = useStrings().database
     const topics = useTopics()
     const questions = useQuestions()
-    const actions = useActions({ setSort, setTable, getTopics, removeTopic, removeQuestion, resetTopic, resetQuestion, getQuestions })
+    const actions = useActions({
+        setSort,
+        setTable,
+        getTopics,
+        removeTopic,
+        removeQuestion,
+        resetTopic,
+        resetQuestion,
+        getQuestions
+    })
     const sort = useSort()
     const filter = useFilter()
     const segment = useSegment()
     const table = useTable()
     const topicId = useTopicId()
-
-    React.useEffect(() => {
-        actions.getTopics({ filter, segment, sort })
-
-        if (table === 'questions') {
-            actions.getQuestions({ filter, segment, sort })
-        }
-    }, [])
 
     const renderTopicsTable = () => (
         <Table<Topic>
@@ -141,7 +142,8 @@ const DatabaseView: React.FC<Props> & Static = () => {
             defaultSort={sort}
             columns={[
                 { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
-                { accessor: item => item.name, title: strings.topic, width: 3 },
+                { accessor: item => item.name, title: strings.question, width: 3 },
+                { accessor: item => item.topic.name, title: strings.topic, width: 1.5 },
                 {
                     accessor: item => item.correct / item.wrong,
                     title: strings.success,
@@ -167,7 +169,9 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 }
             ]}
             renderBody={items => (
-                <Async data={[questions, () => getQuestions({ sort, filter, segment }), [topicId]]} success={() => items} />)} />
+                <Async
+                    data={[[questions, () => getQuestions({ sort, filter, segment }), [topicId]], [topics, getTopics]]}
+                    success={() => items} />)} />
     )
 
     return (
