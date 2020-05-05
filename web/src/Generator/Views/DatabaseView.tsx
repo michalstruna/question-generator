@@ -16,16 +16,17 @@ import {
     removeTopic,
     resetQuestion,
     resetTopic,
-    removeQuestion
+    removeQuestion, useSegment, useFilter
 } from '..'
 
 import { Table, View, Window } from '../../Layout'
 import { Async } from '../../Async'
 import Bar from '../Components/Bar'
 import { Time } from '../../Native'
-import { ZIndex } from '../../Style'
+import { Color, size, ZIndex } from '../../Style'
 import TopicForm from '../Components/TopicForm'
 import QuestionForm from '../Components/QuestionForm'
+import DatabaseSelector from '../Components/DatabaseSelector'
 
 interface Static {
 
@@ -77,14 +78,16 @@ const Controls = Styled.div`
     }
 `
 
-const ControlRight = Styled.div`
-    top: 1rem;
-    position: absolute;
-    right: 1rem;
+const Fixed = Styled.div`
+    bottom: 2rem;
+    position: fixed;
+    right: 2rem;
 `
 
-const ALL_TOPICS = '__topics__'
-const ALL_QUESTIONS = '__questions__'
+const Add = Styled.button`
+    ${size('2.5rem')}
+    box-shadow: 0 0 0.3rem ${Color.DARKEST};
+`
 
 const DatabaseView: React.FC<Props> & Static = () => {
 
@@ -93,49 +96,17 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const questions = useQuestions()
     const actions = useActions({ setSort, setTable, getTopics, removeTopic, removeQuestion, resetTopic, resetQuestion })
     const sort = useSort()
-    const [filter, setFilter] = React.useState('')
+    const filter = useFilter()
+    const segment = useSegment()
     const table = useTable()
 
     React.useEffect(() => {
-        actions.getTopics()
+        actions.getTopics({ filter, segment, sort })
     }, [])
-
-    const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
-        actions.setTable(event.target.value)
-    }
-
-    const renderControls = () => (
-        <Controls>
-            <p>
-                {strings.select}
-            </p>
-            <select value={table} onChange={handleChange}>
-                <optgroup label={strings.global}>
-                    <option value={ALL_TOPICS}>{strings.allTopics}</option>
-                    <option value={ALL_QUESTIONS}>{strings.allQuestions}</option>
-                </optgroup>
-                <optgroup label={strings.specified}>
-                    {topics.payload && topics.payload.map((topic, i) => (
-                        <option value={topic.id} key={i}>{strings.questionsFromTopics} {topic.name}</option>
-                    ))}
-                </optgroup>
-            </select>
-            <p>
-                {strings.contains}
-            </p>
-            <input type='text' onChange={e => setFilter(e.target.value)} value={filter}
-                   placeholder={strings.anything} />
-            <ControlRight>
-                <Window renderButton={() => <button>{strings.add}</button>}>
-                    {table === ALL_TOPICS ? <TopicForm /> : <QuestionForm />}
-                </Window>
-            </ControlRight>
-        </Controls>
-    )
 
     const renderTopicsTable = () => (
         <Table<Topic>
-            items={(topics.payload || []).filter(i => i.name.toLowerCase().includes(filter.toLowerCase()))}
+            items={topics.payload?.content || []}
             onSort={actions.setSort}
             defaultSort={sort}
             columns={[
@@ -172,7 +143,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
 
     const renderQuestionsTable = () => (
         <Table<Question>
-            items={(questions.payload || []).filter(i => i.name.toLowerCase().includes(filter.toLowerCase()))}
+            items={questions.payload?.content || []}
             onSort={actions.setSort}
             defaultSort={sort}
             columns={[
@@ -208,8 +179,13 @@ const DatabaseView: React.FC<Props> & Static = () => {
 
     return (
         <Root>
-            {renderControls()}
-            {table === ALL_TOPICS ? renderTopicsTable() : renderQuestionsTable()}
+            <DatabaseSelector />
+            {table === 'topics' ? renderTopicsTable() : renderQuestionsTable()}
+            <Fixed>
+                <Window renderButton={() => <Add>+</Add>}>
+                    {table === 'topics' ? <TopicForm /> : <QuestionForm />}
+                </Window>
+            </Fixed>
         </Root>
     )
 

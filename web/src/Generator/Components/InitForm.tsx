@@ -125,25 +125,25 @@ const InitForm: React.FC<Props> & Static = ({ ...props }) => {
                 {strings.selectTopics}
             </Subtitle>
             <Topics>
-                {topics.payload.map((topic, i) => (
+                {topics.payload.content.map((topic, i) => (
                         <TopicContainer key={i}>
                             <label>
                                 <input
                                     type='checkbox'
                                     onChange={event => {
                                         if (event.target.checked) {
-                                            setSelectedTopics([...selectedTopics, topics.payload![i]])
+                                            setSelectedTopics([...selectedTopics, topics.payload!.content[i]])
                                         } else {
-                                            setSelectedTopics([...selectedTopics].filter(t => t !== topics.payload![i]))
+                                            setSelectedTopics([...selectedTopics].filter(t => t !== topics.payload!.content[i]))
                                         }
                                     }}
                                 />
                                 <TopicInfo>
                                     <h3>
-                                        {topics.payload![i].name}
+                                        {topics.payload!.content[i].name}
                                     </h3>
-                                    <Bar correct={topics.payload![i].correct}
-                                         wrong={topics.payload![i].wrong} />
+                                    <Bar correct={topics.payload!.content[i].correct}
+                                         wrong={topics.payload!.content[i].wrong} />
                                 </TopicInfo>
                             </label>
                         </TopicContainer>

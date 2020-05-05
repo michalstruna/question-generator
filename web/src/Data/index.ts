@@ -14,4 +14,6 @@ export { default as useSort } from './Hooks/UseSort'
 
 export { Languages, Redux }
 
+export { default as Paginator } from './Components/Paginator'
+
 export * from './types'

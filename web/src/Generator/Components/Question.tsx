@@ -206,7 +206,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
         <Header>
             Otázka č. {questionIndex + 1}
             <Tag>
-                {topics.payload!.find((topic: Topic) => topic.id === question.payload!.topicId)!.name}
+                {topics.payload!.content.find((topic: Topic) => topic.id === question.payload!.topicId)!.name}
             </Tag>
         </Header>
     )
