@@ -1,67 +1,66 @@
 package cz.michalstruna.questiongenerator.service;
 
-import cz.michalstruna.questiongenerator.data.NewTopic;
-import cz.michalstruna.questiongenerator.data.Topic;
-import cz.michalstruna.questiongenerator.data.UpdatedTopic;
+import cz.michalstruna.questiongenerator.dao.TopicRepository;
+import cz.michalstruna.questiongenerator.model.database.Topic;
+import cz.michalstruna.questiongenerator.model.dto.NewTopic;
+import cz.michalstruna.questiongenerator.model.dto.UpdatedTopic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class TopicService {
 
-    private List<Topic> topics = new ArrayList<>();
+    @Autowired
+    private TopicRepository topicRepository;
 
     public Topic get(int topicId) {
-        return topics.stream().filter(topic -> topic.getId() == topicId).findFirst().get();
+        return topicRepository.findById(topicId).orElseThrow(); // TODO: 404
     }
 
-    public Topic[] getAll() {
-        return topics.toArray(Topic[]::new);
+    public Page<Topic> getAll(Pageable pageable) {
+        return topicRepository.findAll(pageable);
     }
 
     public Topic add(NewTopic newTopic) {
-        Topic topic = new Topic(topics.size(), newTopic.getName(), 0, 0, 0, 0);
-        topics.add(topic);
+        Topic topic = new Topic();
+        topic.setName(newTopic.getName());
+        topic.setCorrect(0);
+        topic.setWrong(0);
+        topic.setQuestionsCount(0);
 
-        return topic;
+        return topicRepository.save(topic);
     }
 
     public Topic update(int topicId, UpdatedTopic updatedTopic) {
-        for (Topic topic : topics) {
-            if (topic.getId() == topicId) {
+        Topic topic = topicRepository.findById(topicId).orElseThrow();
 
-                if (updatedTopic.getName() != null) {
-                    topic.setName(updatedTopic.getName());
-                }
-
-                if (updatedTopic.getCorrect() != null) {
-                    topic.setCorrect(updatedTopic.getCorrect());
-                }
-
-                if (updatedTopic.getQuestionsCount() != null) {
-                    topic.setQuestionsCount(updatedTopic.getQuestionsCount());
-                }
-
-                if (updatedTopic.getWrong() != null) {
-                    topic.setWrong(updatedTopic.getWrong());
-                }
-
-                if (updatedTopic.getTime() != null) {
-                    topic.setTime(updatedTopic.getTime());
-                }
-
-                return topic;
-            }
+        if (updatedTopic.getName() != null) {
+            topic.setName(updatedTopic.getName());
         }
 
-        return null;
+        if (updatedTopic.getCorrect() != null) {
+            topic.setCorrect(updatedTopic.getCorrect());
+        }
+
+        if (updatedTopic.getQuestionsCount() != null) {
+            topic.setQuestionsCount(updatedTopic.getQuestionsCount());
+        }
+
+        if (updatedTopic.getWrong() != null) {
+            topic.setWrong(updatedTopic.getWrong());
+        }
+
+        if (updatedTopic.getTime() != null) {
+            topic.setTime(updatedTopic.getTime());
+        }
+
+        return topicRepository.save(topic);
     }
 
     public void remove(int topicId) {
-        Topic topic = get(topicId);
-        topics.remove(topic);
+        topicRepository.deleteById(topicId);
     }
 
 }

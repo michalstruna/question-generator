@@ -1,4 +1,4 @@
-package cz.michalstruna.questiongenerator.data;
+package cz.michalstruna.questiongenerator.model.dto;
 
 public class NewTopic {
 
