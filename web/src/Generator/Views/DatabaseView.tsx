@@ -1,22 +1,10 @@
-import React, { ChangeEvent } from 'react'
+import React from 'react'
 import Styled from 'styled-components'
 
 import { useActions, useStrings } from '../../Data'
 import {
-    useTopics,
-    getTopics,
-    setSort,
-    useSort,
-    Topic,
-    useTable,
-    setTable,
-    Question,
-    useQuestions,
-    getQuestions,
-    removeTopic,
-    resetQuestion,
-    resetTopic,
-    removeQuestion, useSegment, useFilter
+    useTopics, getTopics, setSort, useSort, Topic, useTable, setTable, Question, useQuestions, getQuestions,
+    removeTopic, resetQuestion, resetTopic, removeQuestion, useSegment, useFilter, useTopicId
 } from '..'
 
 import { Table, View, Window } from '../../Layout'
@@ -94,14 +82,19 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const strings = useStrings().database
     const topics = useTopics()
     const questions = useQuestions()
-    const actions = useActions({ setSort, setTable, getTopics, removeTopic, removeQuestion, resetTopic, resetQuestion })
+    const actions = useActions({ setSort, setTable, getTopics, removeTopic, removeQuestion, resetTopic, resetQuestion, getQuestions })
     const sort = useSort()
     const filter = useFilter()
     const segment = useSegment()
     const table = useTable()
+    const topicId = useTopicId()
 
     React.useEffect(() => {
         actions.getTopics({ filter, segment, sort })
+
+        if (table === 'questions') {
+            actions.getQuestions({ filter, segment, sort })
+        }
     }, [])
 
     const renderTopicsTable = () => (
@@ -119,9 +112,9 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 },
                 { accessor: item => item.questionsCount, title: strings.questions },
                 { accessor: item => item.correct + item.wrong, title: strings.answers },
-                { accessor: item => item.time, title: strings.totalTime, render: Time.format },
+                { accessor: item => item.totalTime, title: strings.totalTime, render: Time.format },
                 {
-                    accessor: item => (item.time / (item.correct + item.wrong)) || 0,
+                    accessor: item => (item.totalTime / (item.correct + item.wrong)) || 0,
                     title: strings.timePerQuestion,
                     render: Time.format
                 },
@@ -156,7 +149,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 },
                 { accessor: item => item.correct + item.wrong, title: strings.answers },
                 {
-                    accessor: item => (item.time / (item.correct + item.wrong)) || 0,
+                    accessor: item => (item.totalTime / (item.correct + item.wrong)) || 0,
                     title: strings.timePerQuestion,
                     render: Time.format
                 },
@@ -174,7 +167,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 }
             ]}
             renderBody={items => (
-                <Async data={[questions, () => getQuestions(table), table]} success={() => items} />)} />
+                <Async data={[questions, () => getQuestions({ sort, filter, segment }), [topicId]]} success={() => items} />)} />
     )
 
     return (

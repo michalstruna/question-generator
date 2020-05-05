@@ -53,7 +53,7 @@ public class TopicService {
         }
 
         if (updatedTopic.getTime() != null) {
-            topic.setTime(updatedTopic.getTime());
+            topic.setTotalTime(updatedTopic.getTime());
         }
 
         return topicRepository.save(topic);

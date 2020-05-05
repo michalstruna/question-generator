@@ -3,10 +3,9 @@ package cz.michalstruna.questiongenerator.model.database;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
-import java.util.List;
 
-@Entity(name = "topic")
-public class Topic {
+@Entity(name = "question")
+public class Question {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +21,13 @@ public class Topic {
     private int wrong;
 
     @Column
-    private int questionsCount;
+    private int totalTime;
 
     @Column
-    private int totalTime;
+    private String answer;
+
+    @ManyToOne
+    private Topic topic;
 
     @Formula("coalesce(correct / NULLIF((correct + wrong), 0), 100)")
     private double success;
@@ -36,12 +38,10 @@ public class Topic {
     @Formula("coalesce(total_time / NULLIF((correct + wrong), 0), 0)")
     private double timePerAnswer;
 
-    @OneToMany(mappedBy = "topic")
-    private List<Question> questions;
-
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -70,20 +70,20 @@ public class Topic {
         this.wrong = wrong;
     }
 
-    public int getQuestionsCount() {
-        return questionsCount;
-    }
-
-    public void setQuestionsCount(int questionsCount) {
-        this.questionsCount = questionsCount;
-    }
-
     public int getTotalTime() {
         return totalTime;
     }
 
     public void setTotalTime(int time) {
         this.totalTime = time;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
     public double getSuccess() {
@@ -98,4 +98,11 @@ public class Topic {
         return timePerAnswer;
     }
 
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
+    }
 }

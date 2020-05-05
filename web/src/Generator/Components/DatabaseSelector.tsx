@@ -4,7 +4,18 @@ import Styled from 'styled-components'
 import { useFixedX } from '../../Style'
 import { Paginator, useActions, useStrings } from '../../Data'
 import { setSegment, setFilter } from '../Redux/Slice'
-import { useSegment, useFilter, useTopics, useTable, setTable } from '..'
+import {
+    useSegment,
+    useFilter,
+    useTopics,
+    useTable,
+    setTable,
+    useTopicId,
+    setTopicId,
+    useSort,
+    getTopics,
+    getQuestions
+} from '..'
 
 interface Static {
 
@@ -39,7 +50,7 @@ const Selector = Styled.div`
 const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
 
     const strings = useStrings().database
-    const actions = useActions({ setSegment, setFilter, setTable })
+    const actions = useActions({ setSegment, setFilter, setTable, setTopicId, getQuestions, getTopics })
     const table = useTable()
 
     const root = React.useRef()
@@ -47,6 +58,7 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
     const segment = useSegment()
     const filter = useFilter()
     const topics = useTopics()
+    const topicId = useTopicId()
 
     return (
         <Root {...props} ref={root as any}>
@@ -65,6 +77,19 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
                        onChange={e => actions.setFilter(e.target.value)}
                        value={filter}
                        placeholder={strings.anything} />
+                {table === 'questions' && topics.payload && (
+                    <>
+                        <p>
+                            {strings.from}
+                        </p>
+                        <select value={topicId} onChange={e => actions.setTopicId(e.target.value)}>
+                            <option value=''>{strings.allTopics}</option>
+                            {topics.payload.content.map((topic, i) => (
+                                <option value={topic.id} key={i}>{topic.name}</option>
+                            ))}
+                        </select>
+                    </>
+                )}
             </Selector>
 
             {topics.payload && topics.payload.totalPages > 0 ? (

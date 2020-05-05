@@ -166,7 +166,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                             {strings.correctAnswer}: {answer.payload!.correctAnswer.value}
                         </p>
                         <p>
-                            {strings.time}: {Time.format(answer.payload!.time)}
+                            {strings.time}: {Time.format(answer.payload!.totalTime)}
                         </p>
                     </div>
                     <button onClick={handleNext}>

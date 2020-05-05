@@ -108,7 +108,7 @@ const InitForm: React.FC<Props> & Static = ({ ...props }) => {
 
     const handleSubmit = (event: FormEvent) => {
         if (selectedTopics.length > 0) {
-            actions.setGenerator({ time: new Date().getTime(), correct: 0, topics: selectedTopics, wrong: 0 })
+            actions.setGenerator({ totalTime: new Date().getTime(), correct: 0, topics: selectedTopics, wrong: 0 })
         }
     }
 

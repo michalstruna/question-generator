@@ -1,22 +1,16 @@
 package cz.michalstruna.questiongenerator.model.dto;
 
-public class UpdatedTopic extends NewTopic {
+public class UpdatedQuestion {
 
-    private Integer questionsCount;
+    private String name;
+    private String answer;
     private Integer correct;
     private Integer wrong;
     private Integer time;
+    private Integer topicId;
 
-    public UpdatedTopic() {
+    public UpdatedQuestion() {
         super();
-    }
-
-    public Integer getQuestionsCount() {
-        return questionsCount;
-    }
-
-    public void setQuestionsCount(Integer questionsCount) {
-        this.questionsCount = questionsCount;
     }
 
     public Integer getCorrect() {
@@ -41,6 +35,30 @@ public class UpdatedTopic extends NewTopic {
 
     public void setTime(Integer time) {
         this.time = time;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    public Integer getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(Integer topicId) {
+        this.topicId = topicId;
     }
 
 }

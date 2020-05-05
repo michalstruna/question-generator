@@ -46,7 +46,8 @@ export default {
 
     database: {
         topic: { [CS]: 'Téma' },
-        questions: { [CS]: 'Otázek' },
+        questions: { [CS]: 'Otázky' },
+        topics: { [CS]: 'Témata' },
         answers: { [CS]: 'Odpovědí' },
         success: { [CS]: 'Úspěšnost' },
         totalTime: { [CS]: 'Strávený čas' },
@@ -67,7 +68,9 @@ export default {
         addTopic: { [CS]: 'Nové téma' },
         addQuestion: { [CS]: 'Nová otázka' },
         answer: { [CS]: 'Odpověď' },
-        missingAnswer: { [CS]: 'Zadejte odpověď' }
+        missingAnswer: { [CS]: 'Zadejte odpověď' },
+        from: { [CS]: 'Z tématu' },
+        missingTopic: { [CS]: 'Vyberte téma' }
     }
 
 }
