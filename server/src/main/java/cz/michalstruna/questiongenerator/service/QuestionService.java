@@ -1,7 +1,9 @@
 package cz.michalstruna.questiongenerator.service;
 
 import cz.michalstruna.questiongenerator.dao.QuestionRepository;
+import cz.michalstruna.questiongenerator.dao.TopicRepository;
 import cz.michalstruna.questiongenerator.model.database.Question;
+import cz.michalstruna.questiongenerator.model.database.Topic;
 import cz.michalstruna.questiongenerator.model.dto.NewQuestion;
 import cz.michalstruna.questiongenerator.model.dto.UpdatedQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,9 @@ public class QuestionService {
 
     @Autowired
     private QuestionRepository questionRepository;
+
+    @Autowired
+    private TopicRepository topicRepository;
 
     @Autowired
     private TopicService topicService;
@@ -31,7 +36,13 @@ public class QuestionService {
         question.setName(newQuestion.getName());
         question.setCorrect(0);
         question.setWrong(0);
-        question.setTopic(topicService.get(newQuestion.getTopicId()));
+        question.setTotalTime(0);
+        question.setAnswer(newQuestion.getAnswer());
+
+        Topic topic = topicService.get(newQuestion.getTopicId());
+        topic.setQuestionsCount(topic.getQuestionsCount() + 1);
+        question.setTopic(topic);
+        topicRepository.save(topic);
 
         return questionRepository.save(question);
     }
@@ -59,10 +70,27 @@ public class QuestionService {
             question.setTopic(topicService.get(updatedQuestion.getTopicId()));
         }
 
+        remove(questionId);
+
+        Topic topic = question.getTopic();
+        topic.setQuestionsCount(topic.getQuestionsCount() + 1);
+        topic.setCorrect(topic.getCorrect() + question.getCorrect());
+        topic.setWrong(topic.getWrong() + question.getWrong());
+        topic.setTotalTime(topic.getTotalTime() + question.getTotalTime());
+        topicRepository.save(topic);
+
         return questionRepository.save(question);
     }
 
     public void remove(int questionId) {
+        Question question = get(questionId);
+        Topic topic = question.getTopic();
+        topic.setQuestionsCount(topic.getQuestionsCount() - 1);
+        topic.setCorrect(topic.getCorrect() - question.getCorrect());
+        topic.setWrong(topic.getWrong() - question.getWrong());
+        topic.setTotalTime(topic.getTotalTime() - question.getTotalTime());
+        topicRepository.save(topic);
+
         questionRepository.deleteById(questionId);
     }
 

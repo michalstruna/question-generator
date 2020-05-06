@@ -143,6 +143,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
             columns={[
                 { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.question, width: 3 },
+                { accessor: item => item.answer, title: strings.answer },
                 { accessor: item => item.topic.name, title: strings.topic, width: 1.5 },
                 {
                     accessor: item => item.correct / item.wrong,

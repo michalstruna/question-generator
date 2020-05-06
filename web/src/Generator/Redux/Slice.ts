@@ -76,9 +76,13 @@ const Slice = Redux.slice(
         removeTopic: async<string, void>('removedTopic', topicId => Requests.delete<any>(`topics/${topicId}`), {
             onSuccess: (state, action) => {
                 const payload = state.topics.payload!
-                payload.content = payload.content.filter(topic => topic.id !== action.meta?.arg)
+                payload.content = payload.content.filter(topic => topic.id !== action.meta!.arg)
                 payload.totalElements--
                 payload.totalPages = Math.ceil(payload.totalElements / state.segment.size)
+
+                if (state.questions.payload) {
+                    state.questions.payload.content = state.questions.payload.content.filter(q => q.topic.id !== action.meta!.arg)
+                }
             }
         }),
 
@@ -123,10 +127,14 @@ const Slice = Redux.slice(
 
         addQuestion: async<QuestionNew, Question>('newQuestion', question => Requests.post('questions', question), {
             onSuccess: (state, action) => {
-                console.log(action)
-
                 if (state.topicId === action.payload.topic.id || !state.topicId) {
                     state.questions.payload?.content.push(action.payload)
+                }
+
+                for (const topic of state.topics.payload!.content) {
+                    if (topic.id === action.payload.topic.id) {
+                        topic.questionsCount++
+                    }
                 }
             }
         }),
@@ -140,7 +148,7 @@ const Slice = Redux.slice(
                                 if (topic.id === question.topic.id) {
                                     topic.correct = topic.correct - question.correct
                                     topic.wrong = topic.wrong - question.wrong
-                                    topic.questionsCount = topic.questionsCount - 1
+                                    topic.questionsCount--
                                     topic.totalTime = topic.totalTime - question.totalTime
                                 }
                             }
@@ -154,7 +162,7 @@ const Slice = Redux.slice(
             }
         }),
 
-        resetQuestion: async<string, void>('resetQuestion', mock.resetQuestion, {
+        resetQuestion: async<string, void>('resetQuestion', questionId => Requests.put(`questions/${questionId}/reset`), {
             onSuccess: (state, action) => {
                 for (const question of state.questions.payload!.content) {
                     if (question.id === action.meta?.arg) {
@@ -174,7 +182,6 @@ const Slice = Redux.slice(
         }),
 
         setTopicId: set<string>('topicId'),
-
 
         generateQuestion: async<Topic[], GeneratedQuestion>('question', mock.generateQuestion, {
             onPending: state => state.question.payload = state.question.error = state.answer.payload = null

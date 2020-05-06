@@ -36,7 +36,7 @@ public class Topic {
     @Formula("coalesce(total_time / NULLIF((correct + wrong), 0), 0)")
     private double timePerAnswer;
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Question> questions;
 
     public int getId() {
