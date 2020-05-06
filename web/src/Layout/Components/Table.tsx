@@ -1,8 +1,8 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { Color, Duration, size, threeDots } from '../../Style'
-import { Sort, useSort } from '../../Data'
+import { Color, Duration, size } from '../../Style'
+import { Segment, Sort, useSort } from '../../Data'
 
 interface Props<Item> extends React.ComponentPropsWithoutRef<'div'> {
     items: Item[]
@@ -11,6 +11,7 @@ interface Props<Item> extends React.ComponentPropsWithoutRef<'div'> {
     onSort?: (sort: Sort) => void
     defaultSort?: Sort
     renderBody?: (items: React.ReactNode) => React.ReactNode
+    segment?: Segment
 }
 
 interface Column<Item> {
@@ -52,6 +53,10 @@ const Cell = Styled.div`
     &:last-of-type {
         padding-right: 1rem;
     }
+    
+    &:empty {
+        pointer-events: none;
+    }
 `
 
 const HeaderRow = Styled(Row)`
@@ -92,9 +97,17 @@ const HeaderCell = Styled(Cell)`
 
 `
 
-function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBody, ...props }: Props<Item>) {
+function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBody, segment, ...props }: Props<Item>) {
 
     const { sort, sortedColumn, isAsc } = useSort(defaultSort ? defaultSort.column : 1, defaultSort ? defaultSort.isAsc : true)
+
+    const sortedItems = React.useMemo(() => segment ? (
+        [...items].sort((a, b) => {
+            const valueA = columns[sortedColumn].accessor(a, 0)
+            const valueB = columns[sortedColumn].accessor(b, 0)
+            return (valueA > valueB ? 1 : (valueB > valueA ? -1 : 0)) * (isAsc ? 1 : -1)
+        }).slice(segment.index * segment.size, (segment.index + 1) * segment.size)
+    ) : items, [sortedColumn, isAsc, items, segment])
 
     React.useEffect(() => {
         onSort?.({ column: sortedColumn, isAsc })
@@ -112,7 +125,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
     ), [columns, withHeader, sort])
 
     const renderedItems = React.useMemo(() => (
-        items.map((item, i) => (
+        sortedItems.map((item, i) => (
             <Row key={i}>
                 {columns.map((column, j) => (
                     <Cell key={j} style={{ flex: `${column.width ?? 1}` }}>

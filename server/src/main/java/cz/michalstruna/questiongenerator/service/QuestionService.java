@@ -27,8 +27,13 @@ public class QuestionService {
         return questionRepository.findById(questionId).orElseThrow(); // TODO: 404
     }
 
-    public Page<Question> getAll(Pageable pageable) {
-        return questionRepository.findAll(pageable);
+    public Page<Question> getAll(Pageable pageable, String nameFilter) {
+        return questionRepository.findAllByNameContainingIgnoreCase(pageable, nameFilter);
+    }
+
+    public Page<Question> getAllByTopic(Pageable pageable, String nameFilter, int topicIdFilter) {
+        Topic topic = topicService.get(topicIdFilter);
+        return questionRepository.findAllByNameContainingIgnoreCaseAndTopic(nameFilter, topic, pageable);
     }
 
     public Question add(NewQuestion newQuestion) {

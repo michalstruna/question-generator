@@ -36,7 +36,7 @@ const mock = {
     })
 }
 
-const questionColumns = ['name', 'success', 'questionsCount', 'answersCount', 'time', 'timePerAnswer']
+const questionColumns = ['name', 'name', 'answer', 'topic', 'success', 'answersCount', 'totalTime', 'timePerAnswer']
 
 const Slice = Redux.slice(
     'generator',
@@ -120,8 +120,9 @@ const Slice = Redux.slice(
             })
         }),
 
-        getQuestions: async<Cursor, Pageable<Question>>('questions', cursor => Requests.get('questions', {
-            filter: cursor.filter,
+        getQuestions: async<[Cursor, number?], Pageable<Question>>('questions', ([cursor, topicId]) => Requests.get('questions', {
+            nameFilter: cursor.filter,
+            topicIdFilter: topicId,
             sort: questionColumns[cursor.sort.column] + ',' + (cursor.sort.isAsc ? 'asc' : 'desc')
         })),
 
