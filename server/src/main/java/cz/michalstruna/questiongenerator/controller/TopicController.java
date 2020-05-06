@@ -23,8 +23,8 @@ public class TopicController {
     }
 
     @GetMapping(value = "/")
-    public Page<Topic> getAll(Pageable pageable) {
-        return topicService.getAll(pageable);
+    public Page<Topic> getAll(Pageable pageable, @RequestParam(defaultValue = "", required = false) String filter) {
+        return topicService.getAll(pageable, filter);
     }
 
     @PostMapping("/")

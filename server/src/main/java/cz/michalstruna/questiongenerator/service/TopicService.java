@@ -23,8 +23,8 @@ public class TopicService {
         return topicRepository.findById(topicId).orElseThrow(); // TODO: 404
     }
 
-    public Page<Topic> getAll(Pageable pageable) {
-        return topicRepository.findAll(pageable);
+    public Page<Topic> getAll(Pageable pageable, String filter) {
+        return topicRepository.findAllByNameContainingIgnoreCase(pageable, filter);
     }
 
     public Topic add(NewTopic newTopic) {
