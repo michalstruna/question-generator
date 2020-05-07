@@ -42,27 +42,10 @@ const Root = Styled(View)`
             padding-left: 1rem;
             pointer-events: none;
         }
-        
-        &:nth-of-type(8n) {
-            pointer-events: none;
-        }
     }
     
     button {
         margin-right: 0.5rem;
-    }
-`
-
-const Controls = Styled.div`
-    align-items: center;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-    padding: 1rem;
-    width: 100%;
-    
-    & > * {
-        margin: 1rem;
     }
 `
 
@@ -100,9 +83,10 @@ const DatabaseView: React.FC<Props> & Static = () => {
 
     const renderTopicsTable = () => (
         <Table<Topic>
-            items={topics.payload?.content || []}
+            items={topics.payload?.content.filter(t => t.name.includes(filter)) || []}
             onSort={actions.setSort}
             defaultSort={sort}
+            segment={segment}
             columns={[
                 { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.topic, width: 1.5 },
@@ -151,6 +135,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                     render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />
                 },
                 { accessor: item => item.correct + item.wrong, title: strings.answers },
+                { accessor: item => item.totalTime, title: strings.totalTime, render: Time.format },
                 {
                     accessor: item => (item.totalTime / (item.correct + item.wrong)) || 0,
                     title: strings.timePerQuestion,
@@ -171,7 +156,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
             ]}
             renderBody={items => (
                 <Async
-                    data={[[questions, () => getQuestions({ sort, filter, segment }), [topicId]], [topics, getTopics]]}
+                    data={[[questions, () => getQuestions([{ sort, filter, segment }, topicId]), [topicId, filter, sort, segment]], [topics, getTopics]]}
                     success={() => items} />)} />
     )
 

@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { ChangeEvent } from 'react'
 import Styled from 'styled-components'
+import { debounce } from 'throttle-debounce'
 
 import { useFixedX } from '../../Style'
 import { Paginator, useActions, useStrings } from '../../Data'
@@ -59,6 +60,10 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
     const topics = useTopics()
     const topicId = useTopicId()
 
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+        actions.setFilter(event.target.value)
+    }
+
     return (
         <Root {...props} ref={root as any}>
             <Selector>
@@ -73,7 +78,7 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
                     {strings.contains}
                 </p>
                 <input type='text'
-                       onChange={e => actions.setFilter(e.target.value)}
+                       onChange={handleChange}
                        value={filter}
                        placeholder={strings.anything} />
                 {table === 'questions' && topics.payload && (

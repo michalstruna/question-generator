@@ -23,8 +23,16 @@ public class QuestionController {
     }
 
     @GetMapping(value = "/")
-    public Page<Question> getAll(Pageable pageable) {
-        return questionService.getAll(pageable);
+    public Page<Question> getAll(
+            Pageable pageable,
+            @RequestParam(defaultValue = "", required = false) String nameFilter,
+            @RequestParam(required = false) Integer topicIdFilter
+    ) {
+        if (topicIdFilter != null) {
+            return questionService.getAllByTopic(pageable, nameFilter, topicIdFilter);
+        } else {
+            return questionService.getAll(pageable, nameFilter);
+        }
     }
 
     @PostMapping("/")

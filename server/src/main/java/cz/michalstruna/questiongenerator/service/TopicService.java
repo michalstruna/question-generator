@@ -16,15 +16,12 @@ public class TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
-    @Autowired
-    private QuestionRepository questionRepository;
-
     public Topic get(int topicId) {
         return topicRepository.findById(topicId).orElseThrow(); // TODO: 404
     }
 
-    public Page<Topic> getAll(Pageable pageable) {
-        return topicRepository.findAll(pageable);
+    public Page<Topic> getAll(Pageable pageable, String filter) {
+        return topicRepository.findAllByNameContainingIgnoreCase(pageable, filter);
     }
 
     public Topic add(NewTopic newTopic) {
