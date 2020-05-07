@@ -96,7 +96,7 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
                 )}
             </Selector>
 
-            {topics.payload && topics.payload.totalPages > 0 ? (
+            {topics.payload && topics.payload.totalElements > 0 ? (
                 <Paginator
                     page={segment}
                     itemsCount={topics.payload.totalElements}

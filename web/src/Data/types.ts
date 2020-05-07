@@ -24,6 +24,5 @@ export type Cursor = {
 
 export type Pageable<Item> = {
     content: Item[]
-    totalPages: number
     totalElements: number
 }
