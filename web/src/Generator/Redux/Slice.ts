@@ -85,17 +85,17 @@ const Slice = Redux.slice(
             }
         }),
 
-        resetTopic: async<string, void>('resetTopic', topicId => Requests.put<void>(`topics/${topicId}/reset`), {
+        resetTopic: async<string, Topic>('resetTopic', topicId => Requests.put<Topic>(`topics/${topicId}/reset`), {
             onSuccess: (state, action) => {
                 for (const topic of state.topics.payload!.content) {
-                    if (topic.id === action.meta?.arg) {
+                    if (topic.id === action.meta!.arg) {
                         topic.correct = topic.wrong = topic.totalTime = 0
+                    }
+                }
 
-                        if (state.topicId === topic.id) {
-                            for (const question of state.questions.payload!.content) {
-                                question.correct = question.wrong = question.totalTime = 0
-                            }
-                        }
+                if (state.topicId === action.payload.id || !state.topicId) {
+                    for (const question of state.questions.payload!.content) {
+                        question.correct = question.wrong = question.totalTime = 0
                     }
                 }
             }

@@ -3,6 +3,7 @@ package cz.michalstruna.questiongenerator.model.database;
 import org.hibernate.annotations.Formula;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "question")
 public class Question {
@@ -13,6 +14,9 @@ public class Question {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<QuestionInstance> instances;
 
     @Column()
     private int correct;

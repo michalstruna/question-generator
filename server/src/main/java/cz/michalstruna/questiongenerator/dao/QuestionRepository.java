@@ -6,17 +6,24 @@ import cz.michalstruna.questiongenerator.model.database.Topic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Component
+@Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
     Page<Question> findAllByNameContainingIgnoreCase(Pageable pageable, String filter);
 
     Page<Question> findAllByNameContainingIgnoreCaseAndTopic(String name, Topic topic, Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query("UPDATE question q SET q.correct = 0, q.wrong = 0, q.totalTime = 0 WHERE topic = :topic")
+    void resetAllByTopic(Topic topic);
 
     @Query(value="SELECT * FROM question ORDER BY RAND() LIMIT 1", nativeQuery = true)
     QuestionInstance getRandom(List<Integer> topicIds);

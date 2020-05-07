@@ -16,6 +16,9 @@ public class TopicService {
     @Autowired
     private TopicRepository topicRepository;
 
+    @Autowired
+    private QuestionRepository questionRepository;
+
     public Topic get(int topicId) {
         return topicRepository.findById(topicId).orElseThrow(); // TODO: 404
     }
@@ -32,6 +35,17 @@ public class TopicService {
         topic.setQuestionsCount(0);
 
         return topicRepository.save(topic);
+    }
+
+    public Topic reset(int topicId) {
+        UpdatedTopic topic = new UpdatedTopic();
+        topic.setCorrect(0);
+        topic.setTime(0);
+        topic.setWrong(0);
+
+        Topic newTopic = update(topicId, topic);
+        questionRepository.resetAllByTopic(newTopic);
+        return newTopic;
     }
 
     public Topic update(int topicId, UpdatedTopic updatedTopic) {

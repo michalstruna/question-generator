@@ -42,12 +42,7 @@ public class TopicController {
 
     @PutMapping("/{topicId}/reset")
     public Topic reset(@PathVariable("topicId") int id) {
-        UpdatedTopic topic = new UpdatedTopic();
-        topic.setCorrect(0);
-        topic.setTime(0);
-        topic.setWrong(0);
-
-        return topicService.update(id, topic);
+        return topicService.reset(id);
     }
 
     @DeleteMapping("/{topicId}")

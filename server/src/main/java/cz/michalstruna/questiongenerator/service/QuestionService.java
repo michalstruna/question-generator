@@ -52,6 +52,15 @@ public class QuestionService {
         return questionRepository.save(question);
     }
 
+    public Question reset(int questionId) {
+        UpdatedQuestion question = new UpdatedQuestion();
+        question.setCorrect(0);
+        question.setTime(0);
+        question.setWrong(0);
+
+        return update(questionId, question);
+    }
+
     public Question update(int questionId, UpdatedQuestion updatedQuestion) {
         Question question = questionRepository.findById(questionId).orElseThrow();
         Topic topic = question.getTopic();

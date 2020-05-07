@@ -49,14 +49,9 @@ public class QuestionController {
         return questionService.update(id, question);
     }
 
-    @PutMapping("/{topicId}/reset")
+    @PutMapping("/{questionId}/reset")
     public Question reset(@PathVariable("questionId") int id) {
-        UpdatedQuestion question = new UpdatedQuestion();
-        question.setCorrect(0);
-        question.setTime(0);
-        question.setWrong(0);
-
-        return questionService.update(id, question);
+        return questionService.reset(id);
     }
 
     @DeleteMapping("/{questionId}")
