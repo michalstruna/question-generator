@@ -28,7 +28,7 @@ const Generator: React.FC<Props> & Static = ({ ...props }) => {
 
     React.useEffect(() => {
         if (!question.payload) {
-            actions.generateQuestion(generator.topics)
+            actions.generateQuestion(generator.topics.map(topic => topic.id))
         }
     }, [])
 

@@ -135,18 +135,20 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
 
     const questionIndex = React.useMemo(() => generator.correct + generator.wrong, [question])
 
+    const topicIds = React.useMemo(() => generator.topics.map(topic => topic.id), [generator])
+
     React.useEffect(() => {
         if (generator && !question.payload) {
-            actions.generateQuestion(generator.topics)
+            actions.generateQuestion(topicIds)
         }
     }, [generator])
 
     const handleAnswer = (values: AnswerFormValues) => {
-        actions.sendAnswer({ token: question.payload!.token, value: values.answer })
+        actions.sendAnswer({ id: question.payload!.id, value: values.answer })
     }
 
     const handleNext = () => {
-        actions.generateQuestion(generator.topics)
+        actions.generateQuestion(topicIds)
     }
 
     const handleExit = () => {
@@ -163,7 +165,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                             {answer.payload!.isCorrect ? strings.correct : strings.wrong}
                         </AnswerTitle>
                         <p>
-                            {strings.correctAnswer}: {answer.payload!.correctAnswer.value}
+                            {strings.correctAnswer}: {answer.payload!.correctAnswer}
                         </p>
                         <p>
                             {strings.time}: {Time.format(answer.payload!.totalTime)}
@@ -206,7 +208,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
         <Header>
             Otázka č. {questionIndex + 1}
             <Tag>
-                {topics.payload!.content.find((topic: Topic) => topic.id === question.payload!.topic.id)!.name}
+                {question.payload!.question.topic.name}
             </Tag>
         </Header>
     )
@@ -219,7 +221,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                     <>
                         {renderHeader()}
                         <Title>
-                            {question.payload!.name}
+                            {question.payload!.question.name}
                         </Title>
                         {answer.payload || answer.pending ? renderAnswer() : renderAnswerForm()}
                     </>

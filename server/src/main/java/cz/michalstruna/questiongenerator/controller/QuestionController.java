@@ -45,7 +45,6 @@ public class QuestionController {
         UpdatedQuestion question = new UpdatedQuestion();
         question.setName(newQuestion.getName());
         question.setAnswer(newQuestion.getAnswer());
-        question.setTopicId(newQuestion.getTopicId());
 
         return questionService.update(id, question);
     }

@@ -2,9 +2,8 @@ import { Cursor, Filter, Pageable, Redux, Segment, Sort } from '../../Data'
 import {
     Answer,
     AnswerCheck,
-    GeneratedQuestion,
     GeneratorInstance,
-    Question,
+    Question, QuestionInstance,
     QuestionNew,
     Topic,
     TopicNew
@@ -16,7 +15,7 @@ import { Requests } from '../../Async'
 const mock = {
     getTopics: () => new Promise<Topic[]>(resolve => {
     }),
-    generateQuestion: (topics: Topic[]) => new Promise<GeneratedQuestion>(resolve => {
+    generateQuestion: (topics: Topic[]) => new Promise<Question>(resolve => {
     }),
     sendAnswer: (answer: Answer) => new Promise<AnswerCheck>(resolve => {
     }),
@@ -50,7 +49,7 @@ const Slice = Redux.slice(
 
         answer: Redux.async<AnswerCheck>(),
         generator: Redux.empty<GeneratorInstance | undefined>(),
-        question: Redux.async<GeneratedQuestion>(),
+        question: Redux.async<QuestionInstance>(),
         table: '',
         newTopic: Redux.async<TopicNew>(),
         newQuestion: Redux.async<QuestionNew>(),
@@ -184,10 +183,13 @@ const Slice = Redux.slice(
 
         setTopicId: set<string>('topicId'),
 
-        generateQuestion: async<Topic[], GeneratedQuestion>('question', mock.generateQuestion, {
+        generateQuestion: async<number[], QuestionInstance>('question', topicIds => Requests.get<QuestionInstance>('questions/random', {
+            topicIds
+        }), {
             onPending: state => state.question.payload = state.question.error = state.answer.payload = null
         }),
-        sendAnswer: async<Answer, AnswerCheck>('answer', mock.sendAnswer, {
+
+        sendAnswer: async<Answer, AnswerCheck>('answer', answer => Requests.put(`questions/${answer.id}/answer`, answer.value), {
             onSuccess: (state, action) => {
                 if (action.payload.isCorrect) {
                     state.generator!.correct++

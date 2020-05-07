@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux'
-import { AnswerCheck, GeneratedQuestion, GeneratorInstance, Question, Topic } from '../types'
+import { AnswerCheck, GeneratorInstance, Question, QuestionInstance, Topic } from '../types'
 import { AsyncData, Filter, Pageable, Segment, Sort } from '../../Data'
 
 type State = any // TODO: Use typeof State.
@@ -11,7 +11,7 @@ export const useSort = (): Sort => useSelector((state: State) => state.generator
 export const useSegment = (): Segment => useSelector((state: State) => state.generator.segment)
 export const useFilter = (): Filter => useSelector((state: State) => state.generator.filter)
 
-export const useQuestion = (): AsyncData<GeneratedQuestion> => useSelector((state: State) => state.generator.question)
+export const useQuestion = (): AsyncData<QuestionInstance> => useSelector((state: State) => state.generator.question)
 export const useAnswer = (): AsyncData<AnswerCheck> => useSelector((state: State) => state.generator.answer)
 export const useGenerator = (): GeneratorInstance => useSelector((state: State) => state.generator.generator)
 export const useTable = (): string => useSelector((state: State) => state.generator.table)
