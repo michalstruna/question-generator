@@ -3,19 +3,19 @@ export type TopicNew = {
 }
 
 export type Topic = Stats & TopicNew & {
-    id: string
+    id: number
     questionsCount: number
 }
 
 export type QuestionNew = {
     name: string
     answer: string
-    topicId: string
+    topicId: number
 }
 
-export type Question = Stats & QuestionNew & {
-    id: string
-    topicId: string
+export type Question = Stats & Omit<QuestionNew, 'topicId'> & {
+    id: number
+    topic: Topic
     name: string
 }
 
@@ -31,13 +31,13 @@ export type Answer<Value = string> = {
 export type AnswerCheck<Value = string> = {
     isCorrect: boolean
     correctAnswer: Omit<Answer<Value>, 'token'>
-    time: number
+    totalTime: number
 }
 
 export type Stats = {
     correct: number
     wrong: number
-    time: number
+    totalTime: number
 }
 
 export type GeneratorInstance = Stats & {

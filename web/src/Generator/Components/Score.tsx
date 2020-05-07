@@ -36,7 +36,7 @@ const Score: React.FC<Props> & Static = ({ ...props }) => {
 
     React.useEffect(() => {
         const interval = setInterval(() => {
-            setTime(new Date().getTime() - generator.time)
+            setTime(new Date().getTime() - generator.totalTime)
         }, 1000)
 
         return () => clearInterval(interval)

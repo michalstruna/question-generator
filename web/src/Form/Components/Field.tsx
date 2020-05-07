@@ -70,7 +70,7 @@ const Field: React.FC<Props> = ({ name, type, label, required, invalid, validato
     const validate = (value: any) => {
         setValue(value)
 
-        if (required && !value) {
+        if (required && (value === null || value === undefined || value === '')) {
             return required
         }
 

@@ -3,7 +3,7 @@ import Styled from 'styled-components'
 
 import { Field, FieldType, Form, FormContainer } from '../../Form'
 import { useActions, useStrings } from '../../Data'
-import { addQuestion, QuestionNew, TopicNew, useNewTopic, useTopics } from '..'
+import { addQuestion, QuestionNew, useNewTopic, useTopics } from '..'
 import { Async } from '../../Async'
 import { Window } from '../../Layout'
 
@@ -46,7 +46,7 @@ const TopicForm: React.FC<Props> & Static = ({ ...props }) => {
 
     return (
         <FormContainer<QuestionNew>
-            initialValues={{ name: '', answer: '', topicId: topics.payload?.[0].id || '' }}
+            initialValues={{ name: '', answer: '', topicId: topics.payload?.content[0]?.id || 0 }}
             onSubmit={handleSubmit}>
             {({ renderSubmit, globalError }) => (
                 <Root {...props}>
@@ -65,8 +65,12 @@ const TopicForm: React.FC<Props> & Static = ({ ...props }) => {
                                 name='answer'
                                 label={strings.answer}
                                 required={strings.missingAnswer} />
-                            <Field name='topicId' type={FieldType.SELECT} label={strings.topic}
-                                   options={topics.payload!.map(topic => ({ text: topic.name, value: topic.id }))} />
+                            <Field
+                                name='topicId'
+                                type={FieldType.SELECT}
+                                label={strings.topic}
+                                required={strings.missingTopic}
+                                options={topics.payload!.content.map(topic => ({ text: topic.name, value: topic.id }))} />
                             {renderSubmit(strings.add)}
                             {globalError}
                             <Async data={[newTopic]} fail={() => null} />

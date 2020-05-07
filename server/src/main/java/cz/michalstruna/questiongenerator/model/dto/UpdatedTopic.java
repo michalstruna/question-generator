@@ -1,4 +1,4 @@
-package cz.michalstruna.questiongenerator.data;
+package cz.michalstruna.questiongenerator.model.dto;
 
 public class UpdatedTopic extends NewTopic {
 
@@ -7,16 +7,8 @@ public class UpdatedTopic extends NewTopic {
     private Integer wrong;
     private Integer time;
 
-    public UpdatedTopic(String name, Integer questionsCount, Integer correct, Integer wrong, Integer time) {
-        super(name);
-        this.questionsCount = questionsCount;
-        this.correct = correct;
-        this.wrong = wrong;
-        this.time = time;
-    }
-
     public UpdatedTopic() {
-        super(null);
+        super();
     }
 
     public Integer getQuestionsCount() {

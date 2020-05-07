@@ -1,11 +1,13 @@
 package cz.michalstruna.questiongenerator.controller;
 
-import cz.michalstruna.questiongenerator.data.NewTopic;
-import cz.michalstruna.questiongenerator.data.Topic;
-import cz.michalstruna.questiongenerator.data.UpdatedTopic;
+import cz.michalstruna.questiongenerator.model.database.Topic;
+import cz.michalstruna.questiongenerator.model.dto.NewTopic;
+import cz.michalstruna.questiongenerator.model.dto.UpdatedTopic;
 import cz.michalstruna.questiongenerator.service.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping("/api/topics")
@@ -20,9 +22,9 @@ public class TopicController {
         return topicService.get(topicId);
     }
 
-    @GetMapping("/")
-    public Topic[] getAll() {
-        return topicService.getAll();
+    @GetMapping(value = "/")
+    public Page<Topic> getAll(Pageable pageable) {
+        return topicService.getAll(pageable);
     }
 
     @PostMapping("/")

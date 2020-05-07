@@ -166,7 +166,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                             {strings.correctAnswer}: {answer.payload!.correctAnswer.value}
                         </p>
                         <p>
-                            {strings.time}: {Time.format(answer.payload!.time)}
+                            {strings.time}: {Time.format(answer.payload!.totalTime)}
                         </p>
                     </div>
                     <button onClick={handleNext}>
@@ -206,7 +206,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
         <Header>
             Otázka č. {questionIndex + 1}
             <Tag>
-                {topics.payload!.find((topic: Topic) => topic.id === question.payload!.topicId)!.name}
+                {topics.payload!.content.find((topic: Topic) => topic.id === question.payload!.topic.id)!.name}
             </Tag>
         </Header>
     )
