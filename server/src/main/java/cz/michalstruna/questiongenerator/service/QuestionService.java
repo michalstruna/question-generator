@@ -54,34 +54,27 @@ public class QuestionService {
 
     public Question update(int questionId, UpdatedQuestion updatedQuestion) {
         Question question = questionRepository.findById(questionId).orElseThrow();
+        Topic topic = question.getTopic();
 
         if (updatedQuestion.getName() != null) {
             question.setName(updatedQuestion.getName());
         }
 
         if (updatedQuestion.getCorrect() != null) {
+            topic.setCorrect(topic.getCorrect() + updatedQuestion.getCorrect() - question.getCorrect());
             question.setCorrect(updatedQuestion.getCorrect());
         }
 
         if (updatedQuestion.getWrong() != null) {
+            topic.setWrong(topic.getWrong() + updatedQuestion.getWrong() - question.getWrong());
             question.setWrong(updatedQuestion.getWrong());
         }
 
         if (updatedQuestion.getTime() != null) {
+            topic.setTotalTime(topic.getTotalTime() + updatedQuestion.getTime() - question.getTotalTime());
             question.setTotalTime(updatedQuestion.getTime());
         }
 
-        if (updatedQuestion.getTopicId() != null) {
-            question.setTopic(topicService.get(updatedQuestion.getTopicId()));
-        }
-
-        remove(questionId);
-
-        Topic topic = question.getTopic();
-        topic.setQuestionsCount(topic.getQuestionsCount() + 1);
-        topic.setCorrect(topic.getCorrect() + question.getCorrect());
-        topic.setWrong(topic.getWrong() + question.getWrong());
-        topic.setTotalTime(topic.getTotalTime() + question.getTotalTime());
         topicRepository.save(topic);
 
         return questionRepository.save(question);

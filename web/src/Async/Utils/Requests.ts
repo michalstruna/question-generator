@@ -1,11 +1,12 @@
 import Axios, { AxiosPromise } from 'axios'
 import Path from 'url'
+import QueryString from 'query-string'
 
 import Config from '../../Async/Constants/Config'
 
 export default class Requests {
 
-    public static get<T>(path: string, query: Record<string, any> = {}): Promise<T> {
+    public static get<T>(path: string, query: any = {}): Promise<T> {
         return this.process<T>(
             Axios.get(
                 this.getPath(path),
@@ -14,7 +15,7 @@ export default class Requests {
         )
     }
 
-    public static post<T>(path: string, body: Record<string, any> = {}, query: Record<string, any> = {}): Promise<T> {
+    public static post<T>(path: string, body: any = {}, query: Record<string, any> = {}): Promise<T> {
         return this.process<T>(
             Axios.post(
                 this.getPath(path),
@@ -24,7 +25,7 @@ export default class Requests {
         )
     }
 
-    public static put<T>(path: string, body: Record<string, any> = {}, query: Record<string, any> = {}): Promise<T> {
+    public static put<T>(path: string, body: any = {}, query: Record<string, any> = {}): Promise<T> {
         return this.process<T>(
             Axios.put(
                 this.getPath(path),
@@ -52,7 +53,7 @@ export default class Requests {
     }
 
     private static getOptions(query: Record<string, any>): object {
-        return { params: query }
+        return { params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }) }
     }
 
     private static getPath(path: string): string {

@@ -7,7 +7,6 @@ public class UpdatedQuestion {
     private Integer correct;
     private Integer wrong;
     private Integer time;
-    private Integer topicId;
 
     public UpdatedQuestion() {
         super();
@@ -51,14 +50,6 @@ public class UpdatedQuestion {
 
     public void setAnswer(String answer) {
         this.answer = answer;
-    }
-
-    public Integer getTopicId() {
-        return topicId;
-    }
-
-    public void setTopicId(Integer topicId) {
-        this.topicId = topicId;
     }
 
 }

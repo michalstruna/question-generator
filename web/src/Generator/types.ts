@@ -19,18 +19,20 @@ export type Question = Stats & Omit<QuestionNew, 'topicId'> & {
     name: string
 }
 
-export type GeneratedQuestion = Omit<Question, 'answer'> & {
-    token: string
+export type QuestionInstance = {
+    id: number
+    question: Question
+    startTime: number
 }
 
 export type Answer<Value = string> = {
-    token: string,
+    id: number,
     value: Value
 }
 
 export type AnswerCheck<Value = string> = {
     isCorrect: boolean
-    correctAnswer: Omit<Answer<Value>, 'token'>
+    correctAnswer: Omit<Value, 'token'>
     totalTime: number
 }
 
