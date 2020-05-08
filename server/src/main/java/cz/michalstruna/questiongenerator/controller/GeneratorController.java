@@ -1,6 +1,7 @@
 package cz.michalstruna.questiongenerator.controller;
 
 import cz.michalstruna.questiongenerator.model.database.QuestionInstance;
+import cz.michalstruna.questiongenerator.model.dto.Answer;
 import cz.michalstruna.questiongenerator.model.dto.AnswerCheck;
 import cz.michalstruna.questiongenerator.service.GeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class GeneratorController {
     }
 
     @PutMapping("/{generatedQuestionId}/answer")
-    public AnswerCheck answer(@PathVariable int generatedQuestionId, @RequestBody String answer) {
+    public AnswerCheck answer(@PathVariable int generatedQuestionId, @RequestBody Answer answer) {
         return generatorService.answerQuestion(generatedQuestionId, answer);
     }
 

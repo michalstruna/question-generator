@@ -1,5 +1,14 @@
 import { Cursor, Filter, Pageable, Redux, Segment, Sort } from '../../Data'
-import { Answer, AnswerCheck, GeneratorInstance, Question, QuestionInstance, QuestionNew, Topic, TopicNew } from '../types'
+import {
+    Answer,
+    AnswerCheck,
+    GeneratorInstance,
+    Question,
+    QuestionInstance,
+    QuestionNew,
+    Topic,
+    TopicNew
+} from '../types'
 import { Query } from '../../Routing'
 import { Requests } from '../../Async'
 
@@ -56,7 +65,9 @@ const Slice = Redux.slice(
 
                 if (state.questions.payload && (state.topicId === action.payload.id || !state.topicId)) {
                     for (const question of state.questions.payload.content) {
-                        question.correct = question.wrong = question.totalTime = 0
+                        if (question.topic.id === action.payload.id) {
+                            question.correct = question.wrong = question.totalTime = 0
+                        }
                     }
                 }
             }
@@ -149,10 +160,29 @@ const Slice = Redux.slice(
             onPending: state => state.question.payload = state.question.error = state.answer.payload = null
         }),
 
-        sendAnswer: async<Answer, AnswerCheck>('answer', answer => Requests.put(`questions/${answer.id}/answer`, answer.value), {
+        sendAnswer: async<Answer, AnswerCheck>('answer', answer => Requests.put(`questions/${answer.id}/answer`, answer), {
             onSuccess: (state, action) => {
                 state.generator![action.payload.isCorrect ? 'correct' : 'wrong']++
                 state.answer.payload = action.payload
+
+                const questionId = state.question.payload!.question.id
+                const topicId = state.question.payload!.question.topic.id
+
+                if (state.questions.payload) {
+                    for (const question of state.questions.payload!.content) {
+                        if (question.id === questionId) {
+                            question[action.payload.isCorrect ? 'correct' : 'wrong']++
+                            question.totalTime += action.payload.totalTime
+                        }
+                    }
+                }
+
+                for (const topic of state.topics.payload!.content) {
+                    if (topic.id === topicId) {
+                        topic[action.payload.isCorrect ? 'correct' : 'wrong']++
+                        topic.totalTime += action.payload.totalTime
+                    }
+                }
             }
         }),
 

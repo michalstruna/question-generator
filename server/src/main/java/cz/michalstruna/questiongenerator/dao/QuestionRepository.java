@@ -1,13 +1,13 @@
 package cz.michalstruna.questiongenerator.dao;
 
 import cz.michalstruna.questiongenerator.model.database.Question;
-import cz.michalstruna.questiongenerator.model.database.QuestionInstance;
 import cz.michalstruna.questiongenerator.model.database.Topic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
@@ -25,7 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     @Query("UPDATE question q SET q.correct = 0, q.wrong = 0, q.totalTime = 0 WHERE topic = :topic")
     void resetAllByTopic(Topic topic);
 
-    @Query(value="SELECT * FROM question ORDER BY RAND() LIMIT 1", nativeQuery = true)
-    QuestionInstance getRandom(List<Integer> topicIds);
+    @Query("SELECT q FROM question q WHERE q.topic.id IN :topicIds ORDER BY function('RAND')")
+    List<Question> getRandom(@Param("topicIds") List<Integer> topicIds);
 
 }

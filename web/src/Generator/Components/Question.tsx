@@ -16,7 +16,7 @@ import { Async } from '../../Async'
 import { Field, FieldType, Form, FormContainer } from '../../Form'
 import { Color, image, opacityHover, size } from '../../Style'
 import Tag from './Tag'
-import { Time } from '../../Native'
+import { Time, useEvent } from '../../Native'
 
 interface Static {
 
@@ -142,6 +142,10 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
             actions.generateQuestion(topicIds)
         }
     }, [generator])
+
+    useEvent(document, 'keydown', () => {
+        handleNext()
+    }, { active: !!answer.payload })
 
     const handleAnswer = (values: AnswerFormValues) => {
         actions.sendAnswer({ id: question.payload!.id, value: values.answer })
