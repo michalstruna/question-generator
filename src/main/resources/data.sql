@@ -2,10 +2,12 @@ DELETE FROM question;
 DELETE FROM topic;
 
 INSERT INTO topic (id, name, correct, wrong, questions_count, total_time) VALUES
-(1, 'Internetové aplikace', 12, 30, 40, 50),
-(2, 'Matematika', 5691, 961, 2368, 3520),
-(3, 'Fyzika', 968, 115, 400, 6),
-(4, 'Operační systémy', 182, 156, 3, 4);
+(1, 'Internetové aplikace', 12, 30, 40, 50000),
+(2, 'Matematika', 5691, 961, 2368, 3520000),
+(3, 'Fyzika', 968, 115, 400, 60000),
+(4, 'Operační systémy', 182, 156, 3, 40000),
+(5, 'Datové struktury', 12, 0, 4, 11200),
+(6, 'Umělá inteligence', 15, 5, 5, 87654);
 
 INSERT INTO question (id, name, answer, correct, wrong, total_time, topic_id) VALUES
 (1, 'Jak se nazývá novinka, která v Reactu umožňuje využívat state ve stateless komponentách?', '(react )?hooks?', 13, 1, 145, 1),
@@ -1801,4 +1803,13 @@ INSERT INTO question (id, name, answer, correct, wrong, total_time, topic_id) VA
 (5100, 'Kterým příkazem na UNIXových systémech lze vypsat obsah aktuálního adresáře včetně skrytých souborů?', 'ls -a', 19, 1, 200000, 4),
 (5101, 'Kterým příkazem na UNIXových systémech lze smazat adresář "abc" v domovském adresáři včetně jeho obsahu?', 'rm -r ~\/abc', 16, 0, 210005, 4),
 (5102, 'Jaká je obdoba příkazu ls v OS Windows?', 'dir', 22, 5, 168, 4),
-(5103, 'Jak lze v linuxu přidat oprávnění vlastníkovi souboru data.txt právo pro spouštění bez ovlivnění ostatních práv?', 'chmod u\+x data\.txt', 12, 1, 100000, 4)
+(5103, 'Jak lze v linuxu přidat oprávnění vlastníkovi souboru data.txt právo pro spouštění bez ovlivnění ostatních práv?', 'chmod u\+x data\.txt', 12, 1, 100000, 4),
+
+(5200, 'Kolik maximálně potomků může mít uzel ve 2-3 stromu?', 3, 10, 0, 23423, 5),
+(5201, 'Hierarchické datové struktury mohou zpravidla nabídnout jakou nejlepší asymptotickou složitost vyhledávání?', 'O\(log\(n\)\)|log(aritmickou)?', 12, 0, 34000, 5),
+(5202, 'Hashovací datové struktury mohou zpravidla nabídnout jakou nejlepší asymptotickou složitost vyhledávání?', '1|O\(1\)|konstantní', 5, 0, 34442, 5),
+(5203, 'Lineární datové struktury mohou zpravidla nabídnou jakou nejlepší asymptotickou složitost vyhledávání?', 'n|O\(n\)|lineární', 10, 0, 30456, 5),
+
+(5300, 'Extrakci vlastností z obrázku dovede provést jaký typ neuronových sítí?', 'CNN|konvoluční( síť)?', 154, 12, 345324, 6),
+(5301, 'Evoluční (genetický) algoritmus je stochastický heuristický postup skládající se z jakých 3 hlavních fází?', 'selekce,? ?křížení,? ?mutace', 150, 62, 9988776, 6),
+(5302, 'Jaký typ dopředné neuronové sítě je nejjednodušším binárním klasifikátorem?', '(jednoduchý )?perceptron', 100, 15, 666554, 6);
