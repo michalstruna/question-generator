@@ -33,7 +33,7 @@ public class Question {
     @ManyToOne
     private Topic topic;
 
-    @Formula("coalesce(correct / NULLIF((correct + wrong), 0), 100)")
+    @Formula("coalesce(10000 * correct / NULLIF((correct + wrong), 0), 10000)")
     private double success;
 
     @Formula("correct + wrong")

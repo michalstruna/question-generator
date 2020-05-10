@@ -60,7 +60,7 @@ public class GeneratorService {
 
     private boolean isCorrectAnswer(String answer, String correctAnswer) {
         Pattern pattern = Pattern.compile("^" + correctAnswer.toLowerCase() + "$");
-        Matcher matcher = pattern.matcher(answer);
+        Matcher matcher = pattern.matcher(answer.trim().toLowerCase());
         return matcher.matches();
     }
 

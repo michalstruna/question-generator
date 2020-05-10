@@ -37,9 +37,11 @@ const Row = Styled.div`
 const Cell = Styled.div`
     align-items: center;
     display: flex;
+    overflow: hidden;
     flex: 1 1 0;
     padding: 0.5rem;
     vertical-align: middle;
+    word-break: break-word;
     width: 100%;
     
     &:nth-of-type(2n + 1) {
