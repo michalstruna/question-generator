@@ -40,7 +40,7 @@ const Score: React.FC<Props> & Static = ({ ...props }) => {
         }, 1000)
 
         return () => clearInterval(interval)
-    }, [])
+    }, [generator.totalTime])
 
     return (
         <Root {...props}>

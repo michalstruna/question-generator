@@ -28,7 +28,7 @@ public class QuestionService {
     }
 
     public Page<Question> getAll(Pageable pageable, String nameFilter) {
-        return questionRepository.findAllByNameContainingIgnoreCase(pageable, nameFilter);
+        return questionRepository.findAllByNameContainingIgnoreCase(nameFilter, pageable);
     }
 
     public Page<Question> getAllByTopic(Pageable pageable, String nameFilter, int topicIdFilter) {
@@ -50,6 +50,15 @@ public class QuestionService {
         topicRepository.save(topic);
 
         return questionRepository.save(question);
+    }
+
+    public Question reset(int questionId) {
+        UpdatedQuestion question = new UpdatedQuestion();
+        question.setCorrect(0);
+        question.setTime(0);
+        question.setWrong(0);
+
+        return update(questionId, question);
     }
 
     public Question update(int questionId, UpdatedQuestion updatedQuestion) {

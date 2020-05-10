@@ -4,12 +4,15 @@ import cz.michalstruna.questiongenerator.dao.QuestionInstanceRepository;
 import cz.michalstruna.questiongenerator.dao.QuestionRepository;
 import cz.michalstruna.questiongenerator.model.database.Question;
 import cz.michalstruna.questiongenerator.model.database.QuestionInstance;
+import cz.michalstruna.questiongenerator.model.dto.Answer;
 import cz.michalstruna.questiongenerator.model.dto.AnswerCheck;
 import cz.michalstruna.questiongenerator.model.dto.UpdatedQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class GeneratorService {
@@ -24,7 +27,7 @@ public class GeneratorService {
     QuestionService questionService;
 
     public QuestionInstance generateQuestion(List<Integer> topicIds) {
-        Question question = questionRepository.findById(1).orElseThrow();
+        Question question = questionRepository.getRandom(topicIds).get(0);
         QuestionInstance instance = new QuestionInstance();
         instance.setStartTime(System.currentTimeMillis());
         instance.setQuestion(question);
@@ -33,11 +36,11 @@ public class GeneratorService {
         return instance;
     }
 
-    public AnswerCheck answerQuestion(int generatedQuestionId, String answer) {
+    public AnswerCheck answerQuestion(int generatedQuestionId, Answer answer) {
         QuestionInstance instance = questionInstanceRepository.findById(generatedQuestionId).orElseThrow();
 
         String correctAnswer = instance.getQuestion().getAnswer();
-        boolean isCorrect = isCorrectAnswer(answer, instance.getQuestion().getAnswer());
+        boolean isCorrect = isCorrectAnswer(answer.getValue(), instance.getQuestion().getAnswer());
         int time = (int) (System.currentTimeMillis() - instance.getStartTime());
 
         UpdatedQuestion updatedQuestion = new UpdatedQuestion();
@@ -56,7 +59,9 @@ public class GeneratorService {
     }
 
     private boolean isCorrectAnswer(String answer, String correctAnswer) {
-        return answer.equals(correctAnswer); // TODO: Lower case, remove spaces, regexp?
+        Pattern pattern = Pattern.compile("^" + correctAnswer.toLowerCase() + "$");
+        Matcher matcher = pattern.matcher(answer);
+        return matcher.matches();
     }
 
 }

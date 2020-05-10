@@ -135,9 +135,9 @@ const Paginator: React.FC<Props> & Static = ({ onChange, page, itemsCount, freez
             <Row>
                 <Stats>
                     Zobrazeno {page.index * page.size + 1}-{Math.min(cache.itemsCount, (page.index + 1) * page.size)} z {cache.itemsCount}. Velikost stránky {(
-                    <PerPage onChange={event => handleChangeSize(parseInt(event.target.value))}>
+                    <PerPage onChange={event => handleChangeSize(parseInt(event.target.value))} value={page.size}>
                         {[5, 10, 20, 50, 100, 200].map((value, i) => (
-                            <option key={i} value={value} selected={value === page.size}>
+                            <option key={i} value={value}>
                                 {value}
                             </option>
                         ))}

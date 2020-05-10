@@ -97,9 +97,17 @@ const HeaderCell = Styled(Cell)`
 
 `
 
+let last = { columns: null, sortedColumn: null, isAsc: null, items: null, segment: null } as any
+
 function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBody, segment, ...props }: Props<Item>) {
 
     const { sort, sortedColumn, isAsc } = useSort(defaultSort ? defaultSort.column : 1, defaultSort ? defaultSort.isAsc : true)
+
+    last.columns = columns
+    last.sortedColumn = sortedColumn
+    last.isAsc = isAsc
+    last.items = items
+    last.segment = segment
 
     const sortedItems = React.useMemo(() => segment ? (
         [...items].sort((a, b) => {
@@ -107,11 +115,11 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
             const valueB = columns[sortedColumn].accessor(b, 0)
             return (valueA > valueB ? 1 : (valueB > valueA ? -1 : 0)) * (isAsc ? 1 : -1)
         }).slice(segment.index * segment.size, (segment.index + 1) * segment.size)
-    ) : items, [sortedColumn, isAsc, items, segment])
+    ) : items, [columns, sortedColumn, isAsc, items, segment])
 
     React.useEffect(() => {
         onSort?.({ column: sortedColumn, isAsc })
-    }, [sortedColumn, isAsc])
+    }, [sortedColumn, isAsc, onSort])
 
     const renderedHeader = React.useMemo(() => withHeader && (
         <HeaderRow>
@@ -122,7 +130,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
                 </HeaderCell>
             ))}
         </HeaderRow>
-    ), [columns, withHeader, sort])
+    ), [columns, withHeader, sort, isAsc, sortedColumn])
 
     const renderedItems = React.useMemo(() => (
         sortedItems.map((item, i) => (
@@ -134,7 +142,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
                 ))}
             </Row>
         ))
-    ), [items, columns])
+    ), [sortedItems, columns])
 
     return (
         <Root {...props}>

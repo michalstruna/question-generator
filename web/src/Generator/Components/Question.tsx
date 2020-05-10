@@ -1,22 +1,13 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import {
-    useQuestion,
-    sendAnswer,
-    generateQuestion,
-    useGenerator,
-    useAnswer,
-    useTopics,
-    setGenerator,
-    Topic
-} from '..'
+import { useQuestion, sendAnswer, generateQuestion, useGenerator, useAnswer, setGenerator } from '..'
 import { useActions, useStrings } from '../../Data'
 import { Async } from '../../Async'
 import { Field, FieldType, Form, FormContainer } from '../../Form'
 import { Color, image, opacityHover, size } from '../../Style'
 import Tag from './Tag'
-import { Time } from '../../Native'
+import { Time, useEvent } from '../../Native'
 
 interface Static {
 
@@ -38,10 +29,6 @@ const Root = Styled.div`
     margin-bottom: 2rem;
     width: 100%;
     min-height: 20rem;
-`
-
-const Title = Styled.h2`
-
 `
 
 const Answer = Styled.div<AnswerProps>`
@@ -126,14 +113,13 @@ const AnswerTitle = Styled.h3`
 
 const Question: React.FC<Props> & Static = ({ ...props }) => {
 
-    const topics = useTopics()
     const question = useQuestion()
     const generator = useGenerator()
     const answer = useAnswer()
     const strings = useStrings().question
     const actions = useActions({ sendAnswer, generateQuestion, setGenerator })
 
-    const questionIndex = React.useMemo(() => generator.correct + generator.wrong, [question])
+    const questionIndex = React.useMemo(() => generator.correct + generator.wrong, [generator])
 
     const topicIds = React.useMemo(() => generator.topics.map(topic => topic.id), [generator])
 
@@ -141,7 +127,11 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
         if (generator && !question.payload) {
             actions.generateQuestion(topicIds)
         }
-    }, [generator])
+    }, [generator, actions, question.payload, topicIds])
+
+    useEvent(document, 'keydown', () => {
+        handleNext()
+    }, { active: !!answer.payload })
 
     const handleAnswer = (values: AnswerFormValues) => {
         actions.sendAnswer({ id: question.payload!.id, value: values.answer })
@@ -220,9 +210,9 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                 success={() => (
                     <>
                         {renderHeader()}
-                        <Title>
+                        <h2>
                             {question.payload!.question.name}
-                        </Title>
+                        </h2>
                         {answer.payload || answer.pending ? renderAnswer() : renderAnswerForm()}
                     </>
                 )}

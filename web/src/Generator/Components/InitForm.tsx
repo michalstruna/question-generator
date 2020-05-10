@@ -125,7 +125,7 @@ const InitForm: React.FC<Props> & Static = ({ ...props }) => {
                 {strings.selectTopics}
             </Subtitle>
             <Topics>
-                {topics.payload.content.map((topic, i) => (
+                {topics.payload.content.filter(t => t.questionsCount > 0).map((topic, i) => (
                         <TopicContainer key={i}>
                             <label>
                                 <input

@@ -3,37 +3,14 @@ import {
     Answer,
     AnswerCheck,
     GeneratorInstance,
-    Question, QuestionInstance,
+    Question,
+    QuestionInstance,
     QuestionNew,
     Topic,
     TopicNew
 } from '../types'
 import { Query } from '../../Routing'
 import { Requests } from '../../Async'
-
-
-const mock = {
-    getTopics: () => new Promise<Topic[]>(resolve => {
-    }),
-    generateQuestion: (topics: Topic[]) => new Promise<Question>(resolve => {
-    }),
-    sendAnswer: (answer: Answer) => new Promise<AnswerCheck>(resolve => {
-    }),
-    getQuestions: () => new Promise<Question[]>(resolve => {
-    }),
-    addTopic: (topic: TopicNew) => new Promise<Topic>(resolve => {
-    }),
-    addQuestion: (question: QuestionNew) => new Promise<Question>(resolve => {
-    }),
-    removeTopic: (topicId: string) => new Promise<void>(resolve => {
-    }),
-    removeQuestion: (questionId: string) => new Promise<void>(resolve => {
-    }),
-    resetTopic: (topicId: string) => new Promise<void>(resolve => {
-    }),
-    resetQuestion: (topicId: string) => new Promise<void>(resolve => {
-    })
-}
 
 const questionColumns = ['name', 'name', 'answer', 'topic', 'success', 'answersCount', 'totalTime', 'timePerAnswer']
 
@@ -42,11 +19,9 @@ const Slice = Redux.slice(
     {
         topics: Redux.async<Pageable<Topic>>(),
         questions: Redux.async<Pageable<Question>>(),
-
         sort: Redux.empty<Sort>({}),
         filter: Redux.empty<Filter>({}),
         segment: Redux.empty<Segment>({}),
-
         answer: Redux.async<AnswerCheck>(),
         generator: Redux.empty<GeneratorInstance | undefined>(),
         question: Redux.async<QuestionInstance>(),
@@ -57,7 +32,6 @@ const Slice = Redux.slice(
         removedQuestion: Redux.async<void>(),
         resetTopic: Redux.async<void>(),
         resetQuestion: Redux.async<void>(),
-
         topicId: Redux.empty('')
     },
     ({ async, set }) => ({
@@ -65,19 +39,15 @@ const Slice = Redux.slice(
 
         addTopic: async<TopicNew, Topic>('newTopic', topic => Requests.post<Topic>('topics', topic), {
             onSuccess: (state, action) => {
-                const payload = state.topics.payload!
-                payload.content.push(action.payload)
-                payload.totalElements++
-                payload.totalPages = Math.ceil(payload.totalElements / state.segment.size)
+                state.topics.payload!.content.push(action.payload)
+                state.topics.payload!.totalElements++
             }
         }),
 
         removeTopic: async<string, void>('removedTopic', topicId => Requests.delete<any>(`topics/${topicId}`), {
             onSuccess: (state, action) => {
-                const payload = state.topics.payload!
-                payload.content = payload.content.filter(topic => topic.id !== action.meta!.arg)
-                payload.totalElements--
-                payload.totalPages = Math.ceil(payload.totalElements / state.segment.size)
+                state.topics.payload!.content = state.topics.payload!.content.filter(topic => topic.id !== action.meta!.arg)
+                state.topics.payload!.totalElements--
 
                 if (state.questions.payload) {
                     state.questions.payload.content = state.questions.payload.content.filter(q => q.topic.id !== action.meta!.arg)
@@ -85,16 +55,18 @@ const Slice = Redux.slice(
             }
         }),
 
-        resetTopic: async<string, void>('resetTopic', topicId => Requests.put<void>(`topics/${topicId}/reset`), {
+        resetTopic: async<string, Topic>('resetTopic', topicId => Requests.put<Topic>(`topics/${topicId}/reset`), {
             onSuccess: (state, action) => {
                 for (const topic of state.topics.payload!.content) {
-                    if (topic.id === action.meta?.arg) {
+                    if (topic.id === action.meta!.arg) {
                         topic.correct = topic.wrong = topic.totalTime = 0
+                    }
+                }
 
-                        if (state.topicId === topic.id) {
-                            for (const question of state.questions.payload!.content) {
-                                question.correct = question.wrong = question.totalTime = 0
-                            }
+                if (state.questions.payload && (state.topicId === action.payload.id || !state.topicId)) {
+                    for (const question of state.questions.payload.content) {
+                        if (question.topic.id === action.payload.id) {
+                            question.correct = question.wrong = question.totalTime = 0
                         }
                     }
                 }
@@ -122,13 +94,15 @@ const Slice = Redux.slice(
         getQuestions: async<[Cursor, number?], Pageable<Question>>('questions', ([cursor, topicId]) => Requests.get('questions', {
             nameFilter: cursor.filter,
             topicIdFilter: topicId,
+            page: cursor.segment.index,
+            size: cursor.segment.size,
             sort: questionColumns[cursor.sort.column] + ',' + (cursor.sort.isAsc ? 'asc' : 'desc')
         })),
 
         addQuestion: async<QuestionNew, Question>('newQuestion', question => Requests.post('questions', question), {
             onSuccess: (state, action) => {
                 if (state.topicId === action.payload.topic.id || !state.topicId) {
-                    state.questions.payload?.content.push(action.payload)
+                    state.questions.payload!.content.push(action.payload)
                 }
 
                 for (const topic of state.topics.payload!.content) {
@@ -143,7 +117,7 @@ const Slice = Redux.slice(
             onSuccess: (state, action) => {
                 if (state.questions.payload) {
                     state.questions.payload.content = state.questions.payload.content.filter(question => {
-                        if (question.id === action.meta?.arg) {
+                        if (question.id === action.meta!.arg) {
                             for (const topic of state.topics.payload!.content) {
                                 if (topic.id === question.topic.id) {
                                     topic.correct = topic.correct - question.correct
@@ -165,12 +139,11 @@ const Slice = Redux.slice(
         resetQuestion: async<string, void>('resetQuestion', questionId => Requests.put(`questions/${questionId}/reset`), {
             onSuccess: (state, action) => {
                 for (const question of state.questions.payload!.content) {
-                    if (question.id === action.meta?.arg) {
+                    if (question.id === action.meta!.arg) {
                         for (const topic of state.topics.payload!.content) {
                             if (topic.id === question.topic.id) {
                                 topic.correct = topic.correct - question.correct
                                 topic.wrong = topic.wrong - question.wrong
-                                topic.questionsCount = topic.questionsCount - 1
                                 topic.totalTime = topic.totalTime - question.totalTime
                             }
                         }
@@ -189,17 +162,32 @@ const Slice = Redux.slice(
             onPending: state => state.question.payload = state.question.error = state.answer.payload = null
         }),
 
-        sendAnswer: async<Answer, AnswerCheck>('answer', answer => Requests.put(`questions/${answer.id}/answer`, answer.value), {
+        sendAnswer: async<Answer, AnswerCheck>('answer', answer => Requests.put(`questions/${answer.id}/answer`, answer), {
             onSuccess: (state, action) => {
-                if (action.payload.isCorrect) {
-                    state.generator!.correct++
-                } else {
-                    state.generator!.wrong++
+                state.generator![action.payload.isCorrect ? 'correct' : 'wrong']++
+                state.answer.payload = action.payload
+
+                const questionId = state.question.payload!.question.id
+                const topicId = state.question.payload!.question.topic.id
+
+                if (state.questions.payload) {
+                    for (const question of state.questions.payload!.content) {
+                        if (question.id === questionId) {
+                            question[action.payload.isCorrect ? 'correct' : 'wrong']++
+                            question.totalTime += action.payload.totalTime
+                        }
+                    }
                 }
 
-                state.answer.payload = action.payload
+                for (const topic of state.topics.payload!.content) {
+                    if (topic.id === topicId) {
+                        topic[action.payload.isCorrect ? 'correct' : 'wrong']++
+                        topic.totalTime += action.payload.totalTime
+                    }
+                }
             }
         }),
+
         setGenerator: set<GeneratorInstance | undefined>('generator'),
 
         setTable: set<string>('table', {
