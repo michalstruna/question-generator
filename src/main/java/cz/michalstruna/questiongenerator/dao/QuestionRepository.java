@@ -25,7 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     @Query("UPDATE question q SET q.correct = 0, q.wrong = 0, q.totalTime = 0 WHERE topic = :topic")
     void resetAllByTopic(Topic topic);
 
-    @Query("SELECT q FROM question q WHERE q.topic.id IN :topicIds ORDER BY function('RAND')")
-    List<Question> getRandom(@Param("topicIds") List<Integer> topicIds);
+    @Query("SELECT q FROM question q WHERE q.topic.id = :topicId ORDER BY function('RAND')")
+    List<Question> getRandom(@Param("topicId") int topicId);
 
 }

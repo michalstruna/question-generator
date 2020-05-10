@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,7 +28,8 @@ public class GeneratorService {
     QuestionService questionService;
 
     public QuestionInstance generateQuestion(List<Integer> topicIds) {
-        Question question = questionRepository.getRandom(topicIds).get(0);
+        int topicId = getRandomItemFromList(topicIds);
+        Question question = questionRepository.getRandom(topicId).get(0);
         QuestionInstance instance = new QuestionInstance();
         instance.setStartTime(System.currentTimeMillis());
         instance.setQuestion(question);
@@ -62,6 +64,11 @@ public class GeneratorService {
         Pattern pattern = Pattern.compile("^" + correctAnswer.toLowerCase() + "$");
         Matcher matcher = pattern.matcher(answer.trim().toLowerCase());
         return matcher.matches();
+    }
+
+    private <T> T getRandomItemFromList(List<T> list) {
+        Random rand = new Random();
+        return list.get(rand.nextInt(list.size()));
     }
 
 }

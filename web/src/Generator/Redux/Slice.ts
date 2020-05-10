@@ -34,7 +34,7 @@ const Slice = Redux.slice(
         resetQuestion: Redux.async<void>(),
         topicId: Redux.empty('')
     },
-    ({ async, set }) => ({
+    ({ async, set, plain }) => ({
         getTopics: async<void, Pageable<Topic>>('topics', () => Requests.get<Pageable<Topic>>('topics')),
 
         addTopic: async<TopicNew, Topic>('newTopic', topic => Requests.post<Topic>('topics', topic), {
@@ -188,7 +188,10 @@ const Slice = Redux.slice(
             }
         }),
 
-        setGenerator: set<GeneratorInstance | undefined>('generator'),
+        setGenerator: plain<GeneratorInstance | undefined>((state, action) => {
+            state.generator = action.payload
+            state.question.payload = null
+        }),
 
         setTable: set<string>('table', {
             sync: () => [Query.DB_TABLE, ['questions', 'topics'], 'topics']

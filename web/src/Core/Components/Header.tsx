@@ -14,6 +14,7 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 const Root = Styled.div`
     height: ${Dimension.NAV_HEIGHT};
+    overflow: hidden;
 `
 
 const Left = Styled.div`

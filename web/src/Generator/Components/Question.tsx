@@ -155,7 +155,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                             {answer.payload!.isCorrect ? strings.correct : strings.wrong}
                         </AnswerTitle>
                         <p>
-                            {strings.correctAnswer}: {answer.payload!.correctAnswer}
+                            {strings.correctAnswer}: {answer.payload!.correctAnswer.replace(/\\/g, '')}
                         </p>
                         <p>
                             {strings.time}: {Time.format(answer.payload!.totalTime)}
