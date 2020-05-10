@@ -28,7 +28,7 @@ public class QuestionService {
     }
 
     public Page<Question> getAll(Pageable pageable, String nameFilter) {
-        return questionRepository.findAllByNameContainingIgnoreCase(pageable, nameFilter);
+        return questionRepository.findAllByNameContainingIgnoreCase(nameFilter, pageable);
     }
 
     public Page<Question> getAllByTopic(Pageable pageable, String nameFilter, int topicIdFilter) {

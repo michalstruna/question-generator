@@ -5,7 +5,6 @@ import GlobalStyle from './GlobalStyle'
 import { useElement } from '../../Native'
 import Header from './Header'
 import { useGenerator } from '../../Generator'
-import { useStrings } from '../../Data'
 
 interface Static {
 

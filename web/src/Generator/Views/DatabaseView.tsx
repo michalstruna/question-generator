@@ -80,8 +80,9 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const segment = useSegment()
     const table = useTable()
     const topicId = useTopicId()
+    const isTopicsTable = table === 'topics'
 
-    const renderTopicsTable = () => (
+    const renderedTopicsTable = React.useMemo(() => isTopicsTable && (
         <Table<Topic>
             items={topics.payload?.content.filter(t => t.name.includes(filter)) || []}
             onSort={actions.setSort}
@@ -117,53 +118,57 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 }
             ]}
             renderBody={items => (<Async data={[topics, getTopics]} success={() => items} />)} />
-    )
+    ), [actions, filter, isTopicsTable, segment, sort, strings, topics])
 
-    const renderQuestionsTable = () => (
-        <Table<Question>
-            items={questions.payload?.content || []}
-            onSort={actions.setSort}
-            defaultSort={sort}
-            columns={[
-                { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
-                { accessor: item => item.name, title: strings.question, width: 3 },
-                { accessor: item => item.answer, title: strings.answer },
-                { accessor: item => item.topic.name, title: strings.topic, width: 1.5 },
-                {
-                    accessor: item => item.correct / item.wrong,
-                    title: strings.success,
-                    render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />
-                },
-                { accessor: item => item.correct + item.wrong, title: strings.answers },
-                { accessor: item => item.totalTime, title: strings.totalTime, render: Time.format },
-                {
-                    accessor: item => (item.totalTime / (item.correct + item.wrong)) || 0,
-                    title: strings.timePerQuestion,
-                    render: Time.format
-                },
-                {
-                    accessor: item => item, title: '', render: item => (
-                        <>
-                            <button onClick={() => actions.resetQuestion(item.id)}>
-                                {strings.reset}
-                            </button>
-                            <button onClick={() => actions.removeQuestion(item.id)}>
-                                {strings.delete}
-                            </button>
-                        </>
-                    )
-                }
-            ]}
-            renderBody={items => (
-                <Async
-                    data={[[questions, () => getQuestions([{ sort, filter, segment }, topicId]), [topicId, filter, sort, segment]], [topics, getTopics]]}
-                    success={() => items} />)} />
-    )
+    const renderedQuestionsTable = React.useMemo(() => !isTopicsTable && (
+            <Table<Question>
+                items={questions.payload?.content || []}
+                onSort={actions.setSort}
+                defaultSort={sort}
+                columns={[
+                    { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
+                    { accessor: item => item.name, title: strings.question, width: 3 },
+                    { accessor: item => item.answer, title: strings.answer },
+                    { accessor: item => item.topic.name, title: strings.topic, width: 1.5 },
+                    {
+                        accessor: item => item.correct / item.wrong,
+                        title: strings.success,
+                        render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />
+                    },
+                    { accessor: item => item.correct + item.wrong, title: strings.answers },
+                    { accessor: item => item.totalTime, title: strings.totalTime, render: Time.format },
+                    {
+                        accessor: item => (item.totalTime / (item.correct + item.wrong)) || 0,
+                        title: strings.timePerQuestion,
+                        render: Time.format
+                    },
+                    {
+                        accessor: item => item, title: '', render: item => (
+                            <>
+                                <button onClick={() => actions.resetQuestion(item.id)}>
+                                    {strings.reset}
+                                </button>
+                                <button onClick={() => actions.removeQuestion(item.id)}>
+                                    {strings.delete}
+                                </button>
+                            </>
+                        )
+                    }
+                ]}
+                renderBody={items => (
+                    <Async
+                        data={[[questions, () => getQuestions([{
+                            sort,
+                            filter,
+                            segment
+                        }, topicId]), [topicId, filter, sort, segment]], [topics, getTopics]]}
+                        success={() => items} />)} />
+        ), [actions, filter, isTopicsTable, segment, sort, strings, questions, topicId, topics])
 
     return (
         <Root>
             <DatabaseSelector />
-            {table === 'topics' ? renderTopicsTable() : renderQuestionsTable()}
+            {isTopicsTable ? renderedTopicsTable : renderedQuestionsTable}
             <Fixed>
                 <Window renderButton={() => <Add>+</Add>}>
                     {table === 'topics' ? <TopicForm /> : <QuestionForm />}

@@ -1,7 +1,7 @@
 import React from 'react'
 import Styled from 'styled-components'
 
-import { useGenerator, generateQuestion, useQuestion } from '..'
+import { useGenerator, useQuestion, setGenerator, generateQuestion } from '..'
 import { useActions } from '../../Data'
 import Score from './Score'
 import Question from './Question'
@@ -24,12 +24,17 @@ const Generator: React.FC<Props> & Static = ({ ...props }) => {
 
     const generator = useGenerator()
     const question = useQuestion()
-    const actions = useActions({ generateQuestion })
+    const actions = useActions({ generateQuestion, setGenerator })
 
     React.useEffect(() => {
         if (!question.payload) {
             actions.generateQuestion(generator.topics.map(topic => topic.id))
         }
+
+        return () => {
+            actions.setGenerator(undefined)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (

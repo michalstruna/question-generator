@@ -1,20 +1,12 @@
 import React, { ChangeEvent } from 'react'
 import Styled from 'styled-components'
-import { debounce } from 'throttle-debounce'
 
 import { useFixedX } from '../../Style'
-import { Paginator, useActions, useStrings } from '../../Data'
+import { AsyncData, Pageable, Paginator, useActions, useStrings } from '../../Data'
 import { setSegment, setFilter } from '../Redux/Slice'
 import {
-    useSegment,
-    useFilter,
-    useTopics,
-    useTable,
-    setTable,
-    useTopicId,
-    setTopicId,
-    getTopics,
-    getQuestions
+    useSegment, useFilter, useTopics, useTable, setTable, useTopicId, setTopicId, getTopics,
+    getQuestions, useQuestions
 } from '..'
 
 interface Static {
@@ -52,17 +44,27 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
     const strings = useStrings().database
     const actions = useActions({ setSegment, setFilter, setTable, setTopicId, getQuestions, getTopics })
     const table = useTable()
-
     const root = React.useRef()
     useFixedX(root as any)
     const segment = useSegment()
     const filter = useFilter()
     const topics = useTopics()
+    const questions = useQuestions()
     const topicId = useTopicId()
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         actions.setFilter(event.target.value)
     }
+
+    const renderPaginator = (items: AsyncData<Pageable<any>>) => (
+        items.payload && items.payload.totalElements > 0 ? (
+            <Paginator
+                page={segment}
+                itemsCount={items.payload.totalElements}
+                onChange={actions.setSegment}
+                freeze={items.pending} />
+        ) : <div />
+    )
 
     return (
         <Root {...props} ref={root as any}>
@@ -96,13 +98,7 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
                 )}
             </Selector>
 
-            {topics.payload && topics.payload.totalElements > 0 ? (
-                <Paginator
-                    page={segment}
-                    itemsCount={topics.payload.totalElements}
-                    onChange={actions.setSegment}
-                    freeze={topics.pending} />
-            ) : <div />}
+            {renderPaginator(table === 'questions' ? questions : topics)}
         </Root>
     )
 

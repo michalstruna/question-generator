@@ -16,7 +16,7 @@ import java.util.List;
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Integer> {
 
-    Page<Question> findAllByNameContainingIgnoreCase(Pageable pageable, String filter);
+    Page<Question> findAllByNameContainingIgnoreCase(String filter, Pageable pageable);
 
     Page<Question> findAllByNameContainingIgnoreCaseAndTopic(String name, Topic topic, Pageable pageable);
 

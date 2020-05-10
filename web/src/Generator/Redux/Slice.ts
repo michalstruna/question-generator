@@ -94,6 +94,8 @@ const Slice = Redux.slice(
         getQuestions: async<[Cursor, number?], Pageable<Question>>('questions', ([cursor, topicId]) => Requests.get('questions', {
             nameFilter: cursor.filter,
             topicIdFilter: topicId,
+            page: cursor.segment.index,
+            size: cursor.segment.size,
             sort: questionColumns[cursor.sort.column] + ',' + (cursor.sort.isAsc ? 'asc' : 'desc')
         })),
 
