@@ -1811,5 +1811,5 @@ INSERT INTO question (id, name, answer, correct, wrong, total_time, topic_id) VA
 (5203, 'Lineární datové struktury mohou zpravidla nabídnou jakou nejlepší asymptotickou složitost vyhledávání?', 'n|O\(n\)|lineární', 10, 0, 30456, 5),
 
 (5300, 'Extrakci vlastností z obrázku dovede provést jaký typ neuronových sítí?', 'CNN|konvoluční( síť)?', 154, 12, 345324, 6),
-(5301, 'Evoluční (genetický) algoritmus je stochastický heuristický postup skládající se z jakých 3 hlavních fází?', 'selekce,? ?křížení,? ?mutace', 150, 62, 9988776, 6),
+(5301, 'Evoluční (genetický) algoritmus je stochastický heuristický postup skládající se z jakých 3 hlavních fází?', 'selekce,? ?křížení,? ?mutace', 12, 62, 998876, 6),
 (5302, 'Jaký typ dopředné neuronové sítě je nejjednodušším binárním klasifikátorem?', '(jednoduchý )?perceptron', 100, 15, 666554, 6);
