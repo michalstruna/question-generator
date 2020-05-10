@@ -22,7 +22,7 @@ yarn-error.log*
 
 # other
 .idea/
-server/target/
+/target/
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -30,5 +30,5 @@ pom.xml.next
 release.properties
 dependency-reduced-pom.xml
 buildNumber.properties
-/server.mvn/timing.properties
-/server/.mvn/wrapper/maven-wrapper.jar
+.mvn/timing.properties
+/.mvn/wrapper/maven-wrapper.jar
