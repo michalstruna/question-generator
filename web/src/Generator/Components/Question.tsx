@@ -136,14 +136,7 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
     const actions = useActions({ sendAnswer, generateQuestion, setGenerator })
 
     const questionIndex = React.useMemo(() => generator.correct + generator.wrong, [generator])
-
     const topicIds = React.useMemo(() => generator.topics.map(topic => topic.id), [generator])
-
-    React.useEffect(() => {
-        if (generator && !question.payload) {
-            actions.generateQuestion(topicIds)
-        }
-    }, [generator, actions, question.payload, topicIds])
 
     useEvent(document, 'keydown', () => {
         handleNext()
