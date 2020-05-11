@@ -107,10 +107,10 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 {
                     accessor: item => item, title: '', render: item => (
                         <>
-                            <button onClick={() => actions.resetTopic(item.id)}>
+                            <button onClick={() => window.confirm(`Opravdu vymazat statistiky ze všech otázek tématu "${item.name}"?`) && actions.resetTopic(item.id)}>
                                 {strings.reset}
                             </button>
-                            <button onClick={() => actions.removeTopic(item.id)}>
+                            <button onClick={() => window.confirm(`Opravdu smazat téma "${item.name}" i se všemi otázkami?`) && actions.removeTopic(item.id)}>
                                 {strings.delete}
                             </button>
                         </>
@@ -147,10 +147,10 @@ const DatabaseView: React.FC<Props> & Static = () => {
                     {
                         accessor: item => item, title: '', render: item => (
                             <>
-                                <button onClick={() => actions.resetQuestion(item.id)}>
+                                <button onClick={() => window.confirm(`Opravdu smazat statistiky otázky "${item.name}"?`) && actions.resetQuestion(item.id)}>
                                     {strings.reset}
                                 </button>
-                                <button onClick={() => actions.removeQuestion(item.id)}>
+                                <button onClick={() => window.confirm(`Opravdu smazat otázku "${item.name}"?`) && actions.removeQuestion(item.id)}>
                                     {strings.delete}
                                 </button>
                             </>

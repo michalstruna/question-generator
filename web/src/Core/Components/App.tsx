@@ -27,7 +27,7 @@ const App: React.FC<Props> & Static = ({ children }) => {
             }
         }
 
-        //window.addEventListener('beforeunload', handleUnload) // TODO: Uncomment.
+        window.addEventListener('beforeunload', handleUnload)
 
         return () => window.removeEventListener('beforeunload', handleUnload)
     }, [generator])
