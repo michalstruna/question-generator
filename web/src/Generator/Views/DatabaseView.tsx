@@ -114,7 +114,8 @@ const DatabaseView: React.FC<Props> & Static = () => {
                                 {strings.delete}
                             </button>
                         </>
-                    )
+                    ),
+                    width: '10rem'
                 }
             ]}
             renderBody={items => (<Async data={[topics, getTopics]} success={() => items} />)} />
@@ -126,14 +127,15 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 onSort={actions.setSort}
                 defaultSort={sort}
                 columns={[
-                    { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
+                    { accessor: (item, i) => (i + 1) + '.', title: '#', width: '2rem' },
                     { accessor: item => item.name, title: strings.question, width: 3 },
                     { accessor: item => item.answer, title: strings.answer, render: answer => answer.replace(/\\/g, '') },
                     { accessor: item => item.topic.name, title: strings.topic, width: 1.5 },
                     {
                         accessor: item => item.correct / item.wrong,
                         title: strings.success,
-                        render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />
+                        render: (value, item) => <Bar correct={item.correct} wrong={item.wrong} />,
+                        width: '9rem'
                     },
                     { accessor: item => item.correct + item.wrong, title: strings.answers },
                     { accessor: item => item.totalTime, title: strings.totalTime, render: Time.format },
@@ -152,7 +154,8 @@ const DatabaseView: React.FC<Props> & Static = () => {
                                     {strings.delete}
                                 </button>
                             </>
-                        )
+                        ),
+                        width: '10rem'
                     }
                 ]}
                 renderBody={items => (

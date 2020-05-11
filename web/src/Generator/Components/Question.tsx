@@ -5,7 +5,7 @@ import { useQuestion, sendAnswer, generateQuestion, useGenerator, useAnswer, set
 import { useActions, useStrings } from '../../Data'
 import { Async } from '../../Async'
 import { Field, FieldType, Form, FormContainer } from '../../Form'
-import { Color, image, opacityHover, size } from '../../Style'
+import { Color, image, medium, opacityHover, size } from '../../Style'
 import Tag from './Tag'
 import { Time, useEvent } from '../../Native'
 
@@ -29,6 +29,18 @@ const Root = Styled.div`
     margin-bottom: 2rem;
     width: 100%;
     min-height: 20rem;
+    
+    ${medium} {
+        margin-bottom: 0;
+        min-height: 15rem;
+    }
+`
+
+const QuestionTitle = Styled.h2`
+
+    ${medium} {
+        font-size: 130%;
+    }
 `
 
 const Answer = Styled.div<AnswerProps>`
@@ -41,6 +53,10 @@ const Answer = Styled.div<AnswerProps>`
     padding: 1rem;
     padding-left: 8rem;
     position: relative;
+    
+    ${medium} {
+        margin-top: 0;
+    }
     
     &:before {
         ${size()}
@@ -210,9 +226,9 @@ const Question: React.FC<Props> & Static = ({ ...props }) => {
                 success={() => (
                     <>
                         {renderHeader()}
-                        <h2>
+                        <QuestionTitle>
                             {question.payload!.question.name}
-                        </h2>
+                        </QuestionTitle>
                         {answer.payload || answer.pending ? renderAnswer() : renderAnswerForm()}
                     </>
                 )}

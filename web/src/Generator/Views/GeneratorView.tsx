@@ -5,7 +5,7 @@ import { Async } from '../../Async'
 import { useTopics, getTopics, useGenerator } from '..'
 import InitForm from '../Components/InitForm'
 import Generator from '../Components/Generator'
-import { size } from '../../Style'
+import { medium, size } from '../../Style'
 import { View } from '../../Layout'
 
 interface Static {

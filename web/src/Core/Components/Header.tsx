@@ -20,6 +20,7 @@ const Root = Styled.div`
 const Left = Styled.div`
     height: 100%;
     float: left;
+    max-width: 100%;
 `
 
 const Right = Styled(Left)`

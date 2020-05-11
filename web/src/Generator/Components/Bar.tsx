@@ -3,7 +3,7 @@ import Styled from 'styled-components'
 import { Color, Duration, size } from '../../Style'
 
 interface Static {
-
+    Root: string
 }
 
 interface Props extends React.ComponentPropsWithoutRef<'div'> {
@@ -77,5 +77,7 @@ const Bar: React.FC<Props> & Static = ({ correct, wrong, ...props }) => {
     )
 
 }
+
+Bar.Root = Root
 
 export default Bar

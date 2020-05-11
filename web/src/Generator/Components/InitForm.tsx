@@ -3,7 +3,7 @@ import Styled from 'styled-components'
 
 import { useActions, useStrings } from '../../Data'
 import { generateQuestion, sendAnswer, setGenerator, Topic, useTopics } from '..'
-import { Duration, opacityHover } from '../../Style'
+import { Duration, opacityHover, dots } from '../../Style'
 import Bar from './Bar'
 
 interface Static {
@@ -21,6 +21,10 @@ const Root = Styled.form`
     
     label {
         margin: 0;
+    }
+    
+    ${Bar.Root} {
+        width: 100%;
     }
 `
 
@@ -45,6 +49,7 @@ const TopicInfo = Styled.div`
     transition: filter ${Duration.MEDIUM};
         
     h3 {
+        ${dots()}
         ${opacityHover()}
         margin-bottom: 0.5rem;
     }

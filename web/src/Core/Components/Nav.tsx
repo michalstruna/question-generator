@@ -19,6 +19,7 @@ const Root = Styled.nav`
     justify-content: space-around;
     user-select: none;
     text-align: center;
+    max-width: 100%;
 `
 
 const Nav: React.FC<Props> & Static = ({ ...props }) => {

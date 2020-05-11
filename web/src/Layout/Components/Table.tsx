@@ -18,7 +18,7 @@ interface Column<Item> {
     accessor: (item: Item, index: number) => any
     render?: (value: any, item: Item, index: number) => React.ReactNode
     title?: React.ReactNode
-    width?: number
+    width?: number | string
 }
 
 const Root = Styled.div`
@@ -123,10 +123,18 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
         onSort?.({ column: sortedColumn, isAsc })
     }, [sortedColumn, isAsc, onSort])
 
+    const getWidth = (width?: number | string) => {
+        if (typeof width === 'string') {
+            return { flex: `0 0 ${width}` }
+        } else {
+            return { flex: width ?? 1 }
+        }
+    }
+
     const renderedHeader = React.useMemo(() => withHeader && (
         <HeaderRow>
             {columns.map((column, i) => (
-                <HeaderCell key={i} style={{ flex: `${column.width ?? 1}` }} onClick={() => sort(i)}
+                <HeaderCell key={i} style={getWidth(column.width)} onClick={() => sort(i)}
                             data-sorted={sortedColumn === i ? (isAsc ? 'asc' : 'desc') : undefined}>
                     {column.title || ''}
                 </HeaderCell>
@@ -138,7 +146,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
         sortedItems.map((item, i) => (
             <Row key={i}>
                 {columns.map((column, j) => (
-                    <Cell key={j} style={{ flex: `${column.width ?? 1}` }}>
+                    <Cell key={j} style={getWidth(column.width)}>
                         {column.render ? column.render(column.accessor(item, i), item, i) : column.accessor(item, i)}
                     </Cell>
                 ))}

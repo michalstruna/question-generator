@@ -43,6 +43,7 @@ const Async: any = <T extends any>({ data: rawData, pending, success, fail }: Pr
     React.useEffect(() => {
         for (const item of data) {
             if (!item[2] && item[1]) {
+                console.log(444)
                 dispatch(item[1]())
             }
         }

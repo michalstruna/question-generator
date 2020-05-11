@@ -38,7 +38,7 @@ export const opacityHover = (opacity: number = 0.5, duration: string = Duration.
         }
     `
 
-export const threeDots = () => css`
+export const dots = () => css`
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

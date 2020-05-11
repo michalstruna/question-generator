@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import Styled from 'styled-components'
 
-import { useFixedX } from '../../Style'
+import { large, useFixedX } from '../../Style'
 import { AsyncData, Pageable, Paginator, useActions, useStrings } from '../../Data'
 import { setSegment, setFilter } from '../Redux/Slice'
 import {
@@ -22,11 +22,16 @@ const Root = Styled.div`
     display: flex;
     justify-content: space-between;
     height: 7rem;
+    overflow: hidden;
     margin: 0 auto;
     max-width: calc(100% - 2rem);
     
     & > * {
         width: 33%;
+    }
+    
+    ${large} {
+        display: block;
     }
 `
 

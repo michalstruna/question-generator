@@ -2,22 +2,22 @@ DELETE FROM question;
 DELETE FROM topic;
 
 INSERT INTO topic (id, name, correct, wrong, questions_count, total_time) VALUES
-(1, 'Internetové aplikace', 120, 10, 40, 50000),
-(2, 'Matematika', 5691, 961, 2368, 3520000),
-(3, 'Fyzika', 968, 115, 400, 60000),
-(4, 'Operační systémy', 182, 156, 3, 40000),
-(5, 'Datové struktury', 12, 0, 4, 11200),
-(6, 'Umělá inteligence', 15, 5, 5, 87654);
+(1, 'Internetové aplikace', 389, 63, 8, 3542000),
+(2, 'Matematika', 5691, 961, 2368, 35200000),
+(3, 'Fyzika', 371, 37, 400, 2500701),
+(4, 'Operační systémy', 69, 15, 4, 510173),
+(5, 'Datové struktury', 27, 0, 4, 98898),
+(6, 'Umělá inteligence', 266, 89, 3, 2210754);
 
 INSERT INTO question (id, name, answer, correct, wrong, total_time, topic_id) VALUES
-(1, 'Jak se nazývá novinka, která v Reactu umožňuje využívat state ve stateless komponentách?', '(react )?hooks?', 13, 1, 145, 1),
-(2, 'Jak se nazývá nádstavba JavaScriptu umožňující používat statické typování?', 'TypeScript', 12, 2, 120, 1),
-(3, 'Kterým CSS selectorem lze vybrat následníky elementů, jejichž atribut "name" obsahuje "a"?', '\*\[name\*="a"\] ?\+ ?\*', 53, 12, 631, 1),
-(4, 'Jakým způsobem lze v JavaScriptu vytvořit mělkou kopii pole s názvem "items" pomocí tzv. spread syntax?', '\[\.\.\.items\]', 12, 0, 131, 1),
-(5, 'Která metoda React class komponenty je zavolána ihned po prvním vykreslení?', 'componentDidMount(\(\))?', 38, 19, 412, 1),
-(6, 'Která HTTP metoda se v REST API využívá při úpravě existujícího zdroje?', 'PUT', 128, 12, 961, 1),
-(7, 'Která ze 4 základních HTTP metod nemá request body?', 'GET', 78, 5, 551, 1),
-(8, 'Jaká anotace ve Springu je vhodná pro označení kontroleru?', '@(Controller|Component)', 55, 12, 591, 1),
+(1, 'Jak se nazývá novinka, která v Reactu umožňuje využívat state ve stateless komponentách?', '(react )?hooks?', 13, 1, 145000, 1),
+(2, 'Jak se nazývá nádstavba JavaScriptu umožňující používat statické typování?', 'TypeScript', 12, 2, 120000, 1),
+(3, 'Kterým CSS selectorem lze vybrat následníky elementů, jejichž atribut "name" obsahuje "a"?', '\*\[name\*="a"\] ?\+ ?\*', 53, 12, 631000, 1),
+(4, 'Jakým způsobem lze v JavaScriptu vytvořit mělkou kopii pole s názvem "items" pomocí tzv. spread syntax?', '\[\.\.\.items\]', 12, 0, 131000, 1),
+(5, 'Která metoda React class komponenty je zavolána ihned po prvním vykreslení?', 'componentDidMount(\(\))?', 38, 19, 412000, 1),
+(6, 'Která HTTP metoda se v REST API využívá při úpravě existujícího zdroje?', 'PUT', 128, 12, 961000, 1),
+(7, 'Která ze 4 základních HTTP metod nemá request body?', 'GET', 78, 5, 551000, 1),
+(8, 'Jaká anotace ve Springu je vhodná pro označení kontroleru?', '@(Controller|Component)', 55, 12, 591000, 1),
 
 
 (9, 'Kolik je 0 * 0?', 0, 16, 41, 2486, 2),

@@ -5,6 +5,7 @@ import { IconText } from '../../Layout'
 import { Time } from '../../Native'
 import Tag from './Tag'
 import Bar from './Bar'
+import { medium } from '../../Style'
 
 interface Static {
 
@@ -17,7 +18,16 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 const Root = Styled.div`
     align-items: center;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
+    
+    ${medium} {
+        display: block;
+        text-align: center;
+        
+        & > * {
+            margin: 1rem auto;
+        }
+    }
 `
 
 const SpentTime = Styled(IconText)`

@@ -16,7 +16,7 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 const Root = Styled.div`
     margin: 0 auto;
-    width: calc(100% - 1rem);
+    width: calc(100% - 2rem);
     max-width: 50rem;
 `
 
