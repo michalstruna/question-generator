@@ -2,7 +2,7 @@ import React from 'react'
 import Styled from 'styled-components'
 import Paginate from 'react-paginate'
 
-import { size, Color, Duration } from '../../Style'
+import { size, Color, Duration, large, medium } from '../../Style'
 import { Segment } from '../types'
 
 interface Static {
@@ -47,6 +47,10 @@ const Root = Styled.div`
             display: block;
             outline: none;
         }
+        
+        ${medium} {
+            width: 2rem;
+        }
     }
 
     .${BREAK} {
@@ -61,7 +65,9 @@ const Root = Styled.div`
     }
     
     .${EDGE} {
-    
+        ${medium} {
+            display: none;
+        }
     }
 `
 
@@ -72,6 +78,12 @@ const Row = Styled.div`
     
     &:first-of-type {
         margin-top: 0;
+    }
+    
+    ${large} {
+        margin-bottom: 1rem;
+        padding: 0;
+        text-align: center;
     }
 `
 

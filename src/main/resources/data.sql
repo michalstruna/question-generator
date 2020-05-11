@@ -4,7 +4,7 @@ DELETE FROM topic;
 INSERT INTO topic (id, name, correct, wrong, questions_count, total_time) VALUES
 (1, 'Internetové aplikace', 389, 63, 8, 3542000),
 (2, 'Matematika', 5691, 961, 2368, 35200000),
-(3, 'Fyzika', 371, 37, 400, 2500701),
+(3, 'Fyzika', 371, 37, 6, 2500701),
 (4, 'Operační systémy', 69, 15, 4, 510173),
 (5, 'Datové struktury', 27, 0, 4, 98898),
 (6, 'Umělá inteligence', 266, 89, 3, 2210754);

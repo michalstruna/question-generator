@@ -2,7 +2,7 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import Nav from './Nav'
-import { Dimension } from '../../Style'
+import { Dimension, large } from '../../Style'
 
 interface Static {
 
@@ -27,8 +27,6 @@ const Right = Styled(Left)`
     float: right;
     padding-right: 1.5rem;
 `
-
-
 
 const Header: React.FC<Props> & Static = ({ ...props }) => {
 

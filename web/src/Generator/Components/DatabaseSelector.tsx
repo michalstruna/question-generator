@@ -21,13 +21,18 @@ const Root = Styled.div`
     align-items: center;
     display: flex;
     justify-content: space-between;
-    height: 7rem;
+    min-height: 7rem;
     overflow: hidden;
     margin: 0 auto;
     max-width: calc(100% - 2rem);
     
     & > * {
-        width: 33%;
+        width: 50%;
+        
+        ${large} {
+            float: none;
+            width: 100%;
+        }
     }
     
     ${large} {
@@ -41,6 +46,21 @@ const Selector = Styled.div`
     & > * {
         display: inline-block;
         margin-right: 1.5rem;
+        
+        ${large} {
+            margin-right: 0.5rem;
+        }
+    }
+    
+    input, select {
+        max-width: 10rem;
+    }
+    
+    ${large} {
+        margin-bottom: 2rem;
+        text-align: center;
+        white-space: normal;
+        width: 100%;
     }
 `
 
