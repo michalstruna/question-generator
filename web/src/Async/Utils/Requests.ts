@@ -3,6 +3,7 @@ import Path from 'url'
 import QueryString from 'query-string'
 
 import Config from '../../Async/Constants/Config'
+import Store from '../../Core/Redux/Store'
 
 export default class Requests {
 
@@ -53,7 +54,12 @@ export default class Requests {
     }
 
     private static getOptions(query: Record<string, any>): object {
-        return { params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }) }
+        return {
+            params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }),
+            headers: {
+                Authorization: Store.getState().auth.identity.payload?.token
+            }
+        }
     }
 
     private static getPath(path: string): string {

@@ -20,7 +20,7 @@ const GlobalStyle = createGlobalStyle`
         text-decoration: inherit;
     }
     
-    button, input[type="text"], input[type="number"], input[type="email"], textarea, select {
+    button, input[type="text"], input[type="number"], input[type="email"], input[type="password"], textarea, select {
         background-color: transparent;
         border: none;
         border-bottom: 1px solid ${Color.MEDIUM_LIGHT};

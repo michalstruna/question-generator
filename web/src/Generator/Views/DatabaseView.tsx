@@ -15,6 +15,7 @@ import { Color, size, ZIndex } from '../../Style'
 import TopicForm from '../Components/TopicForm'
 import QuestionForm from '../Components/QuestionForm'
 import DatabaseSelector from '../Components/DatabaseSelector'
+import { useIdentity } from '../../Auth'
 
 interface Static {
 
@@ -81,6 +82,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
     const table = useTable()
     const topicId = useTopicId()
     const isTopicsTable = table === 'topics'
+    const identity = useIdentity()
 
     const renderedTopicsTable = React.useMemo(() => isTopicsTable && (
         <Table<Topic>
@@ -104,7 +106,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                     title: strings.timePerQuestion,
                     render: Time.format
                 },
-                {
+                identity.payload ? {
                     accessor: item => item, title: '', render: item => (
                         <>
                             <button onClick={() => window.confirm(`Opravdu vymazat statistiky ze všech otázek tématu "${item.name}"?`) && actions.resetTopic(item.id)}>
@@ -116,10 +118,10 @@ const DatabaseView: React.FC<Props> & Static = () => {
                         </>
                     ),
                     width: '10rem'
-                }
+                } : { accessor: item => item, title: '', render: () => '', width: '0rem' }
             ]}
             renderBody={items => (<Async data={[topics, getTopics]} success={() => items} />)} />
-    ), [actions, filter, isTopicsTable, segment, sort, strings, topics])
+    ), [actions, filter, isTopicsTable, segment, sort, strings, topics, identity])
 
     const renderedQuestionsTable = React.useMemo(() => !isTopicsTable && (
             <Table<Question>
@@ -144,7 +146,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                         title: strings.timePerQuestion,
                         render: Time.format
                     },
-                    {
+                    identity.payload ? {
                         accessor: item => item, title: '', render: item => (
                             <>
                                 <button onClick={() => window.confirm(`Opravdu smazat statistiky otázky "${item.name}"?`) && actions.resetQuestion(item.id)}>
@@ -156,7 +158,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                             </>
                         ),
                         width: '10rem'
-                    }
+                    } : { accessor: item => item, title: '', render: () => '', width: '0rem' }
                 ]}
                 renderBody={items => (
                     <Async
@@ -166,17 +168,19 @@ const DatabaseView: React.FC<Props> & Static = () => {
                             segment
                         }, topicId]), [topicId, filter, sort, segment]], [topics, getTopics]]}
                         success={() => items} />)} />
-        ), [actions, filter, isTopicsTable, segment, sort, strings, questions, topicId, topics])
+        ), [actions, filter, isTopicsTable, segment, sort, strings, questions, topicId, topics, identity])
 
     return (
         <Root>
             <DatabaseSelector />
             {isTopicsTable ? renderedTopicsTable : renderedQuestionsTable}
-            <Fixed>
-                <Window renderButton={() => <Add>+</Add>}>
-                    {table === 'topics' ? <TopicForm /> : <QuestionForm />}
-                </Window>
-            </Fixed>
+            {identity.payload && (
+                <Fixed>
+                    <Window renderButton={() => <Add>+</Add>}>
+                        {table === 'topics' ? <TopicForm /> : <QuestionForm />}
+                    </Window>
+                </Fixed>
+            )}
         </Root>
     )
 

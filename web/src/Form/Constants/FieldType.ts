@@ -5,6 +5,11 @@ export default {
         validator: () => true
     },
 
+    EMAIL: {
+        name: 'email',
+        validator: () => true // TODO: Regexp.
+    },
+
     NUMBER: {
         name: 'number',
         validator: (value: any) => /[0-9]*/.test(value)
