@@ -55,11 +55,15 @@ export default class Requests {
     }
 
     private static getOptions(query: Record<string, any>): object {
+        const headers: Record<string, string> = {}
+
+        if (Requests.authorization) {
+            headers.Authorization = Requests.authorization
+        }
+
         return {
             params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }),
-            headers: {
-                Authorization: Requests.authorization
-            }
+            headers
         }
     }
 
