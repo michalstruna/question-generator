@@ -73,13 +73,8 @@ function FormContainer<T>({ children, initialValues, onSubmit, onChange, ...prop
 
     const handleSubmit = async (values: T, actions: FormikHelpers<T>) => {
         try {
-            const result = await onSubmit(values, actions)
-
-            if (result.error) {
-                actions.setFieldError(GLOBAL_ERROR_NAME, result.error.message)
-            } else {
-                actions.resetForm()
-            }
+            await onSubmit(values, actions)
+            actions.resetForm()
         } catch (error) {
             actions.setFieldError(GLOBAL_ERROR_NAME, error.toString())
         } finally {

@@ -1,3 +1,3 @@
 export default {
-    IDENTITY: { name: 'identity', expiration: 30 / 1440 }
+    IDENTITY: { name: 'identity', expiration: 1440 }
 }

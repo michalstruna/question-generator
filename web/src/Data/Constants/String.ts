@@ -75,12 +75,11 @@ export default {
     },
 
     login: {
-        email: 'Email',
+        name: 'Jméno',
         password: 'Heslo',
         submit: 'Připojit se',
         error: 'Špatné přihlašovací údaje.',
-        missingEmail: 'Napište svůj email',
-        invalidEmail: 'Napište email ve tvaru email@doména.',
+        missingName: 'Napište své jméno',
         missingPassword: 'Napište své heslo',
         title: 'Přihlášení'
     }

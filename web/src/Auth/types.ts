@@ -1,14 +1,13 @@
 export type User = {
-    id: number
+    id: string
     name: string
-    email: string
 }
 
-export type Identity = User & {
+export type Identity = Omit<User, 'id'> & {
     token: string
 }
 
 export type Credentials = {
-    email: string
+    name: string
     password: string
 }

@@ -2,16 +2,11 @@ import * as React from 'react'
 import Styled from 'styled-components'
 
 import { Field, FieldType, Form, FormContainer } from '../../Form'
-import { login } from '..'
+import { Credentials, login } from '..'
 import { useActions, useStrings } from '../../Data'
 
 interface Props extends React.ComponentPropsWithoutRef<'form'> {
 
-}
-
-interface Values {
-    email: string
-    password: string
 }
 
 const Root = Styled(Form)`
@@ -26,7 +21,7 @@ const LoginForm: React.FC<Props> = ({ ...props }) => {
     const actions = useActions({ login })
     const strings = useStrings().login
 
-    const handleSubmit = async (values: Values) => {
+    const handleSubmit = async (values: Credentials) => {
         const action = await actions.login(values)
 
         if (action.error) {
@@ -34,13 +29,10 @@ const LoginForm: React.FC<Props> = ({ ...props }) => {
         }
     }
 
-    const initialValues = {
-        email: '',
-        password: ''
-    }
+    const initialValues = { name: '', password: '' }
 
     return (
-        <FormContainer<Values>
+        <FormContainer<Credentials>
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             {({ renderSubmit, globalError }) => (
@@ -49,11 +41,10 @@ const LoginForm: React.FC<Props> = ({ ...props }) => {
                         {strings.title}
                     </h2>
                     <Field
-                        type={FieldType.EMAIL}
-                        name='email'
-                        label={strings.email}
-                        required={strings.missingEmail}
-                        invalid={strings.invalidEmail} />
+                        type={FieldType.TEXT}
+                        name='name'
+                        label={strings.name}
+                        required={strings.missingName} />
                     <Field
                         type={FieldType.PASSWORD}
                         label={strings.password}

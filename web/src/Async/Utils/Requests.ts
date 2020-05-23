@@ -3,9 +3,10 @@ import Path from 'url'
 import QueryString from 'query-string'
 
 import Config from '../../Async/Constants/Config'
-import Store from '../../Core/Redux/Store'
 
 export default class Requests {
+
+    public static authorization: string | undefined = undefined
 
     public static get<T>(path: string, query: any = {}): Promise<T> {
         return this.process<T>(
@@ -57,7 +58,7 @@ export default class Requests {
         return {
             params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }),
             headers: {
-                Authorization: Store.getState().auth.identity.payload?.token
+                Authorization: Requests.authorization
             }
         }
     }

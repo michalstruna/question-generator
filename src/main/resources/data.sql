@@ -1,6 +1,8 @@
 DELETE FROM question;
 DELETE FROM topic;
 
+INSERT INTO user (id, username, password) VALUES (1, 'user', '$2a$10$XgbP6h1UQ1tI8O6t/5u8mOGiWxMIbEwCmzawLCK4Ui9kNqrwqT1g2');
+
 INSERT INTO topic (id, name, correct, wrong, questions_count, total_time) VALUES
 (1, 'Internetové aplikace', 389, 63, 8, 3542000),
 (2, 'Matematika', 5691, 961, 2368, 35200000),
