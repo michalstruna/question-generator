@@ -23,7 +23,7 @@ public class QuestionService {
     @Autowired
     private TopicService topicService;
 
-    public Question get(int questionId) {
+    public Question getById(int questionId) {
         return questionRepository.findById(questionId).orElseThrow(); // TODO: 404
     }
 
@@ -32,7 +32,7 @@ public class QuestionService {
     }
 
     public Page<Question> getAllByTopic(Pageable pageable, String nameFilter, int topicIdFilter) {
-        Topic topic = topicService.get(topicIdFilter);
+        Topic topic = topicService.getById(topicIdFilter);
         return questionRepository.findAllByNameContainingIgnoreCaseAndTopic(nameFilter, topic, pageable);
     }
 
@@ -44,7 +44,7 @@ public class QuestionService {
         question.setTotalTime(0);
         question.setAnswer(newQuestion.getAnswer());
 
-        Topic topic = topicService.get(newQuestion.getTopicId());
+        Topic topic = topicService.getById(newQuestion.getTopicId());
         topic.setQuestionsCount(topic.getQuestionsCount() + 1);
         question.setTopic(topic);
         topicRepository.save(topic);
@@ -90,7 +90,7 @@ public class QuestionService {
     }
 
     public void remove(int questionId) {
-        Question question = get(questionId);
+        Question question = getById(questionId);
         Topic topic = question.getTopic();
         topic.setQuestionsCount(topic.getQuestionsCount() - 1);
         topic.setCorrect(topic.getCorrect() - question.getCorrect());

@@ -19,7 +19,7 @@ public class TopicService {
     @Autowired
     private QuestionRepository questionRepository;
 
-    public Topic get(int topicId) {
+    public Topic getById(int topicId) {
         return topicRepository.findById(topicId).orElseThrow(); // TODO: 404
     }
 

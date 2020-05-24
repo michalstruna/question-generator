@@ -19,7 +19,7 @@ public class TopicController {
 
     @GetMapping("/{topicId}")
     public Topic get(@PathVariable int topicId) {
-        return topicService.get(topicId);
+        return topicService.getById(topicId);
     }
 
     @GetMapping(value = "/")

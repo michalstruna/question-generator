@@ -25,7 +25,7 @@ public class AuthService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = authRepository.findByUsername(name);
+        User user = findByUsername(name);
 
         return new UserDetails() {
             @Override
@@ -63,6 +63,10 @@ public class AuthService implements UserDetailsService {
                 return true;
             }
         };
+    }
+
+    public User findByUsername(String name) {
+        return authRepository.findByUsername(name);
     }
 
     public User addUser(Credentials credentials) {
