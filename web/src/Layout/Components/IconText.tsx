@@ -8,6 +8,7 @@ interface Static {
     SMALL: string
     MEDIUM: string
     LARGE: string
+    Root: string
 }
 
 interface Props extends React.ComponentPropsWithoutRef<'div'>, Partial<Target> {
@@ -93,5 +94,7 @@ const IconText: React.FC<Props> & Static = ({ icon, text, size, isActive, pathna
 IconText.SMALL = '1rem'
 IconText.MEDIUM = '1.35rem'
 IconText.LARGE = '2.5rem'
+
+IconText.Root = Root
 
 export default IconText

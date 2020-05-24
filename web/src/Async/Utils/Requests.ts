@@ -6,6 +6,8 @@ import Config from '../../Async/Constants/Config'
 
 export default class Requests {
 
+    public static authorization: string | undefined = undefined
+
     public static get<T>(path: string, query: any = {}): Promise<T> {
         return this.process<T>(
             Axios.get(
@@ -53,7 +55,16 @@ export default class Requests {
     }
 
     private static getOptions(query: Record<string, any>): object {
-        return { params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }) }
+        const headers: Record<string, string> = {}
+
+        if (Requests.authorization) {
+            headers.Authorization = Requests.authorization
+        }
+
+        return {
+            params: query, paramsSerializer: (query: any) => QueryString.stringify(query, { arrayFormat: 'none' }),
+            headers
+        }
     }
 
     private static getPath(path: string): string {

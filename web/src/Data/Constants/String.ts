@@ -9,7 +9,7 @@ export default {
     nav: {
         links: [
             { text: { [CS]: 'Generátor', [EN]: 'Generator' }, pathname: Url.HOME, icon: 'Overview' },
-            { text: { [CS]: 'Databáze', [EN]: 'Database' }, pathname: Url.DATABASE, icon: 'Database' },
+            { text: { [CS]: 'Databáze', [EN]: 'Database' }, pathname: Url.DATABASE, icon: 'Database' }
         ]
     },
 
@@ -41,7 +41,7 @@ export default {
         correct: { [CS]: 'Správně' },
         wrong: { [CS]: 'Špatně' },
         correctAnswer: { [CS]: 'Správná odpověď' },
-        time: { [CS]: 'Doba odpovědi' },
+        time: { [CS]: 'Doba odpovědi' }
     },
 
     database: {
@@ -72,6 +72,16 @@ export default {
         from: { [CS]: 'Z tématu' },
         missingTopic: { [CS]: 'Vyberte téma' },
         question: { [CS]: 'Otázka' }
+    },
+
+    login: {
+        name: 'Jméno',
+        password: 'Heslo',
+        submit: 'Připojit se',
+        error: 'Špatné přihlašovací údaje.',
+        missingName: 'Napište své jméno',
+        missingPassword: 'Napište své heslo',
+        title: 'Přihlášení'
     }
 
 }

@@ -2,7 +2,9 @@ import React from 'react'
 import Styled from 'styled-components'
 
 import Nav from './Nav'
-import { Dimension, large } from '../../Style'
+import { Dimension } from '../../Style'
+import { AuthControl } from '../../Auth'
+import { IconText } from '../../Layout'
 
 interface Static {
 
@@ -14,7 +16,6 @@ interface Props extends React.ComponentPropsWithoutRef<'div'> {
 
 const Root = Styled.div`
     height: ${Dimension.NAV_HEIGHT};
-    overflow: hidden;
 `
 
 const Left = Styled.div`
@@ -25,7 +26,12 @@ const Left = Styled.div`
 
 const Right = Styled(Left)`
     float: right;
-    padding-right: 1.5rem;
+    padding-right: 1.5rem; 
+    
+    ${IconText.Root} {
+        background: transparent !important;
+        font-weight: normal;
+    }
 `
 
 const Header: React.FC<Props> & Static = ({ ...props }) => {
@@ -36,7 +42,7 @@ const Header: React.FC<Props> & Static = ({ ...props }) => {
                 <Nav />
             </Left>
             <Right>
-
+                <AuthControl />
             </Right>
         </Root>
     )
