@@ -144,7 +144,7 @@ function Table<Item>({ columns, items, withHeader, onSort, defaultSort, renderBo
 
     const renderedItems = React.useMemo(() => (
         sortedItems.map((item, i) => (
-            <Row key={i}>
+            <Row key={i} className='table__row'>
                 {columns.map((column, j) => (
                     <Cell key={j} style={getWidth(column.width)}>
                         {column.render ? column.render(column.accessor(item, i), item, i) : column.accessor(item, i)}

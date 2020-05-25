@@ -104,7 +104,7 @@ const DatabaseSelector: React.FC<Props> & Static = ({ ...props }) => {
                 <p>
                     {strings.contains}
                 </p>
-                <input type='text'
+                <input id='name-filter' type='text'
                        onChange={handleChange}
                        value={filter}
                        placeholder={strings.anything} />

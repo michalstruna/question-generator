@@ -176,7 +176,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
             {isTopicsTable ? renderedTopicsTable : renderedQuestionsTable}
             {identity.payload && (
                 <Fixed>
-                    <Window renderButton={() => <Add>+</Add>}>
+                    <Window renderButton={() => <Add id='add-button'>+</Add>}>
                         {table === 'topics' ? <TopicForm /> : <QuestionForm />}
                     </Window>
                 </Fixed>

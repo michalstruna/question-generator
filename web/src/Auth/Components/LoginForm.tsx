@@ -36,7 +36,7 @@ const LoginForm: React.FC<Props> = ({ ...props }) => {
             initialValues={initialValues}
             onSubmit={handleSubmit}>
             {({ renderSubmit, globalError }) => (
-                <Root {...props}>
+                <Root {...props} id='login-form'>
                     <h2>
                         {strings.title}
                     </h2>

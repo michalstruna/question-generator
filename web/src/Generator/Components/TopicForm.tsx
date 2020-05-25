@@ -48,7 +48,7 @@ const TopicForm: React.FC<Props> & Static = ({ ...props }) => {
             initialValues={{ name: '' }}
             onSubmit={handleSubmit}>
             {({ renderSubmit, globalError }) => (
-                <Root {...props}>
+                <Root {...props} id='add-topic-form'>
                     <h3>
                         {strings.addTopic}
                     </h3>
