@@ -22,7 +22,7 @@ public class UI {
     private String url;
 
     public UI() {
-        System.setProperty("webdriver.gecko.driver", "/home/michal/Stažené/geckodriver-v0.26.0-linux64/geckodriver");
+        System.setProperty("webdriver.gecko.driver", "src/test/resources/geckodriver-v0.26.0-linux64");
         driver = new FirefoxDriver();
         driver.get(URL);
     }
