@@ -39,6 +39,10 @@ public class UI {
         Thread.sleep(ms);
     }
 
+    public void asyncWait() throws InterruptedException {
+        wait(2000);
+    }
+
     public void wait(String selector) {
         WebDriverWait wait = new WebDriverWait(driver, 1500);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(selector)));
@@ -66,6 +70,10 @@ public class UI {
         }
 
         find("#login-form button[type='submit']").click();
+    }
+
+    public void acceptConfirm() {
+        driver.switchTo().alert().accept();
     }
 
 }

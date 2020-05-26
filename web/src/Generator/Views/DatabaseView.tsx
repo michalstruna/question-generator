@@ -112,7 +112,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                             <button onClick={() => window.confirm(`Opravdu vymazat statistiky ze všech otázek tématu "${item.name}"?`) && actions.resetTopic(item.id)}>
                                 {strings.reset}
                             </button>
-                            <button onClick={() => window.confirm(`Opravdu smazat téma "${item.name}" i se všemi otázkami?`) && actions.removeTopic(item.id)}>
+                            <button id='delete-button' onClick={() => window.confirm(`Opravdu smazat téma "${item.name}" i se všemi otázkami?`) && actions.removeTopic(item.id)}>
                                 {strings.delete}
                             </button>
                         </>

@@ -34,7 +34,7 @@ public class LoginTest {
         ui.login("", "");
 
         // Login form should be still visible.
-        ui.wait(2000);
+        ui.asyncWait();
         assertTrue(ui.exists("#login-form"));
 
         // Check error messages.
@@ -55,7 +55,7 @@ public class LoginTest {
         ui.login("user", "bad_password");
 
         // Login form should be still visible.
-        ui.wait(2000);
+        ui.asyncWait();
         assertTrue(ui.exists("#login-form"));
 
         // Check error message.

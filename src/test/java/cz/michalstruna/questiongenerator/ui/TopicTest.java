@@ -19,18 +19,21 @@ public class TopicTest {
         ui.find("#nav nav a:last-of-type").click(); // Go to database view.
         ui.find("#add-button").click(); // Show add topic form.
         ui.find("#add-topic-form input[type='text']").sendKeys(TOPIC_NAME);
-        ui.find("add-topic-form button").click();
-        ui.wait(2000);
+        ui.find("#add-topic-form button").click();
+        ui.asyncWait();
         ui.find("#name-filter").sendKeys(TOPIC_NAME);
 
         List<WebElement> rows = ui.findAll(".table__row");
         assertEquals(1, rows.size());
 
         ui.find("#delete-button").click();
+        ui.acceptConfirm();
 
+        ui.asyncWait();
         rows = ui.findAll(".table__row");
-        ui.wait(2000);
         assertEquals(0, rows.size());
+
+        ui.close();
     }
 
 }
