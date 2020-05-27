@@ -19,7 +19,7 @@ public class QuestionController {
 
     @GetMapping("/{questionId}")
     public Question get(@PathVariable int questionId) {
-        return questionService.get(questionId);
+        return questionService.getById(questionId);
     }
 
     @GetMapping(value = "/")

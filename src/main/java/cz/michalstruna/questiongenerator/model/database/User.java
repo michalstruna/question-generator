@@ -1,6 +1,7 @@
 package cz.michalstruna.questiongenerator.model.database;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity(name = "user")
 public class User {
@@ -14,6 +15,15 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+
+    public User() {
+
+    }
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
 
     public int getId() {
         return id;
@@ -39,4 +49,18 @@ public class User {
         this.password = password;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password);
+    }
 }

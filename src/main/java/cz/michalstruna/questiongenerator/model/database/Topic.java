@@ -12,7 +12,7 @@ public class Topic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 40)
     private String name;
 
     @Column()
@@ -27,7 +27,7 @@ public class Topic {
     @Column
     private int totalTime;
 
-    @Formula("coalesce(correct / NULLIF((correct + wrong), 0), 100)")
+    @Formula("coalesce(100 * correct / NULLIF(correct + wrong, 0), 100)")
     private double success;
 
     @Formula("correct + wrong")
@@ -36,8 +36,16 @@ public class Topic {
     @Formula("coalesce(total_time / NULLIF((correct + wrong), 0), 0)")
     private double timePerAnswer;
 
-    @OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<Question> questions;
+    //@OneToMany(mappedBy = "topic", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    //private List<Question> questions;
+
+    public Topic() {
+
+    }
+
+    public Topic(String name) {
+        this.name = name;
+    }
 
     public int getId() {
         return id;

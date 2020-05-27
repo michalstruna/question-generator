@@ -1,6 +1,6 @@
 package cz.michalstruna.questiongenerator.service;
 
-import cz.michalstruna.questiongenerator.dao.AuthRepository;
+import cz.michalstruna.questiongenerator.dao.UserRepository;
 import cz.michalstruna.questiongenerator.model.database.User;
 import cz.michalstruna.questiongenerator.model.dto.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +18,14 @@ import java.util.Collection;
 public class AuthService implements UserDetailsService {
 
     @Autowired
-    AuthRepository authRepository;
+    UserRepository userRepository;
 
     @Autowired
     BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        User user = authRepository.findByUsername(name);
+        User user = findByUsername(name);
 
         return new UserDetails() {
             @Override
@@ -65,11 +65,15 @@ public class AuthService implements UserDetailsService {
         };
     }
 
+    public User findByUsername(String name) {
+        return userRepository.findByUsername(name);
+    }
+
     public User addUser(Credentials credentials) {
         User user = new User();
         user.setUsername(credentials.getName());
         user.setPassword(encoder.encode(credentials.getPassword()));
-        return authRepository.save(user);
+        return userRepository.save(user);
     }
 
 }

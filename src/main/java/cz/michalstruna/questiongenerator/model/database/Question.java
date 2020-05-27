@@ -15,8 +15,8 @@ public class Question {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<QuestionInstance> instances;
+    //@OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    //private List<QuestionInstance> instances;
 
     @Column()
     private int correct;
@@ -33,14 +33,24 @@ public class Question {
     @ManyToOne
     private Topic topic;
 
-    @Formula("coalesce(10000 * correct / NULLIF((correct + wrong), 0), 10000)")
+    @Formula("coalesce(100 * correct / NULLIF(correct + wrong, 0), 100)")
     private double success;
 
     @Formula("correct + wrong")
     private int answersCount;
 
-    @Formula("coalesce(total_time / NULLIF((correct + wrong), 0), 0)")
+    @Formula("coalesce(total_time / NULLIF(correct + wrong, 0), 0)")
     private double timePerAnswer;
+
+    public Question() {
+
+    }
+
+    public Question(String name, String answer, Topic topic) {
+        this.name = name;
+        this.answer = answer;
+        this.topic = topic;
+    }
 
     public int getId() {
         return id;

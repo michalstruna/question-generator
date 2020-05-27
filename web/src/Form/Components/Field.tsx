@@ -119,7 +119,7 @@ const Field: React.FC<Props> = ({ name, type, label, required, invalid, validato
         <Root {...props}>
             {renderControl()}
             <Text>
-                <Label error={true}>
+                <Label error={true} className='form__error'>
                     <ErrorMessage name={name} />
                 </Label>
                 <Label>

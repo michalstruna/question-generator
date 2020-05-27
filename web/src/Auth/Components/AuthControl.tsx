@@ -11,12 +11,13 @@ const AuthControl = () => {
 
     return identity.payload ? (
         <IconText
+            id='logout-button'
             icon='Auth/Logout.svg'
             text='Odhlásit se'
             onClick={() => actions.logout()}
             size={IconText.SMALL} />
     ) : (
-        <Window renderButton={() => <IconText icon='Auth/User.svg' text='Přihlášení' onClick={() => null} size={IconText.SMALL} />}>
+        <Window renderButton={() => <IconText id='toggle-login' icon='Auth/User.svg' text='Přihlášení' onClick={() => null} size={IconText.SMALL} />}>
             <LoginForm />
         </Window>
     )

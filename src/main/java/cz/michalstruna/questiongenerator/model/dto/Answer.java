@@ -1,5 +1,7 @@
 package cz.michalstruna.questiongenerator.model.dto;
 
+import org.springframework.stereotype.Component;
+
 public class Answer {
 
     private String value;
