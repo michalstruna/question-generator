@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class TopicTest {
 
-    private static final String TOPIC_NAME = "test_topic_test_topic_test_topic_test_to";
+    private static final String TOPIC_NAME = "test_topic";
 
     @Test
     public void testCreateAndDeleteTopic() throws InterruptedException {
