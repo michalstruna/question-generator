@@ -1,7 +1,7 @@
 package cz.michalstruna.questiongenerator.ui;
 
 import cz.michalstruna.questiongenerator.testutil.UI;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.openqa.selenium.WebElement;
 
 import java.util.List;

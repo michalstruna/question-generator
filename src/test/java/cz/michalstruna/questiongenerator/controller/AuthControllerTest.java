@@ -4,7 +4,7 @@ import cz.michalstruna.questiongenerator.model.database.User;
 import cz.michalstruna.questiongenerator.model.dto.Credentials;
 import cz.michalstruna.questiongenerator.model.dto.Identity;
 import cz.michalstruna.questiongenerator.testutil.Creator;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
