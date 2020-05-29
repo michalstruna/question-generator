@@ -17,6 +17,7 @@ public class TopicTest {
         UI ui = new UI();
         ui.login("user", "nnpia");
         ui.find("#nav nav a:last-of-type").click(); // Go to database view.
+        ui.wait(100);
         ui.find("#add-button").click(); // Show add topic form.
         ui.find("#add-topic-form input[type='text']").sendKeys(TOPIC_NAME);
         ui.find("#add-topic-form button").click();

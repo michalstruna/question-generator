@@ -91,7 +91,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
             defaultSort={sort}
             segment={segment}
             columns={[
-                { accessor: (item, i) => (i + 1) + '.', title: '#', width: 0.25 },
+                { accessor: (item, i) => (segment.size * segment.index + i + 1) + '.', title: '#', width: 0.25 },
                 { accessor: item => item.name, title: strings.topic, width: 1.5 },
                 {
                     accessor: item => item.correct / item.wrong,
@@ -129,7 +129,7 @@ const DatabaseView: React.FC<Props> & Static = () => {
                 onSort={actions.setSort}
                 defaultSort={sort}
                 columns={[
-                    { accessor: (item, i) => (i + 1) + '.', title: '#', width: '2rem' },
+                    { accessor: (item, i) => (segment.size * segment.index + i + 1) + '.', title: '#', width: '2.5rem' },
                     { accessor: item => item.name, title: strings.question, width: 3 },
                     { accessor: item => item.answer, title: strings.answer, render: answer => answer.replace(/\\/g, '') },
                     { accessor: item => item.topic.name, title: strings.topic, width: 1.5 },

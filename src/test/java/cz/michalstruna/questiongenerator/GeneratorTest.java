@@ -24,8 +24,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class GeneratorTest {
 
-    private static final String TOPIC_NAME = "gen_test_topic_name_";
-    private static final String QUESTION_NAME = "gen_test_topic_name_";
+    private static final String TOPIC_NAME = "test_topic_name";
+    private static final String QUESTION_NAME = "test_topic_name";
 
     @Autowired
     QuestionService questionService;

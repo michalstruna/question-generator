@@ -52,7 +52,7 @@ const Async: any = <T extends any>({ data: rawData, pending, success, fail }: Pr
     React.useEffect(() => {
         let isChanged = false
 
-        for (const i in data) {
+        ITEM: for (const i in data) {
             if (!data[i][2]) {
                 continue
             }
@@ -62,6 +62,7 @@ const Async: any = <T extends any>({ data: rawData, pending, success, fail }: Pr
                     if (data[i][1]) {
                         isChanged = true
                         dispatch(data[i][1]())
+                        continue ITEM
                     }
                 }
             }
