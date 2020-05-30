@@ -1,72 +1,55 @@
 package cz.michalstruna.questiongenerator.ui;
 
-import cz.michalstruna.questiongenerator.testutil.UI;
+import cz.michalstruna.questiongenerator.testutil.AuthControl;
+import cz.michalstruna.questiongenerator.testutil.PageObject;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
+import org.junit.runner.RunWith;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-
+@SpringBootTest
+@RunWith(SpringRunner.class)
 public class LoginTest {
 
     @Test
     public void testSuccessfulLoginAndLogout() throws InterruptedException {
-        UI ui = new UI();
-        ui.login("user", "nnpia");
+        FirefoxDriver driver = PageObject.createDriver();
+        AuthControl auth = new AuthControl(driver);
 
-        // Wait for logout button.
-        ui.wait("#logout-button");
-        assertFalse(ui.exists("#login-form"));
+        auth.login("user", "nnpia");
+        auth.loginFormShouldExist(false);
+        auth.logout();
+        auth.loginFormShouldExist(true);
+        auth.logoutButtonShouldExist(false);
 
-        // Logout.
-        ui.find("#logout-button").click();
-        assertFalse(ui.exists("#logout-button"));
-        assertTrue(ui.exists("#login-form"));
-        assertTrue(ui.exists("#toggle-login"));
-
-        ui.close();
+        driver.close();
     }
 
     @Test
     public void testLoginWithEmptyCredentials() throws InterruptedException {
-        UI ui = new UI();
-        ui.login("", "");
+        FirefoxDriver driver = PageObject.createDriver();
+        AuthControl auth = new AuthControl(driver);
 
-        // Login form should be still visible.
-        ui.asyncWait();
-        assertTrue(ui.exists("#login-form"));
+        auth.login("", "");
+        auth.loginFormShouldExist(true);
+        auth.loginErrorsShouldExist("Napište své jméno", "Napište své heslo");
+        auth.loginButtonShouldBeDisabled();
 
-        // Check error messages.
-        List<WebElement> errors = ui.findAll(".form__error:not(:empty)");
-        assertEquals(2, errors.size());
-        assertEquals("Napište své jméno", errors.get(0).getText());
-        assertEquals("Napište své heslo", errors.get(1).getText());
-
-        // Submit button should be disabled.
-        assertNotNull(ui.find("#login-form button[type='submit']").getAttribute("disabled"));
-
-        ui.close();
+        driver.close();
     }
 
     @Test
     public void testLoginWithWrongPassword() throws InterruptedException {
-        UI ui = new UI();
-        ui.login("user", "bad_password");
+        FirefoxDriver driver = PageObject.createDriver();
+        AuthControl auth = new AuthControl(driver);
 
-        // Login form should be still visible.
-        ui.asyncWait();
-        assertTrue(ui.exists("#login-form"));
+        auth.login("user", "bad_password");
+        auth.loginFormShouldExist(true);
+        auth.loginErrorsShouldExist("Špatné přihlašovací údaje.");
+        auth.loginButtonShouldBeDisabled();
 
-        // Check error message.
-        List<WebElement> errors = ui.findAll(".form__error:not(:empty)");
-        assertEquals(1, errors.size());
-        assertEquals("Špatné přihlašovací údaje.", errors.get(0).getText());
-
-        // Submit button should be disabled.
-        assertNotNull(ui.find("#login-form button[type='submit']").getAttribute("disabled"));
-
-        ui.close();
+        driver.close();
     }
 
 }

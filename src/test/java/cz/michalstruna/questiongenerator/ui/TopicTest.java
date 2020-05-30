@@ -1,12 +1,10 @@
 package cz.michalstruna.questiongenerator.ui;
 
-import cz.michalstruna.questiongenerator.testutil.UI;
+import cz.michalstruna.questiongenerator.testutil.AuthControl;
+import cz.michalstruna.questiongenerator.testutil.DatabasePage;
+import cz.michalstruna.questiongenerator.testutil.PageObject;
 import org.junit.Test;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
-
-import static org.junit.Assert.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class TopicTest {
 
@@ -14,27 +12,19 @@ public class TopicTest {
 
     @Test
     public void testCreateAndDeleteTopic() throws InterruptedException {
-        UI ui = new UI();
-        ui.login("user", "nnpia");
-        ui.find("#nav nav a:last-of-type").click(); // Go to database view.
-        ui.wait(100);
-        ui.find("#add-button").click(); // Show add topic form.
-        ui.find("#add-topic-form input[type='text']").sendKeys(TOPIC_NAME);
-        ui.find("#add-topic-form button").click();
-        ui.asyncWait();
-        ui.find("#name-filter").sendKeys(TOPIC_NAME);
+        FirefoxDriver driver = PageObject.createDriver();
+        AuthControl auth = new AuthControl(driver);
+        DatabasePage db = new DatabasePage(driver);
 
-        List<WebElement> rows = ui.findAll(".table__row");
-        assertEquals(1, rows.size());
+        auth.login("user", "nnpia");
+        db.goTo();
+        db.addTopic(TOPIC_NAME);
+        db.filter(TOPIC_NAME);
+        db.itemsShouldExist(1);
+        db.deleteItem();
+        db.itemsShouldExist(0);
 
-        ui.find("#delete-button").click();
-        ui.acceptConfirm();
-
-        ui.asyncWait();
-        rows = ui.findAll(".table__row");
-        assertEquals(0, rows.size());
-
-        ui.close();
+        driver.close();
     }
 
 }

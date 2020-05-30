@@ -5,6 +5,7 @@ import cz.michalstruna.questiongenerator.model.database.QuestionInstance;
 import cz.michalstruna.questiongenerator.model.database.Topic;
 import cz.michalstruna.questiongenerator.model.dto.Answer;
 import cz.michalstruna.questiongenerator.model.dto.AnswerCheck;
+import cz.michalstruna.questiongenerator.model.dto.NewTopic;
 import cz.michalstruna.questiongenerator.service.GeneratorService;
 import cz.michalstruna.questiongenerator.service.QuestionService;
 import cz.michalstruna.questiongenerator.service.TopicService;
@@ -12,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
@@ -24,8 +26,8 @@ import static org.junit.Assert.*;
 @SpringBootTest
 public class GeneratorTest {
 
-    private static final String TOPIC_NAME = "test_topic_name";
-    private static final String QUESTION_NAME = "test_topic_name";
+    private static final String TOPIC_NAME = "test_gen_topic";
+    private static final String QUESTION_NAME = "test_gen_question";
 
     @Autowired
     QuestionService questionService;
@@ -90,7 +92,6 @@ public class GeneratorTest {
         assertEquals(300, topic.getTimePerAnswer(), 200);
         assertEquals(66.66, topic.getSuccess(), 1);
         assertEquals(6, topic.getAnswersCount());
-
     }
 
 }

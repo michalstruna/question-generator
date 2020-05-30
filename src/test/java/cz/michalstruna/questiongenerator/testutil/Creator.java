@@ -56,6 +56,7 @@ public class Creator {
         try {
             Map props = PropertyUtils.describe(entity);
             List<Field> allFields = FieldUtils.getAllFieldsList(entity.getClass());
+
             for (Field field : allFields) {
                 try {
                     field.setAccessible(true);
@@ -92,6 +93,7 @@ public class Creator {
             }
 
             JpaRepository dao = getDao(entity);
+
             if (deleteOthers) {
                 dao.deleteAllInBatch();
             }
