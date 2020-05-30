@@ -11,8 +11,8 @@ import java.util.List;
 public abstract class PageObject {
 
     private FirefoxDriver driver;
-    private static final String URL = "http://localhost:3000";
-    //private static final String URL = "https://qg.now.sh/";
+    //private static final String URL = "http://localhost:3000";
+    private static final String URL = "https://qg.now.sh/";
 
     public PageObject(FirefoxDriver driver) {
         this.driver = driver;

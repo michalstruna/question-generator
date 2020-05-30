@@ -9,7 +9,9 @@ import cz.michalstruna.questiongenerator.model.dto.UpdatedQuestion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class QuestionService {
@@ -24,7 +26,13 @@ public class QuestionService {
     private TopicService topicService;
 
     public Question getById(int questionId) {
-        return questionRepository.findById(questionId).orElseThrow(); // TODO: 404
+        var question = questionRepository.findById(questionId);
+
+        if (question.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return question.get();
     }
 
     public Page<Question> getAll(Pageable pageable, String nameFilter) {
