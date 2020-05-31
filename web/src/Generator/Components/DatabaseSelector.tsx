@@ -29,6 +29,10 @@ const Root = Styled.div`
     & > * {
         width: 50%;
         
+        &:last-of-type {
+            width: auto;
+        }
+        
         ${large} {
             float: none;
             width: 100%;

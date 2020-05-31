@@ -101,7 +101,7 @@ const Slice = Redux.slice(
 
         addQuestion: async<QuestionNew, Question>('newQuestion', question => Requests.post('questions', question), {
             onSuccess: (state, action) => {
-                if (state.topicId === action.payload.topic.id || !state.topicId) {
+                if (parseInt(state.topicId) === action.payload.topic.id || !state.topicId) {
                     state.questions.payload!.content.push(action.payload)
                 }
 

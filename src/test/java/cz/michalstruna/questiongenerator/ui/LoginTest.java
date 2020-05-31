@@ -3,13 +3,8 @@ package cz.michalstruna.questiongenerator.ui;
 import cz.michalstruna.questiongenerator.testutil.AuthControl;
 import cz.michalstruna.questiongenerator.testutil.PageObject;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@SpringBootTest
-@RunWith(SpringRunner.class)
 public class LoginTest {
 
     @Test

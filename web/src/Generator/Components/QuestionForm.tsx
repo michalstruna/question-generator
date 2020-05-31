@@ -46,8 +46,9 @@ const TopicForm: React.FC<Props> & Static = ({ ...props }) => {
 
     return (
         <FormContainer<QuestionNew>
-            initialValues={{ name: '', answer: '', topicId: topics.payload?.content[0]?.id || 0 }}
-            onSubmit={handleSubmit}>
+            initialValues={{ name: '', answer: '', topicId: topics.payload?.content[0]?.id || 1 }}
+            onSubmit={handleSubmit}
+            enableReinitialize={true}>
             {({ renderSubmit, globalError }) => (
                 <Root {...props}>
                     <Async data={[topics]} success={() => (
@@ -70,7 +71,7 @@ const TopicForm: React.FC<Props> & Static = ({ ...props }) => {
                                 type={FieldType.SELECT}
                                 label={strings.topic}
                                 required={strings.missingTopic}
-                                options={topics.payload!.content.map(topic => ({ text: topic.name, value: topic.id }))} />
+                                options={topics.payload ? topics.payload.content.map(topic => ({ text: topic.name, value: topic.id })) : []} />
                             {renderSubmit(strings.add)}
                             {globalError}
                             <Async data={[newTopic]} fail={() => null} />
